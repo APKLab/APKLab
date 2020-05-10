@@ -1,0 +1,83 @@
+{
+	"name": "apklab",
+	"displayName": "APK Lab",
+	"description": "Android App Package (APK) Reverse Engineering WorkBench",
+	"publisher": "Surendrajat",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.45.0"
+	},
+	"categories": [
+		"Programming Languages",
+		"Other"
+	],
+	"keywords": [
+		"bytecode",
+		"disassembler",
+		"decompiler",
+		"re",
+		"android",
+		"apktool",
+		"jadx",
+		"apksigner",
+		"apk studio",
+		"apk",
+		"reverse engineering",
+		"analysis",
+		"apk editor",
+		"smali",
+		"dalvik"
+	],
+	"activationEvents": [
+		"workspaceContains:apktool.yml",
+		"onCommand:apklab.openApkFile"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "apklab.openApkFile",
+				"title": "APK Lab: Open an APK"
+			}
+		],
+		"configuration": {
+			"title": "APK Lab",
+			"properties": {
+				"apklab.javaPath": {
+					"type": "string",
+					"default": "java",
+					"markdownDescription": "Put the `java` executable path here. If JDK is not present, download from [this link](https://adoptopenjdk.net/)."
+				},
+				"apklab.apktoolPath": {
+					"type": "string",
+					"default": "",
+					"markdownDescription": "Download `apktool_2.x.y.jar` from [this link](https://github.com/ibotpeaches/apktool/releases/) and put it's location here."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.45.0",
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.2",
+		"@types/node": "^13.11.0",
+		"eslint": "^6.8.0",
+		"@typescript-eslint/parser": "^2.30.0",
+		"@typescript-eslint/eslint-plugin": "^2.30.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.2",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0"
+	},
+	"dependencies": {
+		"child_process": "^1.0.2"
+	}
+}
