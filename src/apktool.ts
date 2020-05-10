@@ -53,3 +53,49 @@ export function decodeAPK(apkFilePath: string) {
         }
     );
 }
+
+export function rebuildAPK(apktoolYmlPath: string) {
+
+    const projectDir = apktoolYmlPath.split("/apktool.yml")[0];
+    const projectName = projectDir.substring(projectDir.lastIndexOf("/") + 1);
+
+    // get apktool path from settings
+    let apktoolPath = vscode.workspace.getConfiguration("apklab").get("apktoolPath");
+    // check if it's not empty
+    if (!apktoolPath) {
+        console.error("Please download apktool and update the apktoolPath in settings.");
+        vscode.window.showErrorMessage("Apktool not found");
+        return;
+    }
+    // show a notification progress bar until the apk is being rebuilt
+    vscode.window.withProgress(
+        {
+            location: vscode.ProgressLocation.Notification,
+            title: "ApkTool",
+            cancellable: true,
+        },
+        (progress, token) => {
+            return new Promise((resolve) => {
+                console.info(`Rebuilding ${projectName}.apk into ${projectName}/dist/...`);
+                progress.report({ message: `Rebuilding ${projectName}.apk...` });
+
+                let cp = child_process.spawn("java", ["-jar", String(apktoolPath), 'b', projectDir], {});
+                cp.stdout.on('data', (data) => console.log(data.toString().trim()));
+                cp.stderr.on('data', (data) => console.error(data.toString().trim()));
+                cp.on('error', (data) => { console.error(data.toString().trim()); resolve(); });
+                cp.on('exit', (code) => {
+                    if (code === 0) {
+                        console.log("Rebuilding apk was successful");
+                    } else {
+                        console.error(`Rebuilding process exited with code ${code}`);
+                    }
+                    resolve();
+                });
+                token.onCancellationRequested(() => {
+                    console.warn("User canceled the rebuilding process");
+                    if (!cp.killed) { cp.kill(); }
+                });
+            });
+        }
+    );
+}

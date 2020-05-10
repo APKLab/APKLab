@@ -16,12 +16,18 @@ export function activate(context: vscode.ExtensionContext) {
 			openLabel: "Select an APK file",
 		});
 		if (result && result.length === 1) {
-			apktool.decodeAPK(result[0].path);
+			apktool.decodeAPK(result[0].fsPath);
 		} else {
 			console.warn("[APKLAB]: no apk was file chosen");
 		}
 	});
-	context.subscriptions.push(openApkFileCommand);
+
+	let rebuildAPkFileCommand = vscode.commands.registerCommand("apklab.rebuildApkFile", (uri: vscode.Uri) => {
+		// rebuild apk using Apktool
+		apktool.rebuildAPK(uri.fsPath);
+	});
+
+	context.subscriptions.push(openApkFileCommand, rebuildAPkFileCommand);
 }
 
 export function deactivate() { }

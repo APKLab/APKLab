@@ -8,6 +8,10 @@ APK Lab extension provides an automated and easy-to-use workflow for reverse eng
 
     ![decode.gif](assets/decode.gif)
 
+2. Rebuild APK file using **`Apktool`** (Right click in `apktool.yml` file)
+
+    ![decode.gif](assets/rebuild.gif)
+
 ## Requirements
 
 1. **JDK 8** or higher should be in your PATH

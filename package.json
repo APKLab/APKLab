@@ -45,8 +45,27 @@
 			{
 				"command": "apklab.openApkFile",
 				"title": "APK Lab: Open an APK"
+			},
+			{
+				"command": "apklab.rebuildApkFile",
+				"title": "APK Lab: Rebuild the APK"
 			}
 		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "apklab.rebuildApkFile",
+					"when": "resourceFilename == apktool.yml",
+					"group": "navigation"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "apklab.rebuildApkFile",
+					"when": "resourceFilename == apktool.yml"
+				}
+			]
+		},
 		"configuration": {
 			"title": "APK Lab",
 			"properties": {
@@ -57,7 +76,7 @@
 				},
 				"apklab.apktoolPath": {
 					"type": "string",
-					"default": "",
+					"default": "/home/surendra/apps/apktool_2.4.1.jar",
 					"markdownDescription": "Download `apktool_2.x.y.jar` from [this link](https://github.com/ibotpeaches/apktool/releases/) and put it's location here."
 				}
 			}
