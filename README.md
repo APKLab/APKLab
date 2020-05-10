@@ -9,13 +9,15 @@ APK Lab extension provides an automated and easy-to-use workflow for reverse eng
     ![decode.gif](assets/decode.gif)
 
 2. Rebuild APK file using **`Apktool`** (Right click in `apktool.yml` file)
+3. Sign the rebuilt APK using [**`uber-apk-signer`**](https://github.com/patrickfav/uber-apk-signer)
 
-    ![decode.gif](assets/rebuild.gif)
+    ![rebuild.gif](assets/rebuild.gif)
 
 ## Requirements
 
 1. **JDK 8** or higher should be in your PATH
 2. **Apktool**: Download the latest [`apktool.jar`](https://github.com/ibotpeaches/apktool/releases/) and update its location in VS Code settings under (**`Apklab: Apktool Path`**)
+3. **uber-apk-signer**: Download the latest [`uber-apk-signer.jar`](https://github.com/patrickfav/uber-apk-signer/releases/) and update its location in VS Code settings under (**`Apklab: Apk Signer Path`**)
 
 > [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise) extension is highly recommended as it makes working with `smali` files a breeze.
 
@@ -36,6 +38,14 @@ This extension contributes the following settings:
   ```json
     {
         "apklab.apktoolPath": "/home/oozer/downloads/apktool_2.4.1.jar"
+    }
+  ```
+
+* **`apklab.apkSignerPath`**: Path of `uber-apk-signer.jar`. Please update this with absolute(full) path. For example:
+
+  ```json
+    {
+        "apklab.apkSignerPath": "/home/oozer/downloads/uber-apk-signer-1.1.0.jar"
     }
   ```
 

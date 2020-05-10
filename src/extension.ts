@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as apktool from './apktool';
+import { apktool } from './tools';
 
 
 export function activate(context: vscode.ExtensionContext) {

@@ -3,7 +3,7 @@
 	"displayName": "APK Lab",
 	"description": "Android App Package (APK) Reverse Engineering WorkBench",
 	"publisher": "Surendrajat",
-	"version": "0.0.1",
+	"version": "0.3.0",
 	"engines": {
 		"vscode": "^1.45.0"
 	},
@@ -77,7 +77,12 @@
 				"apklab.apktoolPath": {
 					"type": "string",
 					"default": "/home/surendra/apps/apktool_2.4.1.jar",
-					"markdownDescription": "Download `apktool_2.x.y.jar` from [this link](https://github.com/ibotpeaches/apktool/releases/) and put it's location here."
+					"markdownDescription": "Download `apktool_2.x.y.jar` from [this link](https://github.com/ibotpeaches/apktool/releases/) and put its location here."
+				},
+				"apklab.apkSignerPath": {
+					"type": "string",
+					"default": "/home/surendra/apps/uber-apk-signer-1.1.0.jar",
+					"markdownDescription": "Download `uber-apk-signer-1.x.y.jar` from [this link](https://github.com/patrickfav/uber-apk-signer/releases/) and put its location here."
 				}
 			}
 		}
