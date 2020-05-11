@@ -46,16 +46,19 @@ function executeProcess(processOptions: ProcessOptions) {
                 cp.stderr.on('data', (data) => outputChannel.appendLine(data.toString().trim()));
                 cp.on('error', (data) => {
                     outputChannel.appendLine(data.toString().trim());
+                    vscode.window.showErrorMessage(`APKLab: ${processOptions.name} process failed.`);
                     resolve();
                 });
                 cp.on('exit', (code) => {
                     if (code === 0) {
                         outputChannel.appendLine(`${processOptions.name} process was successful`);
+                        vscode.window.showInformationMessage(`APKLab: ${processOptions.name} process was successful.`);
                         if (processOptions.onSuccess) {
                             processOptions.onSuccess();
                         }
                     } else {
                         outputChannel.appendLine(`${processOptions.name} process exited with code ${code}`);
+                        vscode.window.showErrorMessage(`APKLab: ${processOptions.name} process failed.`);
                     }
                     resolve();
                 });

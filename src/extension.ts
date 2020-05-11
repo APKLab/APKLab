@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 		if (result && result.length === 1) {
 			apktool.decodeAPK(result[0].fsPath);
 		} else {
-			console.warn("[APKLAB]: no apk was file chosen");
+			vscode.window.showWarningMessage("APKLAB: no apk was file chosen");
 		}
 	});
 
