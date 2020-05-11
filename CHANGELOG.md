@@ -1,6 +1,10 @@
 # Changelog
 
-All notable changes to **APK Lab** will be documented in this file.
+## [Unreleased]
+
+### Fixed
+
+- 'Rebuild the APK' always visible in commandPalette
 
 ## [0.3.0] - 2020-05-11
 

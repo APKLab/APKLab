@@ -52,6 +52,12 @@
 			}
 		],
 		"menus": {
+			"commandPalette": [
+				{
+					"command": "apklab.rebuildApkFile",
+					"when": "false"
+				}
+			],
 			"editor/context": [
 				{
 					"command": "apklab.rebuildApkFile",
