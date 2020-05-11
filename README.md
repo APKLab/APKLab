@@ -59,6 +59,10 @@ This extension is in early development stage so if you face any error or have fe
 
 ## Release Notes
 
+### 0.3.1
+
+* fix: `Rebuild the APK` always visible in commandPalette
+
 ### 0.3.0
 
 * Initial release

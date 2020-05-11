@@ -1,10 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [0.3.1] - 2020-05-11
 
 ### Fixed
 
-- 'Rebuild the APK' always visible in commandPalette
+- `Rebuild the APK` always visible in commandPalette
 
 ## [0.3.0] - 2020-05-11
 
