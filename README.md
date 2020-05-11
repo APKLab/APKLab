@@ -53,6 +53,10 @@ This extension contributes the following settings:
 
 1. When decoding an APK, save your workspace first as decoded dir opens up in same window and closes all previous editor tabs & workspace.
 
+## Contribution Guide
+
+This extension is in early development stage so if you face any error or have feature-request etc., please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are also very welcome(We definitely need a good logo).
+
 ## Release Notes
 
 ### 0.3.0
