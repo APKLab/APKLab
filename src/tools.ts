@@ -11,6 +11,7 @@ interface ProcessOptions {
     report: string;
     command: string;
     args: string[];
+    shouldExist?: string;
     onSuccess?: CallableFunction;
 }
 
@@ -50,7 +51,7 @@ function executeProcess(processOptions: ProcessOptions) {
                     resolve();
                 });
                 cp.on('exit', (code) => {
-                    if (code === 0) {
+                    if (code === 0 && (processOptions.shouldExist ? fileSystem.existsSync(processOptions.shouldExist) : true)) {
                         outputChannel.appendLine(`${processOptions.name} process was successful`);
                         vscode.window.showInformationMessage(`APKLab: ${processOptions.name} process was successful.`);
                         if (processOptions.onSuccess) {
@@ -91,8 +92,9 @@ export namespace apktool {
         }
         const report = `Decoding ${apkFileName} into ${apkDecodeDir}...`;
         const args = ["-jar", String(apktoolPath), 'd', apkFilePath, '-o', apkDecodeDir];
+        const shouldExist = apkDecodeDir + "/apktool.yml";
         executeProcess({
-            name: "Decoding", report: report, command: "java", args: args, onSuccess: () => {
+            name: "Decoding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
                 // open apkDecodeDir in vs code
                 vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(apkDecodeDir));
             }
@@ -116,8 +118,9 @@ export namespace apktool {
         const projectName = projectDir.substring(projectDir.lastIndexOf("/") + 1);
         const report = `Rebuilding ${apkFileName} into ${projectName}/dist/...`;
         const args = ["-jar", String(apktoolPath), 'b', projectDir];
+        const shouldExist = `${projectDir}/dist/${apkFileName}`;
         executeProcess({
-            name: "Rebuilding", report: report, command: "java", args: args, onSuccess: () => {
+            name: "Rebuilding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
                 // sign the APK
                 apkSigner.signAPK(projectDir, apkFileName);
             }
@@ -138,16 +141,11 @@ export namespace apkSigner {
             return;
         }
         const builtApkPath = `${projectDir}/dist/${apkFileName}`;
-        // check if APK was rebuilt already and if not, return
-        if (!fileSystem.existsSync(builtApkPath)) {
-            outputChannel.appendLine("Please rebuild the APK before signing.");
-            vscode.window.showWarningMessage("No APK build found in dist dir");
-            return;
-        }
         const report = `Signing ${apkFileName}...`;
         const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign'];
+        const shouldExist = `${builtApkPath.substring(0, builtApkPath.lastIndexOf(".apk"))}-aligned-debugSigned.apk`;
         executeProcess({
-            name: "Signing", report: report, command: "java", args: args
+            name: "Signing", report: report, command: "java", args: args, shouldExist: shouldExist
         });
     }
 }
