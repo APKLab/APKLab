@@ -54,3 +54,10 @@ This extension contributes the following settings:
 1. When decoding an APK, save your workspace first as decoded dir opens up in same window and closes all previous editor tabs & workspace.
 
 ## Release Notes
+
+### 0.3.0
+
+* Initial release
+* DeAssemble/Decode APK file using **`Apktool`**
+* Rebuild APK file (Context menu in `apktool.yml` file)
+* Sign the rebuilt APK using **`uber-apk-signer`**
