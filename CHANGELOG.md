@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0] - 2020-05-13
+
+### Added
+
+- Improved error checking at each step
+- Show useful notifications after each action
+
+### Fixed
+
+- `Open an APK` closes/replaces current workspace
+- No logs being shown Output Channel
+
 ## [0.3.1] - 2020-05-11
 
 ### Fixed

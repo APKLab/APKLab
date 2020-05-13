@@ -57,6 +57,13 @@ This extension is in early development stage so if you face any error or have fe
 
 ## Release Notes
 
+### 0.5.0
+
+* add: Improved error checking at each step
+* add: Show useful notifications after each action
+* fix: `Open an APK` closes/replaces current workspace
+* fix: No logs being shown Output Channel
+
 ### 0.3.1
 
 * fix: `Rebuild the APK` always visible in commandPalette
@@ -64,6 +71,6 @@ This extension is in early development stage so if you face any error or have fe
 ### 0.3.0
 
 * Initial release
-* DeAssemble/Decode APK file using **`Apktool`**
-* Rebuild APK file (Context menu in `apktool.yml` file)
-* Sign the rebuilt APK using **`uber-apk-signer`**
+* add: DeAssemble/Decode APK file using **`Apktool`**
+* add: Rebuild APK file (Context menu in `apktool.yml` file)
+* add: Sign the rebuilt APK using **`uber-apk-signer`**
