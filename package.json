@@ -4,6 +4,7 @@
 	"description": "Android App Package (APK) Reverse Engineering WorkBench",
 	"publisher": "Surendrajat",
 	"version": "0.5.0",
+	"license": "SEE LICENSE IN LICENSE",
 	"engines": {
 		"vscode": "^1.45.0"
 	},
