@@ -95,8 +95,8 @@ export namespace apktool {
         const shouldExist = apkDecodeDir + "/apktool.yml";
         executeProcess({
             name: "Decoding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
-                // open apkDecodeDir in vs code
-                vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(apkDecodeDir));
+                // open apkDecodeDir in a new vs code window
+                vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(apkDecodeDir), true);
             }
         });
     }
