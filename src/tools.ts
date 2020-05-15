@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 
 const outputChannelName = "APK Lab";
 const outputChannel = vscode.window.createOutputChannel(outputChannelName);
+const extensionConfig = vscode.workspace.getConfiguration("apklab");
 
 interface ProcessOptions {
     name: string;
@@ -13,6 +14,12 @@ interface ProcessOptions {
     args: string[];
     shouldExist?: string;
     onSuccess?: CallableFunction;
+}
+
+// try to get javaPath from config first. Defaults to `java`
+function getJavaPath() {
+    let configJavaPath = extensionConfig.get("javaPath");
+    return configJavaPath ? String(configJavaPath) : "java";
 }
 
 // get correct apkFileName from apktool.yml from decoded app
@@ -76,7 +83,7 @@ export namespace apktool {
 
     export function decodeAPK(apkFilePath: string) {
         // get apktool path from settings
-        let apktoolPath = vscode.workspace.getConfiguration("apklab").get("apktoolPath");
+        let apktoolPath = extensionConfig.get("apktoolPath");
         // check if it's not empty
         if (!apktoolPath) {
             outputChannel.appendLine("Please download apktool and update the apktoolPath in settings.");
@@ -94,7 +101,7 @@ export namespace apktool {
         const args = ["-jar", String(apktoolPath), 'd', apkFilePath, '-o', apkDecodeDir];
         const shouldExist = apkDecodeDir + "/apktool.yml";
         executeProcess({
-            name: "Decoding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
+            name: "Decoding", report: report, command: getJavaPath(), args: args, shouldExist: shouldExist, onSuccess: () => {
                 // open apkDecodeDir in a new vs code window
                 vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(apkDecodeDir), true);
             }
@@ -103,7 +110,7 @@ export namespace apktool {
 
     export function rebuildAPK(apktoolYmlPath: string) {
         // get apktool path from settings
-        let apktoolPath = vscode.workspace.getConfiguration("apklab").get("apktoolPath");
+        let apktoolPath = extensionConfig.get("apktoolPath");
         // check if it's not empty
         if (!apktoolPath) {
             outputChannel.appendLine("Please download apktool and update the apktoolPath in settings.");
@@ -120,7 +127,7 @@ export namespace apktool {
         const args = ["-jar", String(apktoolPath), 'b', projectDir];
         const shouldExist = `${projectDir}/dist/${apkFileName}`;
         executeProcess({
-            name: "Rebuilding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
+            name: "Rebuilding", report: report, command: getJavaPath(), args: args, shouldExist: shouldExist, onSuccess: () => {
                 // sign the APK
                 apkSigner.signAPK(projectDir, apkFileName);
             }
@@ -133,7 +140,7 @@ export namespace apkSigner {
     export function signAPK(projectDir: string, apkFileName: string) {
 
         // get uber-apk-signer path from settings
-        let apkSignerPath = vscode.workspace.getConfiguration("apklab").get("apkSignerPath");
+        let apkSignerPath = extensionConfig.get("apkSignerPath");
         // check if it's not empty
         if (!apkSignerPath) {
             outputChannel.appendLine("Please download uber-apk-signer and update the apkSignerPath in settings.");
@@ -145,7 +152,7 @@ export namespace apkSigner {
         const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign'];
         const shouldExist = `${builtApkPath.substring(0, builtApkPath.lastIndexOf(".apk"))}-aligned-debugSigned.apk`;
         executeProcess({
-            name: "Signing", report: report, command: "java", args: args, shouldExist: shouldExist
+            name: "Signing", report: report, command: getJavaPath(), args: args, shouldExist: shouldExist
         });
     }
 }

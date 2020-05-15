@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- use `java` path from config if defined
+
 ## [0.5.0] - 2020-05-13
 
 ### Added
