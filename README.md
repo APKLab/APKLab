@@ -17,9 +17,7 @@ It is NOT intended for piracy and other non-legal uses. It could be used for mal
 
 ## Requirements
 
-1. **JDK 8** or higher should be in your PATH
-2. **Apktool**: Download the latest [`apktool.jar`](https://github.com/ibotpeaches/apktool/releases/) and update its location in VS Code settings under (**`Apklab: Apktool Path`**)
-3. **uber-apk-signer**: Download the latest [`uber-apk-signer.jar`](https://github.com/patrickfav/uber-apk-signer/releases/) and update its location in VS Code settings under (**`Apklab: Apk Signer Path`**)
+- **JDK 8** or higher should be in your PATH
 
 > [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise) extension is highly recommended as it makes working with `smali` files a breeze.
 
@@ -27,7 +25,7 @@ It is NOT intended for piracy and other non-legal uses. It could be used for mal
 
 This extension contributes the following settings:
 
-* **`apklab.javaPath`**: Path of `java` executable. Please update this if JDK is not in the PATH. For example:
+* **`apklab.javaPath`**: Path of `java` executable. Update this, if needed, like:
 
   ```json
     {
@@ -35,7 +33,7 @@ This extension contributes the following settings:
     }
   ```
 
-* **`apklab.apktoolPath`**: Path of `apktool.jar`. Please update this with absolute location(full path). For example:
+* **`apklab.apktoolPath`**: Absolute(full) Path of `apktool.jar`. Update this, if needed, like:
 
   ```json
     {
@@ -43,7 +41,7 @@ This extension contributes the following settings:
     }
   ```
 
-* **`apklab.apkSignerPath`**: Path of `uber-apk-signer.jar`. Please update this with absolute(full) path. For example:
+* **`apklab.apkSignerPath`**: Absolute(full) Path of `uber-apk-signer.jar`. Update this, if needed, like:
 
   ```json
     {

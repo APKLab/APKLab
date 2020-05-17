@@ -1,11 +1,8 @@
 import * as child_process from 'child_process';
-import * as fileSystem from 'fs';
+import * as fs from 'fs';
 import * as vscode from 'vscode';
+import { extensionConfig, outputChannel } from './common';
 
-
-const outputChannelName = "APK Lab";
-const outputChannel = vscode.window.createOutputChannel(outputChannelName);
-const extensionConfig = vscode.workspace.getConfiguration("apklab");
 
 interface ProcessOptions {
     name: string;
@@ -25,7 +22,7 @@ function getJavaPath() {
 // get correct apkFileName from apktool.yml from decoded app
 function getApkName(apktoolYamlPath: string) {
     try {
-        const fileContent = fileSystem.readFileSync(apktoolYamlPath);
+        const fileContent = fs.readFileSync(apktoolYamlPath);
         let regArr = /apkFileName: .*\.apk/.exec(String(fileContent));
         return regArr && regArr.length > 0 ? regArr[0].split(": ")[1] : "";
     } catch (err) {
@@ -58,7 +55,7 @@ function executeProcess(processOptions: ProcessOptions) {
                     resolve();
                 });
                 cp.on('exit', (code) => {
-                    if (code === 0 && (processOptions.shouldExist ? fileSystem.existsSync(processOptions.shouldExist) : true)) {
+                    if (code === 0 && (processOptions.shouldExist ? fs.existsSync(processOptions.shouldExist) : true)) {
                         outputChannel.appendLine(`${processOptions.name} process was successful`);
                         vscode.window.showInformationMessage(`APKLab: ${processOptions.name} process was successful.`);
                         if (processOptions.onSuccess) {
@@ -94,7 +91,7 @@ export namespace apktool {
         const apkName = apkFileName.split('.apk')[0];
         const apkDir = apkFilePath.split(apkFileName)[0];
         let apkDecodeDir = apkDir + apkName;
-        while (fileSystem.existsSync(apkDecodeDir)) {
+        while (fs.existsSync(apkDecodeDir)) {
             apkDecodeDir = apkDecodeDir + "1";
         }
         const report = `Decoding ${apkFileName} into ${apkDecodeDir}...`;

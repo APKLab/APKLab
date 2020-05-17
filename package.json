@@ -83,13 +83,13 @@
 				},
 				"apklab.apktoolPath": {
 					"type": "string",
-					"default": "/home/surendra/apps/apktool_2.4.1.jar",
-					"markdownDescription": "Download `apktool_2.x.y.jar` from [this link](https://github.com/ibotpeaches/apktool/releases/) and put its location here."
+					"default": "",
+					"markdownDescription": "Put the absolute path of `apktool.jar` here if you want to use a non-latest version."
 				},
 				"apklab.apkSignerPath": {
 					"type": "string",
-					"default": "/home/surendra/apps/uber-apk-signer-1.1.0.jar",
-					"markdownDescription": "Download `uber-apk-signer-1.x.y.jar` from [this link](https://github.com/patrickfav/uber-apk-signer/releases/) and put its location here."
+					"default": "",
+					"markdownDescription": "Put the absolute path of `uber-apk-signer.jar` here if you want to use a non-latest version."
 				}
 			}
 		}

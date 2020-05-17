@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Download and manage the dependencies: **`Apktool`**, **`uber-apk-signer`**
+
 ### Fixed
 
 - use `java` path from config if defined
