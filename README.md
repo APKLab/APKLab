@@ -25,7 +25,7 @@ It is NOT intended for piracy and other non-legal uses. It could be used for mal
 
 This extension contributes the following settings:
 
-* **`apklab.javaPath`**: Path of `java` executable. Update this, if needed, like:
+- **`apklab.javaPath`**: Path of `java` executable. Update this, if needed, like:
 
   ```json
     {
@@ -33,7 +33,7 @@ This extension contributes the following settings:
     }
   ```
 
-* **`apklab.apktoolPath`**: Absolute(full) Path of `apktool.jar`. Update this, if needed, like:
+- **`apklab.apktoolPath`**: Absolute(full) Path of `apktool.jar`. Update this, if needed, like:
 
   ```json
     {
@@ -41,7 +41,7 @@ This extension contributes the following settings:
     }
   ```
 
-* **`apklab.apkSignerPath`**: Absolute(full) Path of `uber-apk-signer.jar`. Update this, if needed, like:
+- **`apklab.apkSignerPath`**: Absolute(full) Path of `uber-apk-signer.jar`. Update this, if needed, like:
 
   ```json
     {
@@ -57,20 +57,25 @@ This extension is in early development stage so if you face any error or have fe
 
 ## Release Notes
 
+### 0.6.0
+
+- add: Download and manage the dependencies automatically
+- fix: use `java` path from config if defined
+
 ### 0.5.0
 
-* add: Improved error checking at each step
-* add: Show useful notifications after each action
-* fix: `Open an APK` closes/replaces current workspace
-* fix: No logs being shown Output Channel
+- add: Improved error checking at each step
+- add: Show useful notifications after each action
+- fix: `Open an APK` closes/replaces current workspace
+- fix: No logs being shown Output Channel
 
 ### 0.3.1
 
-* fix: `Rebuild the APK` always visible in commandPalette
+- fix: `Rebuild the APK` always visible in commandPalette
 
 ### 0.3.0
 
-* Initial release
-* add: DeAssemble/Decode APK file using **`Apktool`**
-* add: Rebuild APK file (Context menu in `apktool.yml` file)
-* add: Sign the rebuilt APK using **`uber-apk-signer`**
+- Initial release
+- add: DeAssemble/Decode APK file using **`Apktool`**
+- add: Rebuild APK file (Context menu in `apktool.yml` file)
+- add: Sign the rebuilt APK using **`uber-apk-signer`**
