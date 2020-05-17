@@ -1,6 +1,5 @@
 import { Url, parse as parseUrl } from 'url';
 import * as https from 'https';
-import * as HttpsProxyAgent from 'https-proxy-agent';
 import * as vscode from 'vscode';
 import { extensionConfig, apklabDataDir, outputChannel } from './common';
 import * as fs from 'fs';
@@ -73,12 +72,10 @@ async function DownloadFile(tool: Tool) {
 async function downloadFile(urlString: string): Promise<Buffer> {
     const url = parseUrl(urlString);
     const config = vscode.workspace.getConfiguration();
-    const proxy = config.get<string>('http.proxy');
     const strictSSL = config.get('http.proxyStrictSSL', true);
     const options: https.RequestOptions = {
         host: url.hostname,
         path: url.path,
-        agent: getProxyAgent(proxy),
         port: url.port,
         rejectUnauthorized: strictSSL
     };
@@ -134,27 +131,4 @@ async function downloadFile(urlString: string): Promise<Buffer> {
         // Execute the request
         request.end();
     });
-}
-
-// get a proxy agent in case the proxy is set for https
-function getProxyAgent(proxy: string | undefined): any {
-    const proxyURL = proxy || process.env.HTTPS_PROXY || process.env.https_proxy || process.env.HTTP_PROXY || process.env.http_proxy || "";
-
-    if (!proxyURL) {
-        return null;
-    }
-
-    const proxyEndpoint = parseUrl(proxyURL);
-
-    if (!proxyEndpoint.hostname) {
-        return null;
-    }
-
-    const opts = {
-        host: proxyEndpoint.hostname,
-        port: Number(proxyEndpoint.port),
-        auth: proxyEndpoint.auth,
-    };
-
-    return new HttpsProxyAgent(opts);
 }
