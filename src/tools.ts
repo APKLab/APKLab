@@ -81,12 +81,6 @@ export namespace apktool {
     export function decodeAPK(apkFilePath: string) {
         // get apktool path from settings
         let apktoolPath = extensionConfig.get("apktoolPath");
-        // check if it's not empty
-        if (!apktoolPath) {
-            outputChannel.appendLine("Please download apktool and update the apktoolPath in settings.");
-            vscode.window.showErrorMessage("Apktool not found");
-            return;
-        }
         const apkFileName = apkFilePath.substring(apkFilePath.lastIndexOf('/') + 1);
         const apkName = apkFileName.split('.apk')[0];
         const apkDir = apkFilePath.split(apkFileName)[0];
@@ -108,12 +102,6 @@ export namespace apktool {
     export function rebuildAPK(apktoolYmlPath: string) {
         // get apktool path from settings
         let apktoolPath = extensionConfig.get("apktoolPath");
-        // check if it's not empty
-        if (!apktoolPath) {
-            outputChannel.appendLine("Please download apktool and update the apktoolPath in settings.");
-            vscode.window.showErrorMessage("Apktool not found");
-            return;
-        }
         const apkFileName = getApkName(apktoolYmlPath);
         if (!apkFileName) {
             return;
@@ -135,15 +123,8 @@ export namespace apktool {
 export namespace apkSigner {
 
     export function signAPK(projectDir: string, apkFileName: string) {
-
         // get uber-apk-signer path from settings
         let apkSignerPath = extensionConfig.get("apkSignerPath");
-        // check if it's not empty
-        if (!apkSignerPath) {
-            outputChannel.appendLine("Please download uber-apk-signer and update the apkSignerPath in settings.");
-            vscode.window.showErrorMessage("uber-apk-signer not found");
-            return;
-        }
         const builtApkPath = `${projectDir}/dist/${apkFileName}`;
         const report = `Signing ${apkFileName}...`;
         const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign'];
