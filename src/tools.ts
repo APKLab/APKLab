@@ -4,22 +4,50 @@ import * as vscode from 'vscode';
 import { extensionConfig, outputChannel } from './common';
 
 
+/**
+ * Options for executeProcess function.
+ */
 interface ProcessOptions {
+    /**
+     * Name of the process. Eg: `Decoding`.
+     */
     name: string;
+    /**
+     * Report to show in progress bar.
+     */
     report: string;
+    /**
+     * Name of the executable. Eg: `java`.
+     */
     command: string;
+    /**
+     * CLI arguments for the command.
+     */
     args: string[];
+    /**
+     * A file or dir which should exist if it was successful.
+     */
     shouldExist?: string;
+    /**
+     * Callback on success.
+     */
     onSuccess?: CallableFunction;
 }
 
-// try to get javaPath from config first. Defaults to `java`
+/**
+ * Try to get `javaPath` from config first. Defaults to `java`.
+ * @returns java executable path.
+ */
 function getJavaPath() {
     let configJavaPath = extensionConfig.get("javaPath");
     return configJavaPath ? String(configJavaPath) : "java";
 }
 
-// get correct apkFileName from apktool.yml from decoded app
+/**
+ * Get original file name from `apktool.yml` file of decoded apk.
+ * @param apktoolYamlPath The path of `apktool.yml` file.
+ * @returns returns the original apk file name or empty string.
+ */
 function getApkName(apktoolYamlPath: string) {
     try {
         const fileContent = fs.readFileSync(apktoolYamlPath);
@@ -31,7 +59,10 @@ function getApkName(apktoolYamlPath: string) {
     }
 }
 
-// execute a process with @params ProcessOptions
+/**
+ * Executes a child_process and calls a callback if provided.
+ * @param processOptions Takes a ProcessOptions type to process.
+ */
 function executeProcess(processOptions: ProcessOptions) {
     outputChannel.show();
     outputChannel.appendLine(processOptions.report);
@@ -46,7 +77,7 @@ function executeProcess(processOptions: ProcessOptions) {
             return new Promise((resolve) => {
                 progress.report({ message: processOptions.report });
 
-                let cp = child_process.spawn(processOptions.command, processOptions.args, {});
+                const cp = child_process.spawn(processOptions.command, processOptions.args, {});
                 cp.stdout.on('data', (data) => outputChannel.appendLine(data.toString().trim()));
                 cp.stderr.on('data', (data) => outputChannel.appendLine(data.toString().trim()));
                 cp.on('error', (data) => {
@@ -78,13 +109,17 @@ function executeProcess(processOptions: ProcessOptions) {
 
 export namespace apktool {
 
+    /**
+     * Decodes(Disassembles) the apk resources & dalvik bytecode using **Apktool**.
+     * @param apkFilePath file path Uri for apk file to decode.
+     */
     export function decodeAPK(apkFilePath: string) {
-        // get apktool path from settings
         let apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = apkFilePath.substring(apkFilePath.lastIndexOf('/') + 1);
         const apkName = apkFileName.split('.apk')[0];
         const apkDir = apkFilePath.split(apkFileName)[0];
         let apkDecodeDir = apkDir + apkName;
+        // don't delete the existing dir if it does exist
         while (fs.existsSync(apkDecodeDir)) {
             apkDecodeDir = apkDecodeDir + "1";
         }
@@ -99,9 +134,12 @@ export namespace apktool {
         });
     }
 
+    /**
+     * Rebuild the apk with **Apktool** (also signs it with **uber-apk-signer** post rebuild).
+     * @param apktoolYmlPath The path of `apktool.yml` file.
+     */
     export function rebuildAPK(apktoolYmlPath: string) {
-        // get apktool path from settings
-        let apktoolPath = extensionConfig.get("apktoolPath");
+        const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = getApkName(apktoolYmlPath);
         if (!apkFileName) {
             return;
@@ -113,7 +151,6 @@ export namespace apktool {
         const shouldExist = `${projectDir}/dist/${apkFileName}`;
         executeProcess({
             name: "Rebuilding", report: report, command: getJavaPath(), args: args, shouldExist: shouldExist, onSuccess: () => {
-                // sign the APK
                 apkSigner.signAPK(projectDir, apkFileName);
             }
         });
@@ -122,8 +159,12 @@ export namespace apktool {
 
 export namespace apkSigner {
 
+    /**
+     * Signs given apk file using **uber-apk-signer** from projectDir/dist/apkFileName.apk.
+     * @param projectDir current directory of the project.
+     * @param apkFileName name of the original apk file from `apktool.yml`.
+     */
     export function signAPK(projectDir: string, apkFileName: string) {
-        // get uber-apk-signer path from settings
         let apkSignerPath = extensionConfig.get("apkSignerPath");
         const builtApkPath = `${projectDir}/dist/${apkFileName}`;
         const report = `Signing ${apkFileName}...`;

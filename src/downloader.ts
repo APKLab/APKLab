@@ -7,15 +7,36 @@ import * as path from 'path';
 import * as config from './config.json';
 
 
+/**
+ * Tool details for downloading it if it doesn't exist.
+ */
 interface Tool {
+    /**
+     * Name of the tool.
+     */
     name: string,
+    /**
+     * Latest supported version of the tool.
+     */
     version: string,
+    /**
+     * Download URL.
+     */
     downloadUrl: string,
+    /**
+     * Exact file name for downloaded tool.
+     */
     fileName: string,
+    /**
+     * Name of the configuration related to the tool in extensionConfig object.
+     */
     configName: string,
 }
 
-// check and download the tools
+/**
+ * Check the tools from `config.json`
+ * If do not exist, download them.
+ */
 export function updateTools() {
     return new Promise((resolve, reject) => {
         const apktool = config.tools[0];
@@ -52,12 +73,16 @@ export function updateTools() {
     });
 }
 
-// download the tool
+/**
+ * Downloads and saves a Tool in apklabDataDir.
+ * @param tool a Tool object.
+ * @returns filePath for the tool if download was successful or null.
+ */
 async function DownloadFile(tool: Tool) {
     try {
         outputChannel.show();
         outputChannel.appendLine(`Downloading file: ${tool.fileName}`);
-        let buffer = await downloadFile(tool.downloadUrl);
+        const buffer = await downloadFile(tool.downloadUrl);
         const filePath = path.join(apklabDataDir, tool.fileName);
         fs.writeFileSync(filePath, buffer);
         extensionConfig.update(tool.configName, filePath, vscode.ConfigurationTarget.Global);
@@ -69,6 +94,11 @@ async function DownloadFile(tool: Tool) {
 
 }
 
+/**
+ * Download file from a given URL.
+ * @param urlString download URL for the file.
+ * @returns a Buffer of the file contents.
+ */
 async function downloadFile(urlString: string): Promise<Buffer> {
     const url = parseUrl(urlString);
     const config = vscode.workspace.getConfiguration();

@@ -20,7 +20,6 @@ export function activate(context: vscode.ExtensionContext) {
 				openLabel: "Select an APK file",
 			});
 			if (result && result.length === 1) {
-				// disassemble the selected APK file
 				apktool.decodeAPK(result[0].fsPath);
 			} else {
 				vscode.window.showWarningMessage("APKLAB: no apk was file chosen");
@@ -30,9 +29,9 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 	});
 
+	// command for rebuilding apk file
 	let rebuildAPkFileCommand = vscode.commands.registerCommand("apklab.rebuildApkFile", (uri: vscode.Uri) => {
 		updateTools().then(() => {
-			// rebuild apk using Apktool
 			apktool.rebuildAPK(uri.fsPath);
 		}).catch(() => {
 			outputChannel.appendLine("Can't download/update dependencies!");
