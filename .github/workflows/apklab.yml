@@ -1,0 +1,31 @@
+name: APKLab
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - run: npm install
+      - name: Run Linter
+        run: npm run lint
+      - name: Run tests
+        uses: GabrielBB/xvfb-action@v1.2
+        with:
+          run: npm test
+      - name: Package extension
+        run: npm install -g vsce && vsce package
