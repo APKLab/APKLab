@@ -1,17 +1,19 @@
 # APK Lab
 
+[![version](https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=blue)](https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab) [![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab)](https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab) [![GitHub Workflow Status (master)](https://img.shields.io/github/workflow/status/surendrajat/apklab/APKLab/master)](https://github.com/Surendrajat/APKLab/actions?query=workflow%3AAPKLab)
+
 APK Lab extension provides an automated and easy-to-use workflow for reverse engineering of Android apps (APK) by integrating popular CLI tools such as `Apktool` with the excellent VS Code so you can spend more time on app analysis not tooling.
 
 It is NOT intended for piracy and other non-legal uses. It could be used for malware analysis, localizing, adding some features or support for custom platforms and other GOOD purposes.
 
 ## Features
 
-1. DeAssemble/Decode an APK file using [**`Apktool`**](https://github.com/ibotpeaches/apktool/)
+- DeAssemble/Decode an APK file using [**`Apktool`**](https://github.com/ibotpeaches/apktool/)
 
     ![decode.gif](assets/decode.gif)
 
-2. Rebuild APK file using **`Apktool`** (Right click in `apktool.yml` file)
-3. Sign the rebuilt APK using [**`uber-apk-signer`**](https://github.com/patrickfav/uber-apk-signer)
+- Rebuild APK file using **`Apktool`** (Right click in `apktool.yml` file)
+- Sign the rebuilt APK using [**`uber-apk-signer`**](https://github.com/patrickfav/uber-apk-signer)
 
     ![rebuild.gif](assets/rebuild.gif)
 
