@@ -5,7 +5,7 @@
 	"publisher": "Surendrajat",
 	"version": "0.6.0",
 	"license": "SEE LICENSE IN LICENSE",
-	"icon": "assets/icon.svg",
+	"icon": "assets/icon.png",
 	"engines": {
 		"vscode": "^1.45.0"
 	},
@@ -14,7 +14,7 @@
 		"url": "https://github.com/Surendrajat/APKLab.git"
 	},
 	"bugs": {
-		"url": "https://github.com/Surendrajat/APKLab/issues"
+		"url": "https://github.com/Surendrajats/APKLab/issues"
 	},
 	"categories": [
 		"Programming Languages",
