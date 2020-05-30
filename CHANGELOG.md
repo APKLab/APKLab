@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.1] - 2020-05-30
+
+### Added
+
+- A cool project logo (thanks [@Feimaomii](https://github.com/Feimaomii))
+- Some nice badges in README.md
+
+### Fixed
+
+- Don't check for dependencies at multiple places
+
 ## [0.6.0] - 2020-05-17
 
 ### Added

@@ -3,7 +3,7 @@
 	"displayName": "APK Lab",
 	"description": "Android App Package (APK) Reverse Engineering WorkBench",
 	"publisher": "Surendrajat",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"license": "SEE LICENSE IN LICENSE",
 	"icon": "assets/icon.png",
 	"engines": {

@@ -59,6 +59,12 @@ This extension is in early development stage so if you face any error or have fe
 
 ## Release Notes
 
+### 0.6.1
+
+- add: A cool project logo (thanks [@Feimaomii](https://github.com/Feimaomii))
+- add: Some nice badges in README.md
+- fix: Don't check for dependencies at multiple places
+
 ### 0.6.0
 
 - add: Download and manage the dependencies automatically
