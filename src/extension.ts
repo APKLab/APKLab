@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { apktool } from './tools';
+import { apktool, adb } from './tools';
 import { outputChannel } from './common';
 import { updateTools } from './downloader';
 
@@ -8,7 +8,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Activated apklab extension!');
 	// command for opening an apk file for decoding
-	let openApkFileCommand = vscode.commands.registerCommand('apklab.openApkFile', async () => {
+	const openApkFileCommand = vscode.commands.registerCommand('apklab.openApkFile', async () => {
 
 		updateTools().then(async () => {
 			// browse for an APK file
@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	// command for rebuilding apk file
-	let rebuildAPkFileCommand = vscode.commands.registerCommand("apklab.rebuildApkFile", (uri: vscode.Uri) => {
+	const rebuildAPkFileCommand = vscode.commands.registerCommand("apklab.rebuildApkFile", (uri: vscode.Uri) => {
 		updateTools().then(() => {
 			apktool.rebuildAPK(uri.fsPath);
 		}).catch(() => {
@@ -38,7 +38,12 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 	});
 
-	context.subscriptions.push(openApkFileCommand, rebuildAPkFileCommand);
+	// command for installing apk file
+	const installAPkFileCommand = vscode.commands.registerCommand("apklab.installApkFile", (uri: vscode.Uri) => {
+		adb.installAPK(uri.fsPath);
+	});
+
+	context.subscriptions.push(openApkFileCommand, rebuildAPkFileCommand, installAPkFileCommand);
 }
 
 export function deactivate() { }

@@ -46,11 +46,15 @@
 		"commands": [
 			{
 				"command": "apklab.openApkFile",
-				"title": "APK Lab: Open an APK"
+				"title": "APKLab: Open an APK"
 			},
 			{
 				"command": "apklab.rebuildApkFile",
-				"title": "APK Lab: Rebuild the APK"
+				"title": "APKLab: Rebuild the APK"
+			},
+			{
+				"command": "apklab.installApkFile",
+				"title": "APKLab: Install the APK"
 			}
 		],
 		"menus": {
@@ -71,6 +75,18 @@
 				{
 					"command": "apklab.rebuildApkFile",
 					"when": "resourceFilename == apktool.yml"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "apklab.installApkFile",
+					"when": "resourceExtname == .apk",
+					"group": "navigation"
+				},
+				{
+					"command": "apklab.rebuildApkFile",
+					"when": "resourceFilename == apktool.yml",
+					"group": "navigation"
 				}
 			]
 		},

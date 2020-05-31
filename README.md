@@ -9,18 +9,25 @@ It is NOT intended for piracy and other non-legal uses. It could be used for mal
 ## Features
 
 - DeAssemble/Decode an APK file using [**`Apktool`**](https://github.com/ibotpeaches/apktool/)
+  >Open command palette & <button>APKLab: Open an APK</button>
 
     ![decode.gif](assets/decode.gif)
 
-- Rebuild APK file using **`Apktool`** (Right click in `apktool.yml` file)
+- Rebuild APK file using **`Apktool`**
+  >Right click on/in `apktool.yml` file & <button>APKLab: Rebuild the APK</button>
 - Sign the rebuilt APK using [**`uber-apk-signer`**](https://github.com/patrickfav/uber-apk-signer)
 
     ![rebuild.gif](assets/rebuild.gif)
+
+- Install APK file to device using **adb**
+  >Right click on an apk file (in `dist` directory after rebuild) & <button>APKLab: Install the APK</button>
 
 ## Requirements
 
 - **JDK 8+** should be in your **PATH**
   >Confirm it by running **`java`** in your Shell, if not found download JDK from [here](https://adoptopenjdk.net/).
+- **adb** should be in your **PATH** (optional)
+  >Confirm it by running **`adb devices`** in your Shell, if not found check [this guide](https://www.xda-developers.com/install-adb-windows-macos-linux/).
 
 > [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise) extension is highly recommended as it makes working with `smali` files a breeze.
 

@@ -156,13 +156,29 @@ export namespace apkSigner {
      * @param apkFileName name of the original apk file from `apktool.yml`.
      */
     export function signAPK(projectDir: string, apkFileName: string) {
-        let apkSignerPath = extensionConfig.get("apkSignerPath");
+        const apkSignerPath = extensionConfig.get("apkSignerPath");
         const builtApkPath = `${projectDir}/dist/${apkFileName}`;
         const report = `Signing ${apkFileName}...`;
         const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign'];
         const shouldExist = `${builtApkPath.substring(0, builtApkPath.lastIndexOf(".apk"))}-aligned-debugSigned.apk`;
         executeProcess({
             name: "Signing", report: report, command: "java", args: args, shouldExist: shouldExist
+        });
+    }
+}
+
+export namespace adb {
+
+    /**
+     * Installs the selected APK file to connected android device over ADB.
+     * @param apkFilePath absolute path of the APK file.
+     */
+    export function installAPK(apkFilePath: string) {
+        const apkFileName = apkFilePath.substring(apkFilePath.lastIndexOf('/') + 1);
+        const report = `Installing ${apkFileName} ...`;
+        const args = ["install", "-r", apkFilePath];
+        executeProcess({
+            name: "Installing", report: report, command: "adb", args: args
         });
     }
 }

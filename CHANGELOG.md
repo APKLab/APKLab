@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Install APK file to device using ADB
+
 ### Removed
 
 - `javaPath` removed from settings (Windows path issue)
