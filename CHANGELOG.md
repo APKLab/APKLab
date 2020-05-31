@@ -5,6 +5,7 @@
 ### Added
 
 - Install APK file to device using ADB
+- Overwrite unsigned APK on reSigning
 
 ### Removed
 

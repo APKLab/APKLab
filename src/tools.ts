@@ -159,10 +159,9 @@ export namespace apkSigner {
         const apkSignerPath = extensionConfig.get("apkSignerPath");
         const builtApkPath = `${projectDir}/dist/${apkFileName}`;
         const report = `Signing ${apkFileName}...`;
-        const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign'];
-        const shouldExist = `${builtApkPath.substring(0, builtApkPath.lastIndexOf(".apk"))}-aligned-debugSigned.apk`;
+        const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign', '--overwrite'];
         executeProcess({
-            name: "Signing", report: report, command: "java", args: args, shouldExist: shouldExist
+            name: "Signing", report: report, command: "java", args: args, shouldExist: builtApkPath
         });
     }
 }
