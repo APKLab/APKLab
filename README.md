@@ -9,18 +9,21 @@ It is NOT intended for piracy and other non-legal uses. It could be used for mal
 ## Features
 
 - DeAssemble/Decode an APK file using [**`Apktool`**](https://github.com/ibotpeaches/apktool/)
-  >Open command palette & <kbd>APKLab: Open an APK</kbd>
+  
+  (Open command palette & <kbd>APKLab: Open an APK</kbd>)
 
     ![decode.gif](assets/decode.gif)
 
 - Rebuild APK file using **`Apktool`**
-  >Right click on/in `apktool.yml` file & <kbd>APKLab: Rebuild the APK</kbd>
-- Sign the rebuilt APK using [**`uber-apk-signer`**](https://github.com/patrickfav/uber-apk-signer)
+  
+  (Right click on/in `apktool.yml` file & <kbd>APKLab: Rebuild the APK</kbd>)
+- ReSign the rebuilt APK seamlessly using [**`uber-apk-signer`**](https://github.com/patrickfav/uber-apk-signer)
 
     ![rebuild.gif](assets/rebuild.gif)
 
 - Install APK file to device using **adb**
-  >Right click on an apk file (in `dist` directory after rebuild) & <kbd>APKLab: Install the APK</kbd>
+  
+  (Right click on an apk file (in `dist` directory after rebuild) & <kbd>APKLab: Install the APK</kbd>)
 
 ## Requirements
 
@@ -61,7 +64,7 @@ This extension is in early development stage so if you face any error or have fe
 
 ### 0.7.0
 
-- add: Install APK file to device using ADB
+- add: `Install an APK` file to device using ADB
 - add: Overwrite unsigned APK on reSigning
 - nuke: `javaPath` removed from settings (Windows path issue)
 
