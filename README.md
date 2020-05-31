@@ -59,6 +59,12 @@ This extension is in early development stage so if you face any error or have fe
 
 ## Release Notes
 
+### 0.7.0
+
+- add: Install APK file to device using ADB
+- add: Overwrite unsigned APK on reSigning
+- nuke: `javaPath` removed from settings (Windows path issue)
+
 ### 0.6.1
 
 - add: A cool project logo (thanks [@Feimaomii](https://github.com/Feimaomii))
