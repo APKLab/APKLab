@@ -9,18 +9,18 @@ It is NOT intended for piracy and other non-legal uses. It could be used for mal
 ## Features
 
 - DeAssemble/Decode an APK file using [**`Apktool`**](https://github.com/ibotpeaches/apktool/)
-  >Open command palette & <button>APKLab: Open an APK</button>
+  >Open command palette & <kbd>APKLab: Open an APK</kbd>
 
     ![decode.gif](assets/decode.gif)
 
 - Rebuild APK file using **`Apktool`**
-  >Right click on/in `apktool.yml` file & <button>APKLab: Rebuild the APK</button>
+  >Right click on/in `apktool.yml` file & <kbd>APKLab: Rebuild the APK</kbd>
 - Sign the rebuilt APK using [**`uber-apk-signer`**](https://github.com/patrickfav/uber-apk-signer)
 
     ![rebuild.gif](assets/rebuild.gif)
 
 - Install APK file to device using **adb**
-  >Right click on an apk file (in `dist` directory after rebuild) & <button>APKLab: Install the APK</button>
+  >Right click on an apk file (in `dist` directory after rebuild) & <kbd>APKLab: Install the APK</kbd>
 
 ## Requirements
 
