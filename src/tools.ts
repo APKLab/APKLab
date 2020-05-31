@@ -35,15 +35,6 @@ interface ProcessOptions {
 }
 
 /**
- * Try to get `javaPath` from config first. Defaults to `java`.
- * @returns java executable path.
- */
-function getJavaPath() {
-    let configJavaPath = extensionConfig.get("javaPath");
-    return configJavaPath ? String(configJavaPath) : "java";
-}
-
-/**
  * Get original file name from `apktool.yml` file of decoded apk.
  * @param apktoolYamlPath The path of `apktool.yml` file.
  * @returns returns the original apk file name or empty string.
@@ -127,7 +118,7 @@ export namespace apktool {
         const args = ["-jar", String(apktoolPath), 'd', apkFilePath, '-o', apkDecodeDir];
         const shouldExist = apkDecodeDir + "/apktool.yml";
         executeProcess({
-            name: "Decoding", report: report, command: getJavaPath(), args: args, shouldExist: shouldExist, onSuccess: () => {
+            name: "Decoding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
                 // open apkDecodeDir in a new vs code window
                 vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(apkDecodeDir), true);
             }
@@ -150,7 +141,7 @@ export namespace apktool {
         const args = ["-jar", String(apktoolPath), 'b', projectDir];
         const shouldExist = `${projectDir}/dist/${apkFileName}`;
         executeProcess({
-            name: "Rebuilding", report: report, command: getJavaPath(), args: args, shouldExist: shouldExist, onSuccess: () => {
+            name: "Rebuilding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
                 apkSigner.signAPK(projectDir, apkFileName);
             }
         });
@@ -171,7 +162,7 @@ export namespace apkSigner {
         const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign'];
         const shouldExist = `${builtApkPath.substring(0, builtApkPath.lastIndexOf(".apk"))}-aligned-debugSigned.apk`;
         executeProcess({
-            name: "Signing", report: report, command: getJavaPath(), args: args, shouldExist: shouldExist
+            name: "Signing", report: report, command: "java", args: args, shouldExist: shouldExist
         });
     }
 }

@@ -19,21 +19,14 @@ It is NOT intended for piracy and other non-legal uses. It could be used for mal
 
 ## Requirements
 
-- **JDK 8** or higher should be in your PATH
+- **JDK 8+** should be in your **PATH**
+  >Confirm it by running **`java`** in your Shell, if not found download JDK from [here](https://adoptopenjdk.net/).
 
 > [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise) extension is highly recommended as it makes working with `smali` files a breeze.
 
 ## Extension Settings
 
 This extension contributes the following settings:
-
-- **`apklab.javaPath`**: Path of `java` executable. Update this, if needed, like:
-
-  ```json
-    {
-        "apklab.javaPath": "/usr/bin/java"
-    }
-  ```
 
 - **`apklab.apktoolPath`**: Absolute(full) Path of `apktool.jar`. Update this, if needed, like:
 

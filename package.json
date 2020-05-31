@@ -77,11 +77,6 @@
 		"configuration": {
 			"title": "APK Lab",
 			"properties": {
-				"apklab.javaPath": {
-					"type": "string",
-					"default": "java",
-					"markdownDescription": "Put the `java` executable path here. If JDK is not present, download from [this link](https://adoptopenjdk.net/)."
-				},
 				"apklab.apktoolPath": {
 					"type": "string",
 					"default": "",

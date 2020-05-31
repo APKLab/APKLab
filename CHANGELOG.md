@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Removed
+
+- `javaPath` removed from settings (Windows path issue)
+
 ## [0.6.1] - 2020-05-30
 
 ### Added
