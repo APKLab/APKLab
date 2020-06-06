@@ -1,10 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- `Install the APK` visible in CommandPalette
+
 ## [0.7.0] - 2020-05-31
 
 ### Added
 
-- `Install an APK` file to device using ADB
+- `Install the APK` file to device using ADB
 - Overwrite unsigned APK on reSigning
 
 ### Removed
@@ -48,7 +54,7 @@
 
 ### Fixed
 
-- `Rebuild the APK` always visible in commandPalette
+- `Rebuild the APK` visible in commandPalette
 
 ## [0.3.0] - 2020-05-11
 

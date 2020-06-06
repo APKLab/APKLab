@@ -62,6 +62,10 @@
 				{
 					"command": "apklab.rebuildApkFile",
 					"when": "false"
+				},
+				{
+					"command": "apklab.installApkFile",
+					"when": "false"
 				}
 			],
 			"editor/context": [
