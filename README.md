@@ -12,20 +12,20 @@ It is NOT intended for piracy and other non-legal uses. It could be used for mal
   
   (Open command palette & <kbd>APKLab: Open an APK</kbd>)
 
-    ![decode.gif](assets/decode.gif)
+    ![decode.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/decode.gif)
 
 - Rebuild APK file using **`Apktool`**
   
   (Right click on/in `apktool.yml` file & <kbd>APKLab: Rebuild the APK</kbd>)
 - ReSign the rebuilt APK seamlessly using [**`uber-apk-signer`**](https://github.com/patrickfav/uber-apk-signer)
 
-    ![rebuild.gif](assets/rebuild.gif)
+    ![rebuild.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/rebuild.gif)
 
 - Install APK file to device using **adb**
   
   (Right click on an apk file (in `dist` directory after rebuild) & <kbd>APKLab: Install the APK</kbd>)
 
-    ![install.gif](assets/install.gif)
+    ![install.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/install.gif)
 
 ## Requirements
 
