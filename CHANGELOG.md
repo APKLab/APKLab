@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Improved log output (print actual command, etc.)
+
 ### Fixed
 
 - `Install the APK` visible in CommandPalette

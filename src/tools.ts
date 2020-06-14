@@ -56,7 +56,10 @@ function getApkName(apktoolYamlPath: string) {
  */
 function executeProcess(processOptions: ProcessOptions) {
     outputChannel.show();
+    outputChannel.appendLine("-".repeat(processOptions.report.length));
     outputChannel.appendLine(processOptions.report);
+    outputChannel.appendLine("-".repeat(processOptions.report.length));
+    outputChannel.appendLine(`${processOptions.command} ${processOptions.args.join(" ")}`);
 
     vscode.window.withProgress(
         {
