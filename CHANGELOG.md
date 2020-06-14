@@ -4,6 +4,7 @@
 
 ### Added
 
+- Added support for most cli arguments of **Apktool**
 - Improved log output (print actual command, etc.)
 
 ### Fixed
