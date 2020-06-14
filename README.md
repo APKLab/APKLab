@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="http://www.vaibhavpandey.com/apkstudio/">
+  <a href="https://github.com/surendrajat/apklab">
     <img src="https://raw.githubusercontent.com/surendrajat/apklab/master/assets/icon.png" alt="APK Lab" height="96px" width="100px">
   </a>
   <br>
