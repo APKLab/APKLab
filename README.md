@@ -25,6 +25,8 @@ It is NOT intended for piracy and other non-legal uses. It could be used for mal
   
   (Right click on an apk file (in `dist` directory after rebuild) & <kbd>APKLab: Install the APK</kbd>)
 
+    ![install.gif](assets/install.gif)
+
 ## Requirements
 
 - **JDK 8+** should be in your **PATH**
