@@ -106,8 +106,9 @@ export namespace apktool {
     /**
      * Decodes(Disassembles) the apk resources & dalvik bytecode using **Apktool**.
      * @param apkFilePath file path Uri for apk file to decode.
+     * @param apktoolArgs array of additional args passed to **Apktool**
      */
-    export function decodeAPK(apkFilePath: string) {
+    export function decodeAPK(apkFilePath: string, apktoolArgs: string[]) {
         let apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = apkFilePath.substring(apkFilePath.lastIndexOf('/') + 1);
         const apkName = apkFileName.split('.apk')[0];
@@ -118,7 +119,10 @@ export namespace apktool {
             apkDecodeDir = apkDecodeDir + "1";
         }
         const report = `Decoding ${apkFileName} into ${apkDecodeDir}...`;
-        const args = ["-jar", String(apktoolPath), 'd', apkFilePath, '-o', apkDecodeDir];
+        let args = ["-jar", String(apktoolPath), 'd', apkFilePath, '-o', apkDecodeDir];
+        if (apktoolArgs && apktoolArgs.length > 0) {
+            args = args.concat(apktoolArgs);
+        }
         const shouldExist = apkDecodeDir + "/apktool.yml";
         executeProcess({
             name: "Decoding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
@@ -129,10 +133,11 @@ export namespace apktool {
     }
 
     /**
-     * Rebuild the apk with **Apktool** (also signs it with **uber-apk-signer** post rebuild).
+     * Rebuild the apk with **Apktool** and signs it with **uber-apk-signer**.
      * @param apktoolYmlPath The path of `apktool.yml` file.
+     * @param apktoolArgs array of additional args passed to **Apktool**
      */
-    export function rebuildAPK(apktoolYmlPath: string) {
+    export function rebuildAPK(apktoolYmlPath: string, apktoolArgs: string[]) {
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = getApkName(apktoolYmlPath);
         if (!apkFileName) {
@@ -141,7 +146,10 @@ export namespace apktool {
         const projectDir = apktoolYmlPath.split("/apktool.yml")[0];
         const projectName = projectDir.substring(projectDir.lastIndexOf("/") + 1);
         const report = `Rebuilding ${apkFileName} into ${projectName}/dist/...`;
-        const args = ["-jar", String(apktoolPath), 'b', projectDir];
+        let args = ["-jar", String(apktoolPath), 'b', projectDir];
+        if (apktoolArgs && apktoolArgs.length > 0) {
+            args = args.concat(apktoolArgs);
+        }
         const shouldExist = `${projectDir}/dist/${apkFileName}`;
         executeProcess({
             name: "Rebuilding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
