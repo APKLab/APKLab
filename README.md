@@ -6,9 +6,17 @@
   APK Lab
 </h1>
 
+<h5 align="center">
+The ultimate android static analysis and RE experience right inside your <a href="https://code.visualstudio.com/">VS Code</a>.
+</h5>
+
+<p align="center">
+APKLab seamlessly integrates the best open-source tools: <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
+</p>
+
 <p align="center">
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
-        <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=aa0&labelColor=000">
+        <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=629&labelColor=000">
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
         <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab?logo=visual-studio-code&logoColor=blue&labelColor=000&color=blue">
@@ -18,20 +26,16 @@
     </a>
 </p>
 
-The ultimate android static analysis and RE experience right inside your [VS Code](https://code.visualstudio.com/).
-
-APKLab seamlessly integrates the best open-source tools: [Apktool](https://github.com/ibotpeaches/apktool/), [uber-apk-signer](https://github.com/patrickfav/uber-apk-signer) and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
-
 ## Features
 
 - Decode all the resources from android app
 - Disassemble android app to dalvik bytecode aka smali
 - Decompile android app to Java (Coming soon!)
-- Hack seamlessly with feature rich VS Code
+- Analyze & Hack effectively with feature rich VS Code
 - Build an APK from smali and resources
 - Sign the APK seamlessly during build
-- Install the APK directly to your device
-- Work with or save as Apktool projects
+- Install the APK directly from VS Code
+- Support for Apktool-style projects
 - Support for most Apktool cli arguments
 - Android resource frameworks management (Coming soon!)
 - Configure your own app signing certificate (Coming soon!)
@@ -89,6 +93,6 @@ APKLab seamlessly integrates the best open-source tools: [Apktool](https://githu
 
 ## Credits
 
-- [Feimaomii](https://github.com/Feimaomii) for the awesome APKLab icon
-- [iBotPeaches](https://github.com/iBotPeaches), [brutall](https://github.com/brutall) and [JesusFreke](https://github.com/JesusFreke) for Apktool
+- [Feimaomii](https://github.com/Feimaomii) for the awesome logo
+- [iBotPeaches](https://github.com/iBotPeaches), [brutall](https://github.com/brutall) and [JesusFreke](https://github.com/JesusFreke) for Apktool & Smali
 - [patrickfav](https://github.com/patrickfav) for uber-apk-signer
