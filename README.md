@@ -8,13 +8,13 @@
 
 <p align="center">
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
-        <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=blue">
+        <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=aa0&labelColor=000">
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
-        <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab">
+        <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab?logo=visual-studio-code&logoColor=blue&labelColor=000&color=blue">
     </a>
     <a href="https://github.com/Surendrajat/APKLab/actions?query=workflow%3AAPKLab">
-        <img alt="GitHub Workflow Status (master)" src="https://img.shields.io/github/workflow/status/surendrajat/apklab/APKLab/master">
+        <img alt="GitHub Workflow Status (master)" src="https://img.shields.io/github/workflow/status/surendrajat/apklab/APKLab/master?logo=github&labelColor=black">
     </a>
 </p>
 
