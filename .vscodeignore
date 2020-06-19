@@ -10,3 +10,4 @@ src/**
 webpack.config.js
 node_modules
 .github/**
+assets/*.gif
