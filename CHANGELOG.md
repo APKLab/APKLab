@@ -1,10 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Added GitHub issue/feature-request templates
+- Updated README
+
+### Fixed
+
+- Config was not immediately being updated after downloading tools
+- Updated vulnerable library: lodash
+
 ## [0.8.0] - 2020-06-14
 
 ### Added
 
-- Added support for most cli arguments of **Apktool**
+- Added support for most CLI arguments of **Apktool**
 - Improved log output (print actual command, etc.)
 - Reduced extension size (< 50KB)
 - Improved README
