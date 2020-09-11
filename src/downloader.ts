@@ -85,7 +85,7 @@ async function DownloadFile(tool: Tool) {
         const buffer = await downloadFile(tool.downloadUrl);
         const filePath = path.join(apklabDataDir, tool.fileName);
         fs.writeFileSync(filePath, buffer);
-        extensionConfig.update(tool.configName, filePath, vscode.ConfigurationTarget.Global);
+        await extensionConfig.update(tool.configName, filePath, vscode.ConfigurationTarget.Global);
         return filePath;
     } catch (error) {
         outputChannel.appendLine(`Error: Creating file`);
