@@ -6,9 +6,9 @@
   APK Lab
 </h1>
 
-<h5 align="center">
+<h4 align="center">
 The ultimate android static analysis and RE experience right inside your <a href="https://code.visualstudio.com/">VS Code</a>.
-</h5>
+</h4>
 
 <p align="center">
 APKLab seamlessly integrates the best open-source tools: <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/skylot/jadx">Jadx</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
@@ -92,6 +92,10 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 ## Contribution Guide
 
   For bug report, feature request or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
+
+## Community support
+
+[![telegram](https://img.shields.io/badge/telegram-group-blue)](https://t.me/apklab_re) [![matrix-room](https://img.shields.io/badge/matrix-room-red)](https://matrix.to/#/#apklab:matrix.org)
 
 ## [Changelog](https://github.com/Surendrajat/APKLab/blob/master/CHANGELOG.md)
 
