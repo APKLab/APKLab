@@ -199,13 +199,14 @@ export namespace adb {
 export namespace jadx {
 
     /**
-     * Decompile the APK file to Java source using Jadx.
+     * Decompile the APK file to Java source using **Jadx**.
      * @param apkFilePath path of the APK file.
      * @param apkFileName name of the APK file.
      * @param apkDecodeDir dir where the APK file was decoded.
      */
     export function decompileAPK(apkFilePath: string, apkFileName: string, apkDecodeDir: string) {
-        const jadxPath = "/home/surendra/apps/jadx110/bin/jadx";
+        const jadxDirPath = extensionConfig.get("jadxDirPath");
+        const jadxPath = `${jadxDirPath}/bin/jadx${process.platform.startsWith("win") ? ".bat" : ""}`;
         const apkDecompileDir = `${apkDecodeDir}/java_src`;
         const report = `Decompiling ${apkFileName} into ${apkDecompileDir}`;
         const args = ["-r", "-v", "-ds", apkDecompileDir, apkFilePath];

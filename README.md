@@ -85,6 +85,10 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
   `"apklab.apkSignerPath": "/home/oozer/downloads/uber-apk-signer-1.1.0.jar"`
 
+- **`apklab.jadxDirPath`**: Full Path of `jadx-x.y.z` dir. If you're using different version of it, change it like:
+  
+  `"apklab.jadxDirPath": "/home/oozer/downloads/jadx-1.1.0"`
+
 ## Contribution Guide
 
   For bug report, feature request or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
