@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Decompile APK to Java source using **Jadx**
+
 ## [0.8.1] - 2020-09-11
 
 ### Added

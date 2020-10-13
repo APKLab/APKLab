@@ -11,7 +11,7 @@ The ultimate android static analysis and RE experience right inside your <a href
 </h5>
 
 <p align="center">
-APKLab seamlessly integrates the best open-source tools: <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
+APKLab seamlessly integrates the best open-source tools: <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/skylot/jadx">Jadx</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
 </p>
 
 <p align="center">
@@ -30,7 +30,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
 - Decode all the resources from android app
 - Disassemble android app to dalvik bytecode aka smali
-- Decompile android app to Java (Coming soon!)
+- Decompile android app to Java source
 - Analyze & Hack effectively with feature rich VS Code
 - Build an APK from smali and resources
 - Sign the APK seamlessly during build
@@ -96,3 +96,4 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - [Feimaomii](https://github.com/Feimaomii) for the awesome logo
 - [iBotPeaches](https://github.com/iBotPeaches), [brutall](https://github.com/brutall) and [JesusFreke](https://github.com/JesusFreke) for Apktool & Smali
 - [patrickfav](https://github.com/patrickfav) for uber-apk-signer
+- [skylot](https://github.com/skylot) for Jadx

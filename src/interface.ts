@@ -7,6 +7,11 @@ import { outputChannel } from './common';
  */
 const decodeQuickPickItems: QuickPickItem[] = [
     {
+        label: "decompile_java",
+        detail: "Decompiles APK to Java source using Jadx",
+        description: "[Use Jadx]"
+    },
+    {
         label: "--no-src",
         detail: "Do not decompile dex to smali (-s)",
         alwaysShow: true
@@ -90,9 +95,15 @@ export namespace UI {
             openLabel: "Select an APK file",
         });
         if (result && result.length === 1) {
-            const args = await showArgsQuickPick(decodeQuickPickItems, 'Additional apktool arguments');
+            let args = await showArgsQuickPick(decodeQuickPickItems, 'Additional apktool/jadx arguments');
             if (args) {
-                apktool.decodeAPK(result[0].fsPath, args);
+                const decompileJavaIndex = args.indexOf("decompile_java");
+                let decompileJava = false;
+                if (decompileJavaIndex > -1) {
+                    decompileJava = true;
+                    args.splice(decompileJavaIndex, 1);
+                }
+                apktool.decodeAPK(result[0].fsPath, args, decompileJava);
             }
         } else {
             outputChannel.appendLine("APKLAB: no apk was file chosen");

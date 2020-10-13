@@ -108,7 +108,7 @@ export namespace apktool {
      * @param apkFilePath file path Uri for apk file to decode.
      * @param apktoolArgs array of additional args passed to **Apktool**
      */
-    export function decodeAPK(apkFilePath: string, apktoolArgs: string[]) {
+    export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean) {
         let apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = apkFilePath.substring(apkFilePath.lastIndexOf('/') + 1);
         const apkName = apkFileName.split('.apk')[0];
@@ -126,6 +126,9 @@ export namespace apktool {
         const shouldExist = apkDecodeDir + "/apktool.yml";
         executeProcess({
             name: "Decoding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
+                if (decompileJava) {
+                    jadx.decompileAPK(apkFilePath, apkFileName, apkDecodeDir);
+                }
                 // open apkDecodeDir in a new vs code window
                 vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(apkDecodeDir), true);
             }
@@ -189,6 +192,25 @@ export namespace adb {
         const args = ["install", "-r", apkFilePath];
         executeProcess({
             name: "Installing", report: report, command: "adb", args: args
+        });
+    }
+}
+
+export namespace jadx {
+
+    /**
+     * Decompile the APK file to Java source using Jadx.
+     * @param apkFilePath path of the APK file.
+     * @param apkFileName name of the APK file.
+     * @param apkDecodeDir dir where the APK file was decoded.
+     */
+    export function decompileAPK(apkFilePath: string, apkFileName: string, apkDecodeDir: string) {
+        const jadxPath = "/home/surendra/apps/jadx110/bin/jadx";
+        const apkDecompileDir = `${apkDecodeDir}/java_src`;
+        const report = `Decompiling ${apkFileName} into ${apkDecompileDir}`;
+        const args = ["-r", "-v", "-ds", apkDecompileDir, apkFilePath];
+        executeProcess({
+            name: "Decompiling", report: report, command: jadxPath, args: args, shouldExist: apkDecompileDir
         });
     }
 }
