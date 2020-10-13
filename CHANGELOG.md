@@ -5,6 +5,9 @@
 ### Added
 
 - Decompile APK to Java source using **Jadx**
+- Extension config for Jadx Dir
+- Download and extract Jadx automatically
+- README: added community support links
 
 ## [0.8.1] - 2020-09-11
 
