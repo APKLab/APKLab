@@ -1,7 +1,7 @@
 {
 	"name": "apklab",
 	"displayName": "APK Lab",
-	"description": "Android App Package (APK) Reverse Engineering WorkBench",
+	"description": "Android Reverse Engineering WorkBench",
 	"publisher": "Surendrajat",
 	"version": "0.8.1",
 	"license": "SEE LICENSE IN LICENSE",
