@@ -5,14 +5,25 @@
             "version": "2.4.1",
             "downloadUrl": "https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.4.1.jar",
             "fileName": "apktool_2.4.1.jar",
-            "configName": "apktoolPath"
+            "configName": "apktoolPath",
+            "zipped": false
         },
         {
             "name": "uber-apk-signer",
             "version": "1.1.0",
             "downloadUrl": "https://github.com/patrickfav/uber-apk-signer/releases/download/v1.1.0/uber-apk-signer-1.1.0.jar",
             "fileName": "uber-apk-signer-1.1.0.jar",
-            "configName": "apkSignerPath"
+            "configName": "apkSignerPath",
+            "zipped": false
+        },
+        {
+            "name": "jadx",
+            "version": "1.1.0",
+            "downloadUrl": "https://github.com/skylot/jadx/releases/download/v1.1.0/jadx-1.1.0.zip",
+            "fileName": "jadx-1.1.0.zip",
+            "configName": "jadxDirPath",
+            "zipped": true,
+            "unzipDir": "jadx-1.1.0"
         }
     ]
 }

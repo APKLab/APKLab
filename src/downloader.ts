@@ -5,6 +5,7 @@ import { extensionConfig, apklabDataDir, outputChannel } from './common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as config from './config.json';
+import * as extract from 'extract-zip';
 
 
 /**
@@ -31,6 +32,14 @@ interface Tool {
      * Name of the configuration related to the tool in extensionConfig object.
      */
     configName: string,
+    /**
+     * Is the downloaded file a zip file?
+     */
+    zipped: boolean,
+    /**
+     * If it's a zip file then where to extract it?
+     */
+    unzipDir?: string,
 }
 
 /**
@@ -45,7 +54,11 @@ export function updateTools() {
         const apkSigner = config.tools[1];
         const apkSignerPath = extensionConfig.get(apkSigner.configName);
         const apkSignerExists = apkSignerPath && fs.existsSync(String(apkSignerPath));
-        if ((!apktoolExists || !apkSignerExists) && !fs.existsSync(apklabDataDir)) {
+        const jadx = config.tools[2];
+        const jadxDirPath = extensionConfig.get(jadx.configName);
+        const jadxDirExists = jadxDirPath && fs.existsSync(String(jadxDirPath));
+
+        if ((!apktoolExists || !apkSignerExists || !jadxDirExists) && !fs.existsSync(apklabDataDir)) {
             fs.mkdirSync(apklabDataDir);
         }
         if (!apktoolExists) {
@@ -55,7 +68,16 @@ export function updateTools() {
                 }
                 if (!apkSignerExists) {
                     DownloadFile(apkSigner).then(filePath => {
-                        filePath ? resolve() : reject();
+                        if (!filePath) {
+                            reject();
+                        }
+                        if (!jadxDirExists) {
+                            DownloadFile(jadx).then(filePath => {
+                                filePath ? resolve() : reject();
+                            });
+                        } else {
+                            resolve();
+                        }
                     });
                 } else {
                     resolve();
@@ -64,10 +86,25 @@ export function updateTools() {
         } else {
             if (!apkSignerExists) {
                 DownloadFile(apkSigner).then(filePath => {
-                    filePath ? resolve() : reject();
+                    if (!filePath) {
+                        reject();
+                    }
+                    if (!jadxDirExists) {
+                        DownloadFile(jadx).then(filePath => {
+                            filePath ? resolve() : reject();
+                        });
+                    } else {
+                        resolve();
+                    }
                 });
             } else {
-                resolve();
+                if (!jadxDirExists) {
+                    DownloadFile(jadx).then(filePath => {
+                        filePath ? resolve() : reject();
+                    });
+                } else {
+                    resolve();
+                }
             }
         }
     });
@@ -85,7 +122,17 @@ async function DownloadFile(tool: Tool) {
         const buffer = await downloadFile(tool.downloadUrl);
         const filePath = path.join(apklabDataDir, tool.fileName);
         fs.writeFileSync(filePath, buffer);
-        await extensionConfig.update(tool.configName, filePath, vscode.ConfigurationTarget.Global);
+        let configPath = filePath;
+        if (tool.zipped && tool.unzipDir) {
+            configPath = path.join(apklabDataDir, tool.unzipDir);
+            try {
+                await extract(filePath, { dir: configPath });
+                outputChannel.appendLine(`Extracted ${filePath} into ${configPath}`);
+            } catch (err) {
+                outputChannel.appendLine(`Error: Extracting file ${filePath}: ${err.message}`);
+            }
+        }
+        await extensionConfig.update(tool.configName, configPath, vscode.ConfigurationTarget.Global);
         return filePath;
     } catch (error) {
         outputChannel.appendLine(`Error: Creating file`);
