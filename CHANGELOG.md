@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased]
+
+- Feature complete with [APK Studio](https://github.com/vaibhavpandeyvpz/apkstudio) 🎉🎉
+
+### Added
+
+- Support for user-provided keystore for APK signing
+- Known issue about fist time use
+- Switch to AGPL License
+
+### Fixed
+
+- README update
+- Code refactoring
+
 ## [0.9.0] - 2020-10-13
 
 ### Added
