@@ -28,20 +28,20 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
 ## Features
 
-- Decode all the resources from android app
-- Disassemble android app to dalvik bytecode aka smali
-- Decompile android app to Java source
-- Analyze & Hack effectively with feature rich VS Code
-- Build an APK from smali and resources
-- Sign the APK seamlessly during build
+- Decode all the resources from an APK
+- Disassemble the APK to Dalvik bytecode aka Smali
+- Decompile the APK to Java source
+- Analyze & Hack effectively with feature-rich VS Code
+- Build an APK from Smali and resources
+- Sign the APK seamlessly during the build
 - Install the APK directly from VS Code
-- Support for Apktool-style projects
-- Support for most Apktool cli arguments
+- Support for Apktool-style projects (`apktool.yml`)
+- Support for most Apktool CLI arguments
 - Android resource frameworks management (Coming soon!)
 - Configure your own app signing certificate (Coming soon!)
 - Download and configure missing dependencies
-- Excellent smali language support with [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise)
-- Supports Linux, Windows and Mac
+- Excellent Smali language support with [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise)
+- Supports Linux, Windows, and Mac
 
 ## Getting Started
 
@@ -77,27 +77,27 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
 ## Extension Settings
 
-- **`apklab.apktoolPath`**: Full Path of `apktool.jar`. If you're using different version of it, change it like:
+- **`apklab.apktoolPath`**: Full Path of `apktool.jar`. If you want to use a different version of it, change it like:
 
   `"apklab.apktoolPath": "/home/oozer/downloads/apktool_2.4.1.jar"`
 
-- **`apklab.apkSignerPath`**: Full Path of `uber-apk-signer.jar`. If you're using different version of it, change it like:
+- **`apklab.apkSignerPath`**: Full Path of `uber-apk-signer.jar`. If you want to use a different version of it, change it like:
 
   `"apklab.apkSignerPath": "/home/oozer/downloads/uber-apk-signer-1.1.0.jar"`
 
-- **`apklab.jadxDirPath`**: Full Path of `jadx-x.y.z` dir. If you're using different version of it, change it like:
+- **`apklab.jadxDirPath`**: Full Path of `jadx-x.y.z` dir. If you want to use a different version of it, change it like:
   
   `"apklab.jadxDirPath": "/home/oozer/downloads/jadx-1.1.0"`
 
 ## Known Issues
 
-- First time when you try <kbd>APKLab: Open an APK</kbd>, the dependencies will be downloaded and settings will be updated. However, you may need to restart VS Code once, on download completion, for the settings to be applied.
+- First time when you try <kbd>APKLab: Open an APK</kbd> or <kbd>APKLab: Rebuild the APK</kbd>, the dependencies(ApkTool, etc.) will be downloaded and settings will be updated. However, you may need to restart VS Code once, on download completion, for the settings to be applied.
 
 ## Contribution Guide
 
-  For bug report, feature request or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
+  For bug reports, feature requests or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
 
-## Community support
+## Community Support
 
 [![telegram](https://img.shields.io/badge/telegram-group-blue)](https://t.me/apklab_re) [![matrix-room](https://img.shields.io/badge/matrix-room-red)](https://matrix.to/#/#apklab:matrix.org)
 
