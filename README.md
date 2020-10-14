@@ -89,6 +89,10 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
   
   `"apklab.jadxDirPath": "/home/oozer/downloads/jadx-1.1.0"`
 
+## Known Issues
+
+- First time when you try <kbd>APKLab: Open an APK</kbd>, the dependencies will be downloaded and settings will be updated. However, you may need to restart VS Code once, on download completion, for the settings to be applied.
+
 ## Contribution Guide
 
   For bug report, feature request or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
