@@ -106,7 +106,8 @@ export namespace apktool {
     /**
      * Decodes(Disassembles) the apk resources & dalvik bytecode using **Apktool**.
      * @param apkFilePath file path Uri for apk file to decode.
-     * @param apktoolArgs array of additional args passed to **Apktool**
+     * @param apktoolArgs array of additional args passed to **Apktool**.
+     * @param decompileJava if **jadx** needs to decompile the APK.
      */
     export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean) {
         let apktoolPath = extensionConfig.get("apktoolPath");

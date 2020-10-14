@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { apktool, adb } from './tools';
+import { adb } from './tools';
 import { outputChannel } from './common';
 import { updateTools } from './downloader';
 import { UI } from './interface';

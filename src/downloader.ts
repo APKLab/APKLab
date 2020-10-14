@@ -1,4 +1,4 @@
-import { Url, parse as parseUrl } from 'url';
+import { parse as parseUrl } from 'url';
 import * as https from 'https';
 import * as vscode from 'vscode';
 import { extensionConfig, apklabDataDir, outputChannel } from './common';
