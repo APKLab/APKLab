@@ -111,6 +111,26 @@
 					"type": "string",
 					"default": "",
 					"markdownDescription": "Put the absolute path of `jadx-x.y.z` dir here if you want to use a non-latest version."
+				},
+				"apklab.keystorePath": {
+					"type": "string",
+					"default": "",
+					"markdownDescription": "Put the absolute path of your **Java keystore**(`.jks` or `.keystore`) file here."
+				},
+				"apklab.keystorePassword": {
+					"type": "string",
+					"default": "",
+					"markdownDescription": "Put the **password** of your keystore here."
+				},
+				"apklab.keyAlias": {
+					"type": "string",
+					"default": "",
+					"markdownDescription": "Put the **alias** of the used key in the keystore here."
+				},
+				"apklab.keyPassword": {
+					"type": "string",
+					"default": "",
+					"markdownDescription": "Put the **password** of the used key in the keystore here."
 				}
 			}
 		}

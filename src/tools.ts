@@ -172,9 +172,16 @@ export namespace apkSigner {
      */
     export function signAPK(projectDir: string, apkFileName: string) {
         const apkSignerPath = extensionConfig.get("apkSignerPath");
+        const keystorePath = extensionConfig.get("keystorePath");
+        const keystorePassword = extensionConfig.get("keystorePassword");
+        const keyAlias = extensionConfig.get("keyAlias");
+        const keyPassword = extensionConfig.get("keyPassword");
         const builtApkPath = `${projectDir}/dist/${apkFileName}`;
         const report = `Signing ${apkFileName}...`;
-        const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign', '--overwrite'];
+        let args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign', '--overwrite'];
+        if (keystorePath && fs.existsSync(String(keystorePath)) && keystorePassword && keyAlias && keyPassword) {
+            args.push("--ks", String(keystorePath), "--ksPass", String(keystorePassword), "--ksAlias", String(keyAlias), "--ksKeyPass", String(keyPassword));
+        }
         executeProcess({
             name: "Signing", report: report, command: "java", args: args, shouldExist: builtApkPath
         });

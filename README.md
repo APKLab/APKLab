@@ -38,7 +38,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - Support for Apktool-style projects (`apktool.yml`)
 - Support for most Apktool CLI arguments
 - Android resource frameworks management (Coming soon!)
-- Configure your own app signing certificate (Coming soon!)
+- Support for user-provided keystore for APK signing
 - Download and configure missing dependencies
 - Excellent Smali language support with [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise)
 - Supports Linux, Windows, and Mac
@@ -77,6 +77,9 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
 ## Extension Settings
 
+<details>
+  <summary>Dependency Paths</summary>
+
 - **`apklab.apktoolPath`**: Full Path of `apktool.jar`. If you want to use a different version of it, change it like:
 
   `"apklab.apktoolPath": "/home/oozer/downloads/apktool_2.4.1.jar"`
@@ -88,6 +91,22 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - **`apklab.jadxDirPath`**: Full Path of `jadx-x.y.z` dir. If you want to use a different version of it, change it like:
   
   `"apklab.jadxDirPath": "/home/oozer/downloads/jadx-1.1.0"`
+
+</details>
+<details>
+  <summary>Keystore configuration</summary>
+
+- **`apklab.keystorePath`**: Put the absolute path of your **Java keystore**(`.jks` or `.keystore`) file here.
+
+  `"apklab.keystorePath": "/home/oozer/downloads/debug.keystore"`
+
+- **`apklab.keystorePassword`**: Put the **password** of your keystore here.
+
+- **`apklab.keyAlias`**: Put the **alias** of the used key in the keystore here.
+
+- **`apklab.keyPassword`**: Put the **password** of the used key in the keystore here.
+
+</details>
 
 ## Known Issues
 
