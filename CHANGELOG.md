@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed path issues on Windows (thanks [Aman](https://github.com/amsharma44))
+- Improved logging
+- Updated README
+
 ## [1.0.0] - 2020-10-15
 
 - Feature complete with [APK Studio](https://github.com/vaibhavpandeyvpz/apkstudio) 🎉🎉
