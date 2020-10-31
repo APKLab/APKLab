@@ -106,7 +106,7 @@ export namespace UI {
                 apktool.decodeAPK(result[0].fsPath, args, decompileJava);
             }
         } else {
-            outputChannel.appendLine("APKLAB: no apk was file chosen");
+            outputChannel.appendLine("APKLAB: no APK file was chosen");
         }
     }
 
