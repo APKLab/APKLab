@@ -19,7 +19,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
         <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=a69&labelColor=000">
     </a>
     <a href="https://open-vsx.org/extension/Surendrajat/apklab">
-        <img alt="Download" src="https://img.shields.io/static/v1?label=get from&message=open-vsx&color=629&labelColor=000">
+        <img alt="Download" src="https://img.shields.io/static/v1?label=get%20from&message=open-vsx&color=629&labelColor=000">
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
         <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab?logo=visual-studio-code&logoColor=blue&labelColor=000&color=blue">
