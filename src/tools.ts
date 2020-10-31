@@ -2,6 +2,7 @@ import * as child_process from 'child_process';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 import { extensionConfig, outputChannel } from './common';
+import * as path from 'path';
 
 
 /**
@@ -111,7 +112,7 @@ export namespace apktool {
      */
     export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean) {
         let apktoolPath = extensionConfig.get("apktoolPath");
-        const apkFileName = apkFilePath.substring(apkFilePath.lastIndexOf('/') + 1);
+        const apkFileName = path.basename(apkFilePath);
         const apkName = apkFileName.split('.apk')[0];
         const apkDir = apkFilePath.split(apkFileName)[0];
         let apkDecodeDir = apkDir + apkName;
@@ -124,14 +125,14 @@ export namespace apktool {
         if (apktoolArgs && apktoolArgs.length > 0) {
             args = args.concat(apktoolArgs);
         }
-        const shouldExist = apkDecodeDir + "/apktool.yml";
+        const shouldExist = path.join(apkDecodeDir, "apktool.yml");
         executeProcess({
             name: "Decoding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
                 if (decompileJava) {
                     jadx.decompileAPK(apkFilePath, apkFileName, apkDecodeDir);
                 }
                 // open apkDecodeDir in a new vs code window
-                vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(apkDecodeDir), true);
+                vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(apkDecodeDir), true);
             }
         });
     }
@@ -147,8 +148,8 @@ export namespace apktool {
         if (!apkFileName) {
             return;
         }
-        const projectDir = apktoolYmlPath.split("/apktool.yml")[0];
-        const projectName = projectDir.substring(projectDir.lastIndexOf("/") + 1);
+        const projectDir = path.parse(apktoolYmlPath).dir;
+        const projectName = path.basename(projectDir);
         const report = `Rebuilding ${apkFileName} into ${projectName}/dist/...`;
         let args = ["-jar", String(apktoolPath), 'b', projectDir];
         if (apktoolArgs && apktoolArgs.length > 0) {
@@ -195,7 +196,7 @@ export namespace adb {
      * @param apkFilePath absolute path of the APK file.
      */
     export function installAPK(apkFilePath: string) {
-        const apkFileName = apkFilePath.substring(apkFilePath.lastIndexOf('/') + 1);
+        const apkFileName = path.basename(apkFilePath);
         const report = `Installing ${apkFileName} ...`;
         const args = ["install", "-r", apkFilePath];
         executeProcess({
