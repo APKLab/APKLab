@@ -113,14 +113,12 @@ export namespace apktool {
     export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean) {
         let apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = path.basename(apkFilePath);
-        const apkName = apkFileName.split('.apk')[0];
-        const apkDir = apkFilePath.split(apkFileName)[0];
-        let apkDecodeDir = apkDir + apkName;
+        let apkDecodeDir = path.join(path.dirname(apkFilePath), path.parse(apkFilePath).name);
         // don't delete the existing dir if it does exist
         while (fs.existsSync(apkDecodeDir)) {
             apkDecodeDir = apkDecodeDir + "1";
         }
-        const report = `Decoding ${apkFileName} into ${apkDecodeDir}...`;
+        const report = `Decoding ${apkFileName} into ${apkDecodeDir}`;
         let args = ["-jar", String(apktoolPath), 'd', apkFilePath, '-o', apkDecodeDir];
         if (apktoolArgs && apktoolArgs.length > 0) {
             args = args.concat(apktoolArgs);
@@ -149,13 +147,12 @@ export namespace apktool {
             return;
         }
         const projectDir = path.parse(apktoolYmlPath).dir;
-        const projectName = path.basename(projectDir);
-        const report = `Rebuilding ${apkFileName} into ${projectName}/dist/...`;
+        const report = `Rebuilding ${apkFileName} into ${path.basename(projectDir)}${path.sep}dist`;
         let args = ["-jar", String(apktoolPath), 'b', projectDir];
         if (apktoolArgs && apktoolArgs.length > 0) {
             args = args.concat(apktoolArgs);
         }
-        const shouldExist = `${projectDir}/dist/${apkFileName}`;
+        const shouldExist = path.join(projectDir, "dist", apkFileName);
         executeProcess({
             name: "Rebuilding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
                 apkSigner.signAPK(projectDir, apkFileName);
@@ -177,8 +174,8 @@ export namespace apkSigner {
         const keystorePassword = extensionConfig.get("keystorePassword");
         const keyAlias = extensionConfig.get("keyAlias");
         const keyPassword = extensionConfig.get("keyPassword");
-        const builtApkPath = `${projectDir}/dist/${apkFileName}`;
-        const report = `Signing ${apkFileName}...`;
+        const builtApkPath = path.join(projectDir, "dist", apkFileName);
+        const report = `Signing ${path.basename(projectDir)}${path.sep}dist${path.sep}${apkFileName}`;
         let args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign', '--overwrite'];
         if (keystorePath && fs.existsSync(String(keystorePath)) && keystorePassword && keyAlias && keyPassword) {
             args.push("--ks", String(keystorePath), "--ksPass", String(keystorePassword), "--ksAlias", String(keyAlias), "--ksKeyPass", String(keyPassword));
@@ -197,7 +194,7 @@ export namespace adb {
      */
     export function installAPK(apkFilePath: string) {
         const apkFileName = path.basename(apkFilePath);
-        const report = `Installing ${apkFileName} ...`;
+        const report = `Installing ${apkFileName}`;
         const args = ["install", "-r", apkFilePath];
         executeProcess({
             name: "Installing", report: report, command: "adb", args: args
@@ -215,8 +212,9 @@ export namespace jadx {
      */
     export function decompileAPK(apkFilePath: string, apkFileName: string, apkDecodeDir: string) {
         const jadxDirPath = extensionConfig.get("jadxDirPath");
-        const jadxPath = `${jadxDirPath}/bin/jadx${process.platform.startsWith("win") ? ".bat" : ""}`;
-        const apkDecompileDir = `${apkDecodeDir}/java_src`;
+        const jadxExeName = `jadx${process.platform.startsWith("win") ? ".bat" : ""}`;
+        const jadxPath = path.join(String(jadxDirPath), "bin", jadxExeName);
+        const apkDecompileDir = path.join(apkDecodeDir, "java_src");
         const report = `Decompiling ${apkFileName} into ${apkDecompileDir}`;
         const args = ["-r", "-v", "-ds", apkDecompileDir, apkFilePath];
         executeProcess({
