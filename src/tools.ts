@@ -2,6 +2,7 @@ import * as child_process from 'child_process';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 import { extensionConfig, outputChannel } from './common';
+import * as path from 'path';
 
 
 /**
@@ -111,7 +112,7 @@ export namespace apktool {
      */
     export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean) {
         let apktoolPath = extensionConfig.get("apktoolPath");
-        const apkFileName = apkFilePath.substring(apkFilePath.lastIndexOf('/') + 1);
+        const apkFileName = path.basename(apkFilePath);
         const apkName = apkFileName.split('.apk')[0];
         const apkDir = apkFilePath.split(apkFileName)[0];
         let apkDecodeDir = apkDir + apkName;
@@ -131,7 +132,7 @@ export namespace apktool {
                     jadx.decompileAPK(apkFilePath, apkFileName, apkDecodeDir);
                 }
                 // open apkDecodeDir in a new vs code window
-                vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse(apkDecodeDir), true);
+                vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(apkDecodeDir), true);
             }
         });
     }
