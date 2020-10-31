@@ -7,7 +7,7 @@
 </h1>
 
 <h4 align="center">
-The ultimate android static analysis and RE experience right inside your <a href="https://code.visualstudio.com/">VS Code</a>.
+The ultimate Android RE experience right inside your <a href="https://code.visualstudio.com/">VS Code</a>.
 </h4>
 
 <p align="center">
@@ -16,13 +16,24 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
 <p align="center">
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
-        <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=629&labelColor=000">
+        <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=a69&labelColor=000">
+    </a>
+    <a href="https://open-vsx.org/extension/Surendrajat/apklab">
+        <img alt="Download" src="https://img.shields.io/static/v1?label=get from&message=open-vsx&color=629&labelColor=000">
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
         <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab?logo=visual-studio-code&logoColor=blue&labelColor=000&color=blue">
     </a>
     <a href="https://github.com/Surendrajat/APKLab/actions?query=workflow%3AAPKLab">
         <img alt="GitHub Workflow Status (master)" src="https://img.shields.io/github/workflow/status/surendrajat/apklab/APKLab/master?logo=github&labelColor=black">
+    </a>
+</p>
+<p align="center">
+    <a href="https://t.me/apklab_re">
+        <img alt="Telegram" src="https://img.shields.io/badge/telegram-eff?logo=telegram">
+    </a>
+    <a href="https://matrix.to/#/#apklab:matrix.org">
+        <img alt="Matrix" src="https://img.shields.io/badge/matrix-f5faef?logo=matrix&logoColor=black">
     </a>
 </p>
 
@@ -116,15 +127,12 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
   For bug reports, feature requests or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
 
-## Community Support
-
-[![telegram](https://img.shields.io/badge/telegram-group-blue)](https://t.me/apklab_re) [![matrix-room](https://img.shields.io/badge/matrix-room-red)](https://matrix.to/#/#apklab:matrix.org)
-
 ## [Changelog](https://github.com/Surendrajat/APKLab/blob/master/CHANGELOG.md)
 
 ## Credits
 
 - [Feimaomii](https://github.com/Feimaomii) for the awesome logo
+- [Aman Sharma](https://github.com/amsharma44) for improved Windows support
 - [iBotPeaches](https://github.com/iBotPeaches), [brutall](https://github.com/brutall) and [JesusFreke](https://github.com/JesusFreke) for Apktool & Smali
 - [patrickfav](https://github.com/patrickfav) for uber-apk-signer
 - [skylot](https://github.com/skylot) for Jadx
