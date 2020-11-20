@@ -44,70 +44,25 @@ interface Tool {
 
 /**
  * Check the tools from `config.json`
- * If do not exist, download them.
+ * If any tool does not exist, download it.
  */
 export function updateTools() {
     return new Promise((resolve, reject) => {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
-        const apktool = config.tools[0];
-        const apktoolPath = extensionConfig.get(apktool.configName);
-        const apktoolExists = apktoolPath && fs.existsSync(String(apktoolPath));
-        const apkSigner = config.tools[1];
-        const apkSignerPath = extensionConfig.get(apkSigner.configName);
-        const apkSignerExists = apkSignerPath && fs.existsSync(String(apkSignerPath));
-        const jadx = config.tools[2];
-        const jadxDirPath = extensionConfig.get(jadx.configName);
-        const jadxDirExists = jadxDirPath && fs.existsSync(String(jadxDirPath));
-
-        if ((!apktoolExists || !apkSignerExists || !jadxDirExists) && !fs.existsSync(apklabDataDir)) {
-            fs.mkdirSync(apklabDataDir);
-        }
-        if (!apktoolExists) {
-            DownloadFile(apktool).then(filePath => {
-                if (!filePath) {
-                    reject();
+        config.tools.forEach(tool => {
+            const toolPath = extensionConfig.get(tool.configName);
+            if (!toolPath || !fs.existsSync(String(toolPath))) {
+                if (!fs.existsSync(String(apklabDataDir))) {
+                    fs.mkdirSync(apklabDataDir);
                 }
-                if (!apkSignerExists) {
-                    DownloadFile(apkSigner).then(filePath => {
-                        if (!filePath) {
-                            reject();
-                        }
-                        if (!jadxDirExists) {
-                            DownloadFile(jadx).then(filePath => {
-                                filePath ? resolve() : reject();
-                            });
-                        } else {
-                            resolve();
-                        }
-                    });
-                } else {
-                    resolve();
-                }
-            });
-        } else {
-            if (!apkSignerExists) {
-                DownloadFile(apkSigner).then(filePath => {
+                DownloadFile(tool).then(filePath => {
                     if (!filePath) {
                         reject();
                     }
-                    if (!jadxDirExists) {
-                        DownloadFile(jadx).then(filePath => {
-                            filePath ? resolve() : reject();
-                        });
-                    } else {
-                        resolve();
-                    }
                 });
-            } else {
-                if (!jadxDirExists) {
-                    DownloadFile(jadx).then(filePath => {
-                        filePath ? resolve() : reject();
-                    });
-                } else {
-                    resolve();
-                }
             }
-        }
+        });
+        resolve();
     });
 }
 
