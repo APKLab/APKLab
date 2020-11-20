@@ -14,9 +14,9 @@ const outputChannelName = "APK Lab";
 export const outputChannel = vscode.window.createOutputChannel(outputChannelName);
 
 /**
- * Extension related configuration object.
+ * Extension related configuration object name.
  */
-export const extensionConfig = vscode.workspace.getConfiguration("apklab");
+export const extensionConfigName = "apklab";
 
 /**
  * Data dir for the extension to download dependencies, etc.

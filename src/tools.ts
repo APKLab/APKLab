@@ -1,7 +1,7 @@
 import * as child_process from 'child_process';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
-import { extensionConfig, outputChannel } from './common';
+import { extensionConfigName, outputChannel } from './common';
 import * as path from 'path';
 
 
@@ -111,6 +111,7 @@ export namespace apktool {
      * @param decompileJava if **jadx** needs to decompile the APK.
      */
     export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean) {
+        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         let apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = path.basename(apkFilePath);
         let apkDecodeDir = path.join(path.dirname(apkFilePath), path.parse(apkFilePath).name);
@@ -141,6 +142,7 @@ export namespace apktool {
      * @param apktoolArgs array of additional args passed to **Apktool**
      */
     export function rebuildAPK(apktoolYmlPath: string, apktoolArgs: string[]) {
+        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = getApkName(apktoolYmlPath);
         if (!apkFileName) {
@@ -169,6 +171,7 @@ export namespace apkSigner {
      * @param apkFileName name of the original apk file from `apktool.yml`.
      */
     export function signAPK(projectDir: string, apkFileName: string) {
+        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const apkSignerPath = extensionConfig.get("apkSignerPath");
         const keystorePath = extensionConfig.get("keystorePath");
         const keystorePassword = extensionConfig.get("keystorePassword");
@@ -211,6 +214,7 @@ export namespace jadx {
      * @param apkDecodeDir dir where the APK file was decoded.
      */
     export function decompileAPK(apkFilePath: string, apkFileName: string, apkDecodeDir: string) {
+        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const jadxDirPath = extensionConfig.get("jadxDirPath");
         const jadxExeName = `jadx${process.platform.startsWith("win") ? ".bat" : ""}`;
         const jadxPath = path.join(String(jadxDirPath), "bin", jadxExeName);

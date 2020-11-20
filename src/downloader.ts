@@ -1,7 +1,7 @@
 import { parse as parseUrl } from 'url';
 import * as https from 'https';
 import * as vscode from 'vscode';
-import { extensionConfig, apklabDataDir, outputChannel } from './common';
+import { extensionConfigName, apklabDataDir, outputChannel } from './common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as config from './config.json';
@@ -48,6 +48,7 @@ interface Tool {
  */
 export function updateTools() {
     return new Promise((resolve, reject) => {
+        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const apktool = config.tools[0];
         const apktoolPath = extensionConfig.get(apktool.configName);
         const apktoolExists = apktoolPath && fs.existsSync(String(apktoolPath));
@@ -132,7 +133,7 @@ async function DownloadFile(tool: Tool) {
                 outputChannel.appendLine(`Error: Extracting file ${filePath}: ${err.message}`);
             }
         }
-        await extensionConfig.update(tool.configName, configPath, vscode.ConfigurationTarget.Global);
+        await vscode.workspace.getConfiguration(extensionConfigName).update(tool.configName, configPath, vscode.ConfigurationTarget.Global);
         return filePath;
     } catch (error) {
         outputChannel.appendLine(`Error: Creating file`);
