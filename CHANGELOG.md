@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Bundle extension with Webpack
+- Updated Jadx version to v1.2.0
+
+### Fixed
+
+- Fixed a known issue related to first launch
+- Refactored tools update function
+
 ## [1.0.1] - 2020-10-31
 
 ### Fixed

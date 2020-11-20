@@ -121,8 +121,6 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
 ## Known Issues
 
-- First time when you try <kbd>APKLab: Open an APK</kbd> or <kbd>APKLab: Rebuild the APK</kbd>, the dependencies(ApkTool, etc.) will be downloaded and settings will be updated. However, you may need to restart VS Code once, on download completion, for the settings to be applied.
-
 ## Contribution Guide
 
   For bug reports, feature requests or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
