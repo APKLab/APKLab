@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1] - 2020-11-21
+
+### Fixed
+
+- Fixed a regression introduced in refactoring
+
 ## [1.1.0] - 2020-11-21
 
 ### Added
