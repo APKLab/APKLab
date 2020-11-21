@@ -47,21 +47,20 @@ interface Tool {
  * If any tool does not exist, download it.
  */
 export function updateTools() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
-        config.tools.forEach(tool => {
+        await Promise.all(config.tools.map(async (tool) => {
             const toolPath = extensionConfig.get(tool.configName);
             if (!toolPath || !fs.existsSync(String(toolPath))) {
                 if (!fs.existsSync(String(apklabDataDir))) {
                     fs.mkdirSync(apklabDataDir);
                 }
-                DownloadFile(tool).then(filePath => {
-                    if (!filePath) {
-                        reject();
-                    }
-                });
+                const filepath = await DownloadFile(tool);
+                if (!filepath) {
+                    reject();
+                }
             }
-        });
+        }));
         resolve();
     });
 }
