@@ -44,6 +44,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - Decompile the APK to Java source
 - Analyze & Hack effectively with feature-rich VS Code
 - Build an APK from Smali and resources
+- Rebuild an APK in Debug mode for dynamic analysis
 - Sign the APK seamlessly during the build
 - Install the APK directly from VS Code
 - Support for Apktool-style projects (`apktool.yml`)

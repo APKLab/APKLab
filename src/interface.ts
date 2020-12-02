@@ -51,6 +51,11 @@ const rebuildQuickPickItems: QuickPickItem[] = [
         picked: true
     },
     {
+        label: "--debug",
+        detail: "Build APK in Debug mode by adding debuggable=\"true\" to AndroidManifest file",
+        alwaysShow: true,
+    },
+    {
         label: "--force-all",
         detail: "Overwrites existing files during build, reassembling the resources.arsc file and dex file(s)",
         alwaysShow: true
