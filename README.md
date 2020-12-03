@@ -29,6 +29,9 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
     </a>
 </p>
 <p align="center">
+    <a href="https://forum.xda-developers.com/t/4109409/">
+        <img alt="XDA Developers" src="https://img.shields.io/badge/XDA%20Forums-ffb?logo=xda-developers">
+    </a>
     <a href="https://t.me/apklab_re">
         <img alt="Telegram" src="https://img.shields.io/badge/telegram-eff?logo=telegram">
     </a>
