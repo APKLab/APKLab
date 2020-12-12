@@ -32,7 +32,16 @@ export function activate(context: vscode.ExtensionContext) {
 		adb.installAPK(uri.fsPath);
 	});
 
-	context.subscriptions.push(openApkFileCommand, rebuildAPkFileCommand, installAPkFileCommand);
+	// command for patching files for https inspection
+	const patchApkForHttpsCommand = vscode.commands.registerCommand("apklab.patchApkForHttps", (uri: vscode.Uri) => {
+		updateTools().then(() => {
+			UI.applyMitmPatch(uri.fsPath);
+		}).catch(() => {
+			outputChannel.appendLine("Failed to apply mitm patch");
+		});
+	});
+
+	context.subscriptions.push(openApkFileCommand, rebuildAPkFileCommand, installAPkFileCommand, patchApkForHttpsCommand);
 }
 
 export function deactivate() { }

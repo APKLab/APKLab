@@ -1,6 +1,7 @@
 import { QuickPickItem, window } from 'vscode';
 import { apktool } from './tools';
 import { outputChannel } from './common';
+import { mitmTools } from './mitm-tools';
 
 /**
  * QuickPickItem array for additional **Apktool** args for APK decoding.
@@ -124,5 +125,12 @@ export namespace UI {
         if (args) {
             apktool.rebuildAPK(apktoolYmlPath, args);
         }
+    }
+
+    /**
+     * @param apktoolYmlPath path of the `apktool.yml` file.
+     */
+    export async function applyMitmPatch(apktoolYmlPath: string) {
+        mitmTools.applyMitmPatch(apktoolYmlPath);
     }
 }

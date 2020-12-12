@@ -53,6 +53,10 @@
 				"title": "APKLab: Rebuild the APK"
 			},
 			{
+				"command": "apklab.patchApkForHttps",
+				"title": "APKLab: Prepare for HTTPS inspection"
+			},
+			{
 				"command": "apklab.installApkFile",
 				"title": "APKLab: Install the APK"
 			}
@@ -89,6 +93,11 @@
 				},
 				{
 					"command": "apklab.rebuildApkFile",
+					"when": "resourceFilename == apktool.yml",
+					"group": "navigation"
+				},
+				{
+					"command": "apklab.patchApkForHttps",
 					"when": "resourceFilename == apktool.yml",
 					"group": "navigation"
 				}
@@ -163,6 +172,7 @@
 	"dependencies": {
 		"child_process": "^1.0.2",
 		"extract-zip": "^2.0.1",
-		"path": "^0.12.7"
+		"path": "^0.12.7",
+		"xml-js": "^1.6.11"
 	}
 }
