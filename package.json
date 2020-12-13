@@ -70,6 +70,10 @@
 				{
 					"command": "apklab.installApkFile",
 					"when": "false"
+				},
+				{
+					"command": "apklab.patchApkForHttps",
+					"when": "false"
 				}
 			],
 			"editor/context": [
@@ -77,11 +81,20 @@
 					"command": "apklab.rebuildApkFile",
 					"when": "resourceFilename == apktool.yml",
 					"group": "navigation"
+				},
+				{
+					"command": "apklab.patchApkForHttps",
+					"when": "resourceFilename == apktool.yml",
+					"group": "navigation"
 				}
 			],
 			"editor/title": [
 				{
 					"command": "apklab.rebuildApkFile",
+					"when": "resourceFilename == apktool.yml"
+				},
+				{
+					"command": "apklab.patchApkForHttps",
 					"when": "resourceFilename == apktool.yml"
 				}
 			],

@@ -3,7 +3,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as globby from 'globby';
 import * as escapeStringRegexp from 'escape-string-regexp';
+import * as vscode from 'vscode';
 import { outputChannel } from './common';
+import { quickPickUtil } from './quick-pick.util';
 
 const DEFAULT_CONFIG = `<?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
@@ -101,7 +103,6 @@ async function modifyNetworkSecurityConfig(nscPath: string) {
     }
 
     await fs.promises.writeFile(nscPath, xml.js2xml(fileXml, { compact: true, spaces: 4 }));
-
 }
 
 async function disableCertificatePinning(directoryPath: string) {
@@ -156,7 +157,6 @@ async function disableCertificatePinning(directoryPath: string) {
     if (!pinningFound) {
         outputChannel.appendLine('No certificate pinning logic found.');
     }
-
 }
 
 export namespace mitmTools {
@@ -167,19 +167,30 @@ export namespace mitmTools {
      */
     export async function applyMitmPatch(apktoolYmlPath: string) {
         try {
+            const report = "Applying patch for HTTPS inspection (MITM)";
+
+            outputChannel.show();
+            outputChannel.appendLine("-".repeat(report.length));
+            outputChannel.appendLine(report);
+            outputChannel.appendLine("-".repeat(report.length));
+
             const decodeDir = path.dirname(apktoolYmlPath);
             const manifestPath = path.join(decodeDir, "AndroidManifest.xml");
             const nscName = await getNscFromManifest(manifestPath);
             const nscPath = path.join(decodeDir, `res/xml/${nscName}.xml`);
             await modifyNetworkSecurityConfig(nscPath);
             await disableCertificatePinning(decodeDir);
-            outputChannel.appendLine('APKLab: Success');
+
+            quickPickUtil.setQuickPickDefault('rebuildQuickPickItems', '--debug');
+
+            outputChannel.appendLine('MITM Patch applied successfully');
+            vscode.window.showInformationMessage(`APKLab: MITM Patch applied successfully`);
         }
         catch (err) {
             outputChannel.appendLine(err);
-            outputChannel.appendLine('APKLab: Failed to apply patch');
+            outputChannel.appendLine('Failed to apply MITM patch');
+            vscode.window.showErrorMessage(`APKLab: Failed to apply MITM patch`);
         }
 
     }
-
 }
