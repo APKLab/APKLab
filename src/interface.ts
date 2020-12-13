@@ -131,6 +131,7 @@ export namespace UI {
      * @param apktoolYmlPath path of the `apktool.yml` file.
      */
     export async function applyMitmPatch(apktoolYmlPath: string) {
+        outputChannel.appendLine("APKLAB: Applying patch for HTTPS inspection");
         mitmTools.applyMitmPatch(apktoolYmlPath);
     }
 }

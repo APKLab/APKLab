@@ -1,9 +1,9 @@
 import * as xml from 'xml-js';
 import * as fs from 'fs';
-import { promisify } from 'util';
 import * as path from 'path';
 import * as globby from 'globby';
 import * as escapeStringRegexp from 'escape-string-regexp';
+import { outputChannel } from './common';
 
 const DEFAULT_CONFIG = `<?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
@@ -71,93 +71,95 @@ async function modifyNetworkSecurityConfig(nscPath: string) {
 
     try {
         const fileStat = await fs.promises.stat(nscPath);
-        console.log('file stat here');
-        console.log(fileStat);
-
-        const fileContent = await fs.promises.readFile(nscPath, { encoding: 'utf-8' });
-
-        const fileXml: { [index: string]: any } = xml.xml2js(fileContent, { compact: true, alwaysArray: true });
-
-        const config = fileXml['network-security-config'][0];
-
-        // Remove certificate pinning rules
-        // See https://developer.android.com/training/articles/security-config#pin-set
-        delete config['pin-set'];
-
-        const overrides = (config['debug-overrides'] || (config['debug-overrides'] = [{}]))[0];
-        const trustAnchors = (overrides['trust-anchors'] || (overrides['trust-anchors'] = [{}]))[0];
-        const certificates = trustAnchors['certificates'] || (trustAnchors['certificates'] = []);
-
-        if (!certificates.filter((c: any) => c._attributes.src === 'user').length) {
-            certificates.push({ _attributes: { src: 'user' } });
-        }
-
-        await fs.promises.writeFile(nscPath, xml.js2xml(fileXml, { compact: true, spaces: 4 }));
     }
     catch (err) {
-        console.log(err);
         if (err.includes('ENOENT')) {
             // File does not exist, create a default one
+            outputChannel.appendLine('Creating default network security config file');
             await fs.promises.mkdir(path.dirname(nscPath), { recursive: true });
             await fs.promises.writeFile(nscPath, DEFAULT_CONFIG);
+            return;
+        }
+        else {
+            throw err;
         }
     }
+
+    const fileContent = await fs.promises.readFile(nscPath, { encoding: 'utf-8' });
+
+    const fileXml: { [index: string]: any } = xml.xml2js(fileContent, { compact: true, alwaysArray: true });
+
+    const config = fileXml['network-security-config'][0];
+
+    // Remove certificate pinning rules
+    // See https://developer.android.com/training/articles/security-config#pin-set
+    delete config['pin-set'];
+
+    const overrides = (config['debug-overrides'] || (config['debug-overrides'] = [{}]))[0];
+    const trustAnchors = (overrides['trust-anchors'] || (overrides['trust-anchors'] = [{}]))[0];
+    const certificates = trustAnchors['certificates'] || (trustAnchors['certificates'] = []);
+
+    if (!certificates.filter((c: any) => c._attributes.src === 'user').length) {
+        certificates.push({ _attributes: { src: 'user' } });
+    }
+
+    await fs.promises.writeFile(nscPath, xml.js2xml(fileXml, { compact: true, spaces: 4 }));
+
 }
 
 async function disableCertificatePinning(directoryPath: string) {
 
-    try {
 
-        const smaliFiles = await globby(path.posix.join(directoryPath, 'smali*/**/*.smali'));
+    const smaliFiles = await globby(path.posix.join(directoryPath, 'smali*/**/*.smali'));
 
-        let pinningFound = false;
+    let pinningFound = false;
 
-        for (const filePath of smaliFiles) {
-            // observer.next(`Scanning ${path.basename(filePath)}...`)
+    outputChannel.appendLine(`Analyzing ${smaliFiles.length} smali files`);
 
-            const originalContent = await fs.promises.readFile(filePath, 'utf-8');
+    for (const filePath of smaliFiles) {
+        // observer.next(`Scanning ${path.basename(filePath)}...`)
 
-            // Don't scan classes that don't implement the interface
-            if (!originalContent.includes(INTERFACE_LINE)) {
-                continue;
-            }
+        const originalContent = await fs.promises.readFile(filePath, 'utf-8');
 
-            let patchedContent = originalContent;
-
-            for (const pattern of METHOD_PATTERNS) {
-                patchedContent = patchedContent.replace(pattern, (_, openingLine: string, body: string, closingLine: string) => {
-
-                    const bodyLines = body.split('\n').map(line => line.replace(/^    /, ''));
-
-                    const fixLines = openingLine.includes('getAcceptedIssuers') ? RETURN_EMPTY_ARRAY_FIX : RETURN_VOID_FIX;
-
-                    const patchedBodyLines = [
-                        '# inserted by APKLab to disable certificate pinning',
-                        ...fixLines,
-                        '',
-                        '# commented out by APKLab to disable old method body',
-                        '# ',
-                        ...bodyLines.map(line => `# ${line}`)
-                    ];
-
-                    return [openingLine, ...patchedBodyLines.map(line => `    ${line}`), closingLine,].map(line => line.replace(/\s+$/, '')).join('\n');
-                });
-            }
-
-            if (originalContent !== patchedContent) {
-                pinningFound = true;
-                await fs.promises.writeFile(filePath, patchedContent);
-            }
-
+        // Don't scan classes that don't implement the interface
+        if (!originalContent.includes(INTERFACE_LINE)) {
+            continue;
         }
 
-        if (!pinningFound) {
-            console.log('No certificate pinning logic found.');
+        let patchedContent = originalContent;
+
+        for (const pattern of METHOD_PATTERNS) {
+            patchedContent = patchedContent.replace(pattern, (_, openingLine: string, body: string, closingLine: string) => {
+
+                const bodyLines = body.split('\n').map(line => line.replace(/^    /, ''));
+
+                const fixLines = openingLine.includes('getAcceptedIssuers') ? RETURN_EMPTY_ARRAY_FIX : RETURN_VOID_FIX;
+
+                const patchedBodyLines = [
+                    '# inserted by APKLab to disable certificate pinning',
+                    ...fixLines,
+                    '',
+                    '# commented out by APKLab to disable old method body',
+                    '# ',
+                    ...bodyLines.map(line => `# ${line}`)
+                ];
+
+                return [openingLine, ...patchedBodyLines.map(line => `    ${line}`), closingLine,].map(line => line.replace(/\s+$/, '')).join('\n');
+            });
         }
+
+        if (originalContent !== patchedContent) {
+            pinningFound = true;
+            outputChannel.appendLine(`Applying patch in ${filePath}`);
+            await fs.promises.writeFile(filePath, patchedContent);
+        }
+
     }
-    catch (err) {
-        console.log(err);
+
+    if (!pinningFound) {
+        outputChannel.appendLine('No certificate pinning logic found.');
     }
+
 }
 
 export namespace mitmTools {
@@ -167,16 +169,20 @@ export namespace mitmTools {
      * @param apktoolYmlPath The path of `apktool.yml` file.
      */
     export async function applyMitmPatch(apktoolYmlPath: string) {
-        // console.log('base path: ' + path.dirname(apktoolYmlPath));
-        const decodeDir = path.dirname(apktoolYmlPath);
-        const manifestPath = path.join(decodeDir, "AndroidManifest.xml");
-        // console.log('Manifest path: ' + manifestPath);
-        const nscName = await getNscFromManifest(manifestPath);
-        const nscPath = path.join(decodeDir, `res/xml/${nscName}.xml`);
-        console.log(nscName);
-        console.log(nscPath);
-        await modifyNetworkSecurityConfig(nscPath);
-        await disableCertificatePinning(decodeDir);
+        try {
+            const decodeDir = path.dirname(apktoolYmlPath);
+            const manifestPath = path.join(decodeDir, "AndroidManifest.xml");
+            const nscName = await getNscFromManifest(manifestPath);
+            const nscPath = path.join(decodeDir, `res/xml/${nscName}.xml`);
+            await modifyNetworkSecurityConfig(nscPath);
+            await disableCertificatePinning(decodeDir);
+            outputChannel.appendLine('APKLab: Success');
+        }
+        catch (err) {
+            outputChannel.appendLine(err);
+            outputChannel.appendLine('APKLab: Failed to apply patch');
+        }
+
     }
 
 }
