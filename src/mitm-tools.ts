@@ -106,22 +106,27 @@ async function modifyNetworkSecurityConfig(nscPath: string) {
 }
 
 async function disableCertificatePinning(directoryPath: string) {
+    const smaliPath = directoryPath.split(path.sep).join(path.posix.sep);
 
-
-    const smaliFiles = await globby(path.posix.join(directoryPath, 'smali*/**/*.smali'));
+    const smaliFiles = await globby(path.posix.join(smaliPath, 'smali*/**/*.smali'));
 
     let pinningFound = false;
 
     outputChannel.appendLine(`Analyzing ${smaliFiles.length} smali files`);
 
-    for (const filePath of smaliFiles) {
-        // observer.next(`Scanning ${path.basename(filePath)}...`)
+    for (const smaliFile of smaliFiles) {
 
-        const originalContent = await fs.promises.readFile(filePath, 'utf-8');
+        const filePath = smaliFile.split(path.posix.sep).join(path.sep);
+
+        let originalContent = await fs.promises.readFile(filePath, 'utf-8');
 
         // Don't scan classes that don't implement the interface
         if (!originalContent.includes(INTERFACE_LINE)) {
             continue;
+        }
+
+        if (process.platform.startsWith("win")) {
+            originalContent = originalContent.replace(/\r\n/g, "\n");
         }
 
         let patchedContent = originalContent;
@@ -149,6 +154,9 @@ async function disableCertificatePinning(directoryPath: string) {
         if (originalContent !== patchedContent) {
             pinningFound = true;
             outputChannel.appendLine(`Applying patch in ${filePath}`);
+            if(process.platform.startsWith("win")) {
+                patchedContent = patchedContent.replace(/\n/g, "\r\n");
+            }
             await fs.promises.writeFile(filePath, patchedContent);
         }
 
