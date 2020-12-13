@@ -73,16 +73,13 @@ async function modifyNetworkSecurityConfig(nscPath: string) {
         const fileStat = await fs.promises.stat(nscPath);
     }
     catch (err) {
-        if (err.includes('ENOENT')) {
-            // File does not exist, create a default one
-            outputChannel.appendLine('Creating default network security config file');
-            await fs.promises.mkdir(path.dirname(nscPath), { recursive: true });
-            await fs.promises.writeFile(nscPath, DEFAULT_CONFIG);
-            return;
-        }
-        else {
-            throw err;
-        }
+        if (err.code !== 'ENOENT') { throw err; }
+
+        // File does not exist, create a default one
+        outputChannel.appendLine('Creating default network security config file');
+        await fs.promises.mkdir(path.dirname(nscPath), { recursive: true });
+        await fs.promises.writeFile(nscPath, DEFAULT_CONFIG);
+        return;
     }
 
     const fileContent = await fs.promises.readFile(nscPath, { encoding: 'utf-8' });
