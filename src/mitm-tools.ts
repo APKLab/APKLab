@@ -1,3 +1,6 @@
+// MITM patching code adapted from:
+// https://github.com/shroudedcode/apk-mitm
+
 import * as xml from 'xml-js';
 import * as fs from 'fs';
 import * as path from 'path';

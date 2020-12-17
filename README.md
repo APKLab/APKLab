@@ -11,7 +11,7 @@ The ultimate Android RE experience right inside your <a href="https://code.visua
 </h4>
 
 <p align="center">
-APKLab seamlessly integrates the best open-source tools: <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/skylot/jadx">Jadx</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
+APKLab seamlessly integrates the best open-source tools: <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/skylot/jadx">Jadx</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a>, <a href="https://github.com/shroudedcode/apk-mitm/">apk-mitm</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
 </p>
 
 <p align="center">
@@ -46,6 +46,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - Disassemble the APK to Dalvik bytecode aka Smali
 - Decompile the APK to Java source
 - Analyze & Hack effectively with feature-rich VS Code
+- Apply MITM patch for HTTPS inspection
 - Build an APK from Smali and resources
 - Rebuild an APK in Debug mode for dynamic analysis
 - Sign the APK seamlessly during the build
@@ -134,7 +135,8 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 ## Credits
 
 - [Feimaomii](https://github.com/Feimaomii) for the awesome logo
-- [Aman Sharma](https://github.com/amsharma44) for improved Windows support
+- [Aman Sharma](https://github.com/amsharma44) for active contribution
+- [Niklas Higi](https://github.com/shroudedcode) for apk-mitm
 - [iBotPeaches](https://github.com/iBotPeaches), [brutall](https://github.com/brutall) and [JesusFreke](https://github.com/JesusFreke) for Apktool & Smali
 - [patrickfav](https://github.com/patrickfav) for uber-apk-signer
 - [skylot](https://github.com/skylot) for Jadx
