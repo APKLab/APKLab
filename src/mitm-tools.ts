@@ -1,5 +1,6 @@
 // MITM patching code adapted from:
 // https://github.com/shroudedcode/apk-mitm
+// MIT © Niklas Higi
 
 import * as xml from 'xml-js';
 import * as fs from 'fs';
