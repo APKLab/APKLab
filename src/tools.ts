@@ -69,7 +69,7 @@ function executeProcess(processOptions: ProcessOptions) {
             cancellable: true,
         },
         (progress, token) => {
-            return new Promise((resolve) => {
+            return new Promise<void>((resolve) => {
                 progress.report({ message: processOptions.report });
 
                 const cp = child_process.spawn(processOptions.command, processOptions.args, {});

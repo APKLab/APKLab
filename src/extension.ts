@@ -37,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
 		updateTools().then(() => {
 			UI.applyMitmPatch(uri.fsPath);
 		}).catch(() => {
-			outputChannel.appendLine("Failed to apply mitm patch");
+			outputChannel.appendLine("Can't download/update dependencies!");
 		});
 	});
 

@@ -47,7 +47,7 @@ interface Tool {
  * If any tool does not exist, download it.
  */
 export function updateTools() {
-    return new Promise(async (resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         await Promise.all(config.tools.map(async (tool) => {
             const toolPath = extensionConfig.get(tool.configName);
