@@ -87,6 +87,10 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
   ![install.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/install.gif)
 
+#### Clean ApkTool frameworks dir
+  
+- Open the Command Palette (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) ➜ <kbd>APKLab: Empty ApkTool Framework Dir</kbd>
+
 ## Requirements
 
 - **JDK 8+**
