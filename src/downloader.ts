@@ -91,7 +91,6 @@ async function DownloadFile(tool: Tool) {
         return filePath;
     } catch (error) {
         outputChannel.appendLine(`Error: Creating file`);
-        outputChannel.appendLine(error);
         return null;
     }
 
