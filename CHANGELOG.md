@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Apply MITM patch for HTTPS inspection
+- Build APK in DEBUG mode
+- Cleanup ApkTool Frameworks dir
+
+### Fixed
+
+- Improved error logs
+- ApkTool update to v2.5.0
+- Uber-APK-Signer update to v1.2.1
+- Updated gifs for dark mode
+
 ## [1.1.1] - 2020-11-21
 
 ### Fixed
