@@ -51,6 +51,10 @@ const RETURN_EMPTY_ARRAY_FIX = [
     'return-object v0',
 ];
 
+/**
+* Get network security config file path from manifest
+* @param manifestPath The path of `AndroidManifest.xml` file.
+*/
 async function getNscFromManifest(manifestPath: string) {
     const manifestContent = await fs.promises.readFile(manifestPath, { encoding: 'utf-8' });
 
@@ -72,6 +76,10 @@ async function getNscFromManifest(manifestPath: string) {
     return nscName;
 }
 
+/**
+* Modify network security config file to allow user certificate
+* @param nscPath The path of `network_security_config.xml` file.
+*/
 async function modifyNetworkSecurityConfig(nscPath: string) {
 
     try {
@@ -108,6 +116,10 @@ async function modifyNetworkSecurityConfig(nscPath: string) {
     await fs.promises.writeFile(nscPath, xml.js2xml(fileXml, { compact: true, spaces: 4 }));
 }
 
+/**
+* Disable certificate pinning
+* @param directoryPath Base path for decoded smali.
+*/
 async function disableCertificatePinning(directoryPath: string) {
     const smaliPath = directoryPath.split(path.sep).join(path.posix.sep);
 
@@ -157,7 +169,7 @@ async function disableCertificatePinning(directoryPath: string) {
         if (originalContent !== patchedContent) {
             pinningFound = true;
             outputChannel.appendLine(`Applying patch in ${filePath}`);
-            if(process.platform.startsWith("win")) {
+            if (process.platform.startsWith("win")) {
                 patchedContent = patchedContent.replace(/\n/g, "\r\n");
             }
             await fs.promises.writeFile(filePath, patchedContent);
