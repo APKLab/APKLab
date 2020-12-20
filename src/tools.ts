@@ -161,6 +161,20 @@ export namespace apktool {
             }
         });
     }
+
+
+    /**
+     * Empty the **ApkTool** resource framework dir.
+     */
+    export function emptyFrameworkDir() {
+        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
+        const apktoolPath = extensionConfig.get("apktoolPath");
+        const report = "Cleaning up ApkTool Framework dir";
+        const args = ["-jar", String(apktoolPath), "empty-framework-dir", "--force"];
+        executeProcess({
+            name: "Cleanup Apktool framework dir", report: report, command: "java", args: args
+        });
+    }
 }
 
 export namespace apkSigner {

@@ -39,7 +39,8 @@
 	],
 	"activationEvents": [
 		"workspaceContains:apktool.yml",
-		"onCommand:apklab.openApkFile"
+		"onCommand:apklab.openApkFile",
+		"onCommand:apklab.emptyFrameworkDir"
 	],
 	"main": "./dist/extension",
 	"contributes": {
@@ -59,6 +60,10 @@
 			{
 				"command": "apklab.installApkFile",
 				"title": "APKLab: Install the APK"
+			},
+			{
+				"command": "apklab.emptyFrameworkDir",
+				"title": "APKLab: Empty ApkTool Framework Dir"
 			}
 		],
 		"menus": {

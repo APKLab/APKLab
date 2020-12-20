@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { adb } from './tools';
+import { adb, apktool } from './tools';
 import { outputChannel } from './common';
 import { updateTools } from './downloader';
 import { UI } from './interface';
@@ -41,7 +41,18 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 	});
 
-	context.subscriptions.push(openApkFileCommand, rebuildAPkFileCommand, installAPkFileCommand, patchApkForHttpsCommand);
+	// command to empty apktool framework resource dir
+	const emptyFrameworkDirCommand = vscode.commands.registerCommand("apklab.emptyFrameworkDir", () => {
+		updateTools().then(() => {
+			apktool.emptyFrameworkDir();
+		}).catch(() => {
+			outputChannel.appendLine("Can't download/update dependencies!");
+		});
+	});
+
+	context.subscriptions.push(
+		openApkFileCommand, rebuildAPkFileCommand, installAPkFileCommand, patchApkForHttpsCommand, emptyFrameworkDirCommand
+	);
 }
 
 export function deactivate() { }
