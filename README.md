@@ -75,6 +75,12 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
   ![rebuild.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/rebuild.gif)
 
+#### Apply MITM patch  
+  
+- Right-Click on or inside `apktool.yml` file ➜ <kbd>APKLab: Prepare for HTTPS inspection</kbd>
+
+  ![mitm.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/mitm.gif)
+
 #### Install APK to device
   
 - Right-Click on `.apk` file (in `dist` directory) ➜ <kbd>APKLab: Install the APK</kbd>
