@@ -90,7 +90,7 @@ async function DownloadFile(tool: Tool) {
         await vscode.workspace.getConfiguration(extensionConfigName).update(tool.configName, configPath, vscode.ConfigurationTarget.Global);
         return filePath;
     } catch (error) {
-        outputChannel.appendLine(`Error: Creating file`);
+        outputChannel.appendLine(`Error: ${error}`);
         return null;
     }
 
