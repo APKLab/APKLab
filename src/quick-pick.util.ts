@@ -58,7 +58,8 @@ let quickPickItems: { [index: string]: QuickPickItem[] } = {
         },
         {
             label: "--only-main-classes",
-            detail: "Only disassemble dex classes in root (classes[0-9]*.dex)"
+            detail: "Only disassemble dex classes in root (classes[0-9]*.dex)",
+            picked: true
         },
         {
             label: "--no-debug-info",
@@ -75,9 +76,9 @@ export namespace quickPickUtil {
     }
 
     export function setQuickPickDefault(catagory: string, label: string): void {
-        if(quickPickItems[catagory]) {
+        if (quickPickItems[catagory]) {
             let targetOption = quickPickItems[catagory].filter(x => x.label === label)[0];
-            if(targetOption) {
+            if (targetOption) {
                 targetOption.picked = true;
             }
         }
