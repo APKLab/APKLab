@@ -1,4 +1,4 @@
-name: APKLab
+name: APKLab CI
 on:
   push:
     branches:
@@ -36,3 +36,8 @@ jobs:
           run: npm test
       - name: Package extension
         run: npm install -g vsce && vsce package
+      - uses: actions/upload-artifact@v2
+        if: contains(matrix.os, 'ubuntu') && matrix.node == 12
+        with:
+          name: apklab.vsix
+          path: apklab*.vsix
