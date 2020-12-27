@@ -69,37 +69,38 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
 - Or Just open an existing Apktool project folder
 
-#### Apply MITM patch  
-  
+#### Apply MITM patch
+
 - Right-Click on or inside `apktool.yml` file ➜ <kbd>APKLab: Prepare for HTTPS inspection</kbd>
 
   ![mitm.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/mitm.gif)
 
 #### ReBuild and Sign APK
-  
+
 - Right-Click on or inside `apktool.yml` file ➜ <kbd>APKLab: Rebuild the APK</kbd>
 
   ![rebuild.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/rebuild.gif)
 
 #### Install APK to device
-  
+
 - Right-Click on `.apk` file (in `dist` directory) ➜ <kbd>APKLab: Install the APK</kbd>
 
   ![install.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/install.gif)
 
 #### Clean ApkTool frameworks dir
-  
+
 - Open the Command Palette (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) ➜ <kbd>APKLab: Empty ApkTool Framework Dir</kbd>
 
 ## Requirements
 
 - **JDK 8+**
-  >Run **`java -version`** in your Shell, if not found download from [here](https://adoptopenjdk.net/).
+  > Run **`java -version`** in your Shell, if not found download from [here](https://adoptopenjdk.net/).
 - **adb**
-  >Run **`adb devices`** in your Shell, if not found check [this guide](https://www.xda-developers.com/install-adb-windows-macos-linux/).
+
+  > Run **`adb devices`** in your Shell, if not found check [this guide](https://www.xda-developers.com/install-adb-windows-macos-linux/).
 
 - [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise) (recommended)
-  >It makes working with `smali` files a breeze.
+  > It makes working with `smali` files a breeze.
 
 ## Extension Settings
 
@@ -115,7 +116,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
   `"apklab.apkSignerPath": "/home/oozer/downloads/uber-apk-signer-1.1.0.jar"`
 
 - **`apklab.jadxDirPath`**: Full Path of `jadx-x.y.z` dir. If you want to use a different version of it, change it like:
-  
+
   `"apklab.jadxDirPath": "/home/oozer/downloads/jadx-1.1.0"`
 
 </details>
@@ -138,7 +139,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 
 ## Contribution Guide
 
-  For bug reports, feature requests or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
+For bug reports, feature requests or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
 
 ## [Changelog](https://github.com/Surendrajat/APKLab/blob/master/CHANGELOG.md)
 
