@@ -13,13 +13,11 @@ import { quickPickUtil } from './quick-pick.util';
 
 const DEFAULT_CONFIG = `<?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <debug-overrides>
-        <base-config cleartextTrafficPermitted="true">
-            <trust-anchors>
-                <certificates src="user" />
-            </trust-anchors>
-        </base-config>
-    </debug-overrides>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
 </network-security-config>`;
 
 const INTERFACE_LINE = '.implements Ljavax/net/ssl/X509TrustManager;';
@@ -162,7 +160,7 @@ export namespace mitmTools {
             outputChannel.appendLine("-".repeat(report.length));
 
             const decodeDir = path.dirname(apktoolYmlPath);
-            
+
             await createNetworkSecurityConfig(decodeDir);
             await disableCertificatePinning(decodeDir);
 
