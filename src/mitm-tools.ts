@@ -14,9 +14,11 @@ import { quickPickUtil } from './quick-pick.util';
 const DEFAULT_CONFIG = `<?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <debug-overrides>
-        <trust-anchors>
-            <certificates src="user" />
-        </trust-anchors>
+        <base-config cleartextTrafficPermitted="true">
+            <trust-anchors>
+                <certificates src="user" />
+            </trust-anchors>
+        </base-config>
     </debug-overrides>
 </network-security-config>`;
 
@@ -53,68 +55,29 @@ const RETURN_EMPTY_ARRAY_FIX = [
 ];
 
 /**
-* Get network security config file path from manifest
-* @param manifestPath The path of `AndroidManifest.xml` file.
+* Create network security config file path
+* @param decodeDir The path of decoded file.
 */
-async function getNscFromManifest(manifestPath: string) {
+async function createNetworkSecurityConfig(decodeDir: string) {
+
+    const manifestPath = path.join(decodeDir, "AndroidManifest.xml");
+    const nscPath = path.join(decodeDir, `res/xml/nsc_apklab.xml`);
+
     const manifestContent = await fs.promises.readFile(manifestPath, { encoding: 'utf-8' });
 
     const fileXml: { [index: string]: any } = xml.xml2js(manifestContent, { compact: true, alwaysArray: true });
 
+    outputChannel.appendLine('Creating default network security config file');
+
+    await fs.promises.mkdir(path.dirname(nscPath), { recursive: true });
+    await fs.promises.writeFile(nscPath, DEFAULT_CONFIG);
+
     const manifest = fileXml['manifest'][0];
     const application = manifest['application'][0];
 
-    let nscName = 'network_security_config';
-    const nscReference: string = application._attributes['android:networkSecurityConfig'];
-    if (nscReference && nscReference.startsWith('@xml/')) {
-        nscName = nscReference.slice(5);
-    } else {
-        application._attributes['android:networkSecurityConfig'] = `@xml/${nscName}`;
-    }
+    application._attributes['android:networkSecurityConfig'] = '@xml/nsc_apklab';
 
     await fs.promises.writeFile(manifestPath, xml.js2xml(fileXml, { compact: true, spaces: 4 }));
-
-    return nscName;
-}
-
-/**
-* Modify network security config file to allow user certificate
-* @param nscPath The path of `network_security_config.xml` file.
-*/
-async function modifyNetworkSecurityConfig(nscPath: string) {
-
-    try {
-        const fileStat = await fs.promises.stat(nscPath);
-    }
-    catch (err) {
-        if (err.code !== 'ENOENT') { throw err; }
-
-        // File does not exist, create a default one
-        outputChannel.appendLine('Creating default network security config file');
-        await fs.promises.mkdir(path.dirname(nscPath), { recursive: true });
-        await fs.promises.writeFile(nscPath, DEFAULT_CONFIG);
-        return;
-    }
-
-    const fileContent = await fs.promises.readFile(nscPath, { encoding: 'utf-8' });
-
-    const fileXml: { [index: string]: any } = xml.xml2js(fileContent, { compact: true, alwaysArray: true });
-
-    const config = fileXml['network-security-config'][0];
-
-    // Remove certificate pinning rules
-    // See https://developer.android.com/training/articles/security-config#pin-set
-    delete config['pin-set'];
-
-    const overrides = (config['debug-overrides'] || (config['debug-overrides'] = [{}]))[0];
-    const trustAnchors = (overrides['trust-anchors'] || (overrides['trust-anchors'] = [{}]))[0];
-    const certificates = trustAnchors['certificates'] || (trustAnchors['certificates'] = []);
-
-    if (!certificates.filter((c: any) => c._attributes.src === 'user').length) {
-        certificates.push({ _attributes: { src: 'user' } });
-    }
-
-    await fs.promises.writeFile(nscPath, xml.js2xml(fileXml, { compact: true, spaces: 4 }));
 }
 
 /**
@@ -199,10 +162,8 @@ export namespace mitmTools {
             outputChannel.appendLine("-".repeat(report.length));
 
             const decodeDir = path.dirname(apktoolYmlPath);
-            const manifestPath = path.join(decodeDir, "AndroidManifest.xml");
-            const nscName = await getNscFromManifest(manifestPath);
-            const nscPath = path.join(decodeDir, `res/xml/${nscName}.xml`);
-            await modifyNetworkSecurityConfig(nscPath);
+            
+            await createNetworkSecurityConfig(decodeDir);
             await disableCertificatePinning(decodeDir);
 
             quickPickUtil.setQuickPickDefault('rebuildQuickPickItems', '--debug');
