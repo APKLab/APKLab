@@ -30,9 +30,9 @@ export namespace UI {
     /**
      * Show a APK file chooser window and decompile that APK.
      */
-    export async function decompileAPK() {
+    export async function decompileAPK(): Promise<void> {
         // browse for an APK file
-        let result = await window.showOpenDialog({
+        const result = await window.showOpenDialog({
             canSelectFolders: false,
             filters: {
                 APK: ["apk"]
@@ -40,7 +40,7 @@ export namespace UI {
             openLabel: "Select an APK file",
         });
         if (result && result.length === 1) {
-            let args = await showArgsQuickPick(quickPickUtil.getQuickPickItems('decodeQuickPickItems'), 'Additional apktool/jadx arguments');
+            const args = await showArgsQuickPick(quickPickUtil.getQuickPickItems('decodeQuickPickItems'), 'Additional apktool/jadx arguments');
             if (args) {
                 const decompileJavaIndex = args.indexOf("decompile_java");
                 let decompileJava = false;
@@ -59,7 +59,7 @@ export namespace UI {
      * Show a QuickPick with extra args and build the APK.
      * @param apktoolYmlPath path of the `apktool.yml` file.
      */
-    export async function rebuildAPK(apktoolYmlPath: string) {
+    export async function rebuildAPK(apktoolYmlPath: string): Promise<void> {
         const args = await showArgsQuickPick(quickPickUtil.getQuickPickItems('rebuildQuickPickItems'), 'Additional apktool arguments');
         if (args) {
             apktool.rebuildAPK(apktoolYmlPath, args);
@@ -69,7 +69,7 @@ export namespace UI {
     /**
      * @param apktoolYmlPath path of the `apktool.yml` file.
      */
-    export async function applyMitmPatch(apktoolYmlPath: string) {
+    export async function applyMitmPatch(apktoolYmlPath: string): Promise<void> {
         mitmTools.applyMitmPatch(apktoolYmlPath);
     }
 }

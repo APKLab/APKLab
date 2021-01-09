@@ -111,7 +111,7 @@ async function disableCertificatePinning(directoryPath: string) {
         for (const pattern of METHOD_PATTERNS) {
             patchedContent = patchedContent.replace(pattern, (_, openingLine: string, body: string, closingLine: string) => {
 
-                const bodyLines = body.split('\n').map(line => line.replace(/^    /, ''));
+                const bodyLines = body.split('\n').map(line => line.replace(/^ {4}/, ''));
 
                 const fixLines = openingLine.includes('getAcceptedIssuers') ? RETURN_EMPTY_ARRAY_FIX : RETURN_VOID_FIX;
 
@@ -150,7 +150,7 @@ export namespace mitmTools {
      * Apply patch to intercept HTTPS calls
      * @param apktoolYmlPath The path of `apktool.yml` file.
      */
-    export async function applyMitmPatch(apktoolYmlPath: string) {
+    export async function applyMitmPatch(apktoolYmlPath: string): Promise<void> {
         try {
             const report = "Applying patch for HTTPS inspection (MITM)";
 

@@ -46,7 +46,9 @@ interface Tool {
  * Check the tools from `config.json`
  * If any tool does not exist, download it.
  */
-export function updateTools() {
+export function updateTools(): Promise<void> {
+    // TODO: Refactor without async promise
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise<void>(async (resolve, reject) => {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         await Promise.all(config.tools.map(async (tool) => {
@@ -63,6 +65,7 @@ export function updateTools() {
         }));
         resolve();
     });
+    // eslint-enable-next-line no-async-promise-executor
 }
 
 /**
@@ -112,10 +115,10 @@ async function downloadFile(urlString: string): Promise<Buffer> {
         rejectUnauthorized: strictSSL
     };
 
-    let buffers: any[] = [];
+    const buffers: any[] = [];
 
     return new Promise<Buffer>((resolve, reject) => {
-        let request = https.request(options, response => {
+        const request = https.request(options, response => {
             if ((response.statusCode === 301 || response.statusCode === 302) && response.headers.location) {
                 // Redirect - download from new location
                 return resolve(downloadFile(response.headers.location));
@@ -128,8 +131,8 @@ async function downloadFile(urlString: string): Promise<Buffer> {
             }
 
             // Downloading - hook up events
-            let contentLength = response.headers["content-length"] ? response.headers["content-length"] : "0";
-            let packageSize = parseInt(contentLength, 10);
+            const contentLength = response.headers["content-length"] ? response.headers["content-length"] : "0";
+            const packageSize = parseInt(contentLength, 10);
             let downloadedBytes = 0;
             let downloadPercentage = 0;
 
@@ -140,7 +143,7 @@ async function downloadFile(urlString: string): Promise<Buffer> {
                 buffers.push(data);
 
                 // Update status bar item with percentage
-                let newPercentage = Math.ceil(100 * (downloadedBytes / packageSize));
+                const newPercentage = Math.ceil(100 * (downloadedBytes / packageSize));
                 if (newPercentage !== downloadPercentage) {
                     downloadPercentage = newPercentage;
                     outputChannel.appendLine(`Downloaded ${downloadPercentage}%`);

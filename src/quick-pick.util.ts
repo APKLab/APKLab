@@ -1,7 +1,7 @@
 import { QuickPickItem } from "vscode";
 
 
-let quickPickItems: { [index: string]: QuickPickItem[] } = {
+const quickPickItems: { [index: string]: QuickPickItem[] } = {
     /**
      * QuickPickItem array for additional **Apktool** args for APK building.
      */
@@ -77,7 +77,7 @@ export namespace quickPickUtil {
 
     export function setQuickPickDefault(catagory: string, label: string): void {
         if (quickPickItems[catagory]) {
-            let targetOption = quickPickItems[catagory].filter(x => x.label === label)[0];
+            const targetOption = quickPickItems[catagory].filter(x => x.label === label)[0];
             if (targetOption) {
                 targetOption.picked = true;
             }
