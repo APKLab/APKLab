@@ -150,7 +150,7 @@ export namespace mitmTools {
      * Apply patch to intercept HTTPS calls
      * @param apktoolYmlPath The path of `apktool.yml` file.
      */
-    export async function applyMitmPatch(apktoolYmlPath: string) {
+    export async function applyMitmPatch(apktoolYmlPath: string): Promise<void> {
         try {
             const report = "Applying patch for HTTPS inspection (MITM)";
 

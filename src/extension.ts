@@ -5,7 +5,7 @@ import { updateTools } from './downloader';
 import { UI } from './interface';
 
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): void {
 
     console.log('Activated apklab extension!');
 
@@ -54,5 +54,3 @@ export function activate(context: vscode.ExtensionContext) {
         openApkFileCommand, rebuildAPkFileCommand, installAPkFileCommand, patchApkForHttpsCommand, emptyFrameworkDirCommand
     );
 }
-
-export function deactivate() { }

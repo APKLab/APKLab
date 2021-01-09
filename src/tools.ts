@@ -43,7 +43,7 @@ interface ProcessOptions {
 function getApkName(apktoolYamlPath: string) {
     try {
         const fileContent = fs.readFileSync(apktoolYamlPath);
-        let regArr = /apkFileName: .*\.apk/.exec(String(fileContent));
+        const regArr = /apkFileName: .*\.apk/.exec(String(fileContent));
         return regArr && regArr.length > 0 ? regArr[0].split(": ")[1] : "";
     } catch (err) {
         outputChannel.appendLine("couldn't find apkFileName in apktool.yml: " + String(err));
@@ -110,9 +110,9 @@ export namespace apktool {
      * @param apktoolArgs array of additional args passed to **Apktool**.
      * @param decompileJava if **jadx** needs to decompile the APK.
      */
-    export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean) {
+    export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean):void {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
-        let apktoolPath = extensionConfig.get("apktoolPath");
+        const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = path.basename(apkFilePath);
         let apkDecodeDir = path.join(path.dirname(apkFilePath), path.parse(apkFilePath).name);
         // don't delete the existing dir if it does exist
@@ -141,7 +141,7 @@ export namespace apktool {
      * @param apktoolYmlPath The path of `apktool.yml` file.
      * @param apktoolArgs array of additional args passed to **Apktool**
      */
-    export function rebuildAPK(apktoolYmlPath: string, apktoolArgs: string[]) {
+    export function rebuildAPK(apktoolYmlPath: string, apktoolArgs: string[]):void {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = getApkName(apktoolYmlPath);
@@ -184,7 +184,7 @@ export namespace apkSigner {
      * @param projectDir current directory of the project.
      * @param apkFileName name of the original apk file from `apktool.yml`.
      */
-    export function signAPK(projectDir: string, apkFileName: string) {
+    export function signAPK(projectDir: string, apkFileName: string): void {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const apkSignerPath = extensionConfig.get("apkSignerPath");
         const keystorePath = extensionConfig.get("keystorePath");
@@ -193,7 +193,7 @@ export namespace apkSigner {
         const keyPassword = extensionConfig.get("keyPassword");
         const builtApkPath = path.join(projectDir, "dist", apkFileName);
         const report = `Signing ${path.basename(projectDir)}${path.sep}dist${path.sep}${apkFileName}`;
-        let args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign', '--overwrite'];
+        const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign', '--overwrite'];
         if (keystorePath && fs.existsSync(String(keystorePath)) && keystorePassword && keyAlias && keyPassword) {
             args.push("--ks", String(keystorePath), "--ksPass", String(keystorePassword), "--ksAlias", String(keyAlias), "--ksKeyPass", String(keyPassword));
         }
