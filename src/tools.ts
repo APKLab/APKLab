@@ -110,7 +110,7 @@ export namespace apktool {
      * @param apktoolArgs array of additional args passed to **Apktool**.
      * @param decompileJava if **jadx** needs to decompile the APK.
      */
-    export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean):void {
+    export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean): void {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = path.basename(apkFilePath);
@@ -141,7 +141,7 @@ export namespace apktool {
      * @param apktoolYmlPath The path of `apktool.yml` file.
      * @param apktoolArgs array of additional args passed to **Apktool**
      */
-    export function rebuildAPK(apktoolYmlPath: string, apktoolArgs: string[]):void {
+    export function rebuildAPK(apktoolYmlPath: string, apktoolArgs: string[]): void {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = getApkName(apktoolYmlPath);
@@ -166,7 +166,7 @@ export namespace apktool {
     /**
      * Empty the **ApkTool** resource framework dir.
      */
-    export function emptyFrameworkDir() {
+    export function emptyFrameworkDir(): void {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
         const report = "Cleaning up ApkTool Framework dir";
@@ -209,7 +209,7 @@ export namespace adb {
      * Installs the selected APK file to connected android device over ADB.
      * @param apkFilePath absolute path of the APK file.
      */
-    export function installAPK(apkFilePath: string) {
+    export function installAPK(apkFilePath: string): void {
         const apkFileName = path.basename(apkFilePath);
         const report = `Installing ${apkFileName}`;
         const args = ["install", "-r", apkFilePath];
@@ -227,7 +227,7 @@ export namespace jadx {
      * @param apkFileName name of the APK file.
      * @param apkDecodeDir dir where the APK file was decoded.
      */
-    export function decompileAPK(apkFilePath: string, apkFileName: string, apkDecodeDir: string) {
+    export function decompileAPK(apkFilePath: string, apkFileName: string, apkDecodeDir: string): void {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
         const jadxDirPath = extensionConfig.get("jadxDirPath");
         const jadxExeName = `jadx${process.platform.startsWith("win") ? ".bat" : ""}`;
