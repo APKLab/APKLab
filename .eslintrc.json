@@ -13,13 +13,16 @@
         },
         "project": "tsconfig.json"
     },
-    "plugins": ["@typescript-eslint"],
+    "plugins": ["@typescript-eslint", "prettier"],
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "prettier",
+		"prettier/@typescript-eslint"
     ],
     "rules": {
         "@typescript-eslint/no-namespace": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "error"
+        "@typescript-eslint/explicit-module-boundary-types": "error",
+        "prettier/prettier": "error"
     }
 }

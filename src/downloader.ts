@@ -1,12 +1,11 @@
-import { parse as parseUrl } from 'url';
-import * as https from 'https';
-import * as vscode from 'vscode';
-import { extensionConfigName, apklabDataDir, outputChannel } from './common';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as config from './config.json';
-import * as extract from 'extract-zip';
-
+import { parse as parseUrl } from "url";
+import * as https from "https";
+import * as vscode from "vscode";
+import { extensionConfigName, apklabDataDir, outputChannel } from "./common";
+import * as fs from "fs";
+import * as path from "path";
+import * as config from "./config.json";
+import * as extract from "extract-zip";
 
 /**
  * Tool details for downloading it if it doesn't exist.
@@ -15,31 +14,31 @@ interface Tool {
     /**
      * Name of the tool.
      */
-    name: string,
+    name: string;
     /**
      * Latest supported version of the tool.
      */
-    version: string,
+    version: string;
     /**
      * Download URL.
      */
-    downloadUrl: string,
+    downloadUrl: string;
     /**
      * Exact file name for downloaded tool.
      */
-    fileName: string,
+    fileName: string;
     /**
      * Name of the configuration related to the tool in extensionConfig object.
      */
-    configName: string,
+    configName: string;
     /**
      * Is the downloaded file a zip file?
      */
-    zipped: boolean,
+    zipped: boolean;
     /**
      * If it's a zip file then where to extract it?
      */
-    unzipDir?: string,
+    unzipDir?: string;
 }
 
 /**
@@ -50,19 +49,23 @@ export function updateTools(): Promise<void> {
     // TODO: Refactor without async promise
     // eslint-disable-next-line no-async-promise-executor
     return new Promise<void>(async (resolve, reject) => {
-        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
-        await Promise.all(config.tools.map(async (tool) => {
-            const toolPath = extensionConfig.get(tool.configName);
-            if (!toolPath || !fs.existsSync(String(toolPath))) {
-                if (!fs.existsSync(String(apklabDataDir))) {
-                    fs.mkdirSync(apklabDataDir);
+        const extensionConfig = vscode.workspace.getConfiguration(
+            extensionConfigName
+        );
+        await Promise.all(
+            config.tools.map(async (tool) => {
+                const toolPath = extensionConfig.get(tool.configName);
+                if (!toolPath || !fs.existsSync(String(toolPath))) {
+                    if (!fs.existsSync(String(apklabDataDir))) {
+                        fs.mkdirSync(apklabDataDir);
+                    }
+                    const filepath = await DownloadFile(tool);
+                    if (!filepath) {
+                        reject();
+                    }
                 }
-                const filepath = await DownloadFile(tool);
-                if (!filepath) {
-                    reject();
-                }
-            }
-        }));
+            })
+        );
         resolve();
     });
     // eslint-enable-next-line no-async-promise-executor
@@ -85,18 +88,27 @@ async function DownloadFile(tool: Tool) {
             configPath = path.join(apklabDataDir, tool.unzipDir);
             try {
                 await extract(filePath, { dir: configPath });
-                outputChannel.appendLine(`Extracted ${filePath} into ${configPath}`);
+                outputChannel.appendLine(
+                    `Extracted ${filePath} into ${configPath}`
+                );
             } catch (err) {
-                outputChannel.appendLine(`Error: Extracting file ${filePath}: ${err.message}`);
+                outputChannel.appendLine(
+                    `Error: Extracting file ${filePath}: ${err.message}`
+                );
             }
         }
-        await vscode.workspace.getConfiguration(extensionConfigName).update(tool.configName, configPath, vscode.ConfigurationTarget.Global);
+        await vscode.workspace
+            .getConfiguration(extensionConfigName)
+            .update(
+                tool.configName,
+                configPath,
+                vscode.ConfigurationTarget.Global
+            );
         return filePath;
     } catch (error) {
         outputChannel.appendLine(`Error: ${error}`);
         return null;
     }
-
 }
 
 /**
@@ -107,59 +119,70 @@ async function DownloadFile(tool: Tool) {
 async function downloadFile(urlString: string): Promise<Buffer> {
     const url = parseUrl(urlString);
     const config = vscode.workspace.getConfiguration();
-    const strictSSL = config.get('http.proxyStrictSSL', true);
+    const strictSSL = config.get("http.proxyStrictSSL", true);
     const options: https.RequestOptions = {
         host: url.hostname,
         path: url.path,
         port: url.port,
-        rejectUnauthorized: strictSSL
+        rejectUnauthorized: strictSSL,
     };
 
     const buffers: any[] = [];
 
     return new Promise<Buffer>((resolve, reject) => {
-        const request = https.request(options, response => {
-            if ((response.statusCode === 301 || response.statusCode === 302) && response.headers.location) {
+        const request = https.request(options, (response) => {
+            if (
+                (response.statusCode === 301 || response.statusCode === 302) &&
+                response.headers.location
+            ) {
                 // Redirect - download from new location
                 return resolve(downloadFile(response.headers.location));
-            }
-
-            else if (response.statusCode !== 200) {
+            } else if (response.statusCode !== 200) {
                 // Download failed - print error message
-                outputChannel.appendLine("Download failed with response code: " + response.statusCode);
+                outputChannel.appendLine(
+                    "Download failed with response code: " + response.statusCode
+                );
                 reject("Failed");
             }
 
             // Downloading - hook up events
-            const contentLength = response.headers["content-length"] ? response.headers["content-length"] : "0";
+            const contentLength = response.headers["content-length"]
+                ? response.headers["content-length"]
+                : "0";
             const packageSize = parseInt(contentLength, 10);
             let downloadedBytes = 0;
             let downloadPercentage = 0;
 
-            outputChannel.appendLine(`Download size: ${(packageSize / 1024 / 1024).toFixed(2)} MB`);
+            outputChannel.appendLine(
+                `Download size: ${(packageSize / 1024 / 1024).toFixed(2)} MB`
+            );
 
-            response.on('data', data => {
+            response.on("data", (data) => {
                 downloadedBytes += data.length;
                 buffers.push(data);
 
                 // Update status bar item with percentage
-                const newPercentage = Math.ceil(100 * (downloadedBytes / packageSize));
+                const newPercentage = Math.ceil(
+                    100 * (downloadedBytes / packageSize)
+                );
                 if (newPercentage !== downloadPercentage) {
                     downloadPercentage = newPercentage;
-                    outputChannel.appendLine(`Downloaded ${downloadPercentage}%`);
+                    outputChannel.appendLine(
+                        `Downloaded ${downloadPercentage}%`
+                    );
                 }
             });
 
-            response.on('end', () => {
+            response.on("end", () => {
                 resolve(Buffer.concat(buffers));
             });
 
-            response.on('error', err => {
+            response.on("error", (err) => {
                 reject(err.message);
             });
         });
 
-        request.on('error', err => {
+        request.on("error", (err) => {
             reject(err.message);
         });
 

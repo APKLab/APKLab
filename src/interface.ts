@@ -1,28 +1,26 @@
-import { QuickPickItem, window } from 'vscode';
-import { apktool } from './tools';
-import { outputChannel } from './common';
-import { mitmTools } from './mitm-tools';
-import { quickPickUtil } from './quick-pick.util';
-
-
-
-
+import { QuickPickItem, window } from "vscode";
+import { apktool } from "./tools";
+import { outputChannel } from "./common";
+import { mitmTools } from "./mitm-tools";
+import { quickPickUtil } from "./quick-pick.util";
 
 export namespace UI {
-
     /**
      * Show a QuickPick with multiple items.
      * @param items QuickPickItems to show in the QuickPick.
      * @param placeHolder Place holder text in the box under QuickPick.
      * @returns string[] of the label for selected QuickPickItem[].
      */
-    export async function showArgsQuickPick(items: QuickPickItem[], placeHolder: string): Promise<string[] | undefined> {
+    export async function showArgsQuickPick(
+        items: QuickPickItem[],
+        placeHolder: string
+    ): Promise<string[] | undefined> {
         const result = await window.showQuickPick(items, {
             placeHolder: placeHolder,
             canPickMany: true,
             matchOnDetail: true,
             matchOnDescription: true,
-            ignoreFocusOut: true
+            ignoreFocusOut: true,
         });
         return result ? result.map<string>((item) => item.label) : undefined;
     }
@@ -35,12 +33,15 @@ export namespace UI {
         const result = await window.showOpenDialog({
             canSelectFolders: false,
             filters: {
-                APK: ["apk"]
+                APK: ["apk"],
             },
             openLabel: "Select an APK file",
         });
         if (result && result.length === 1) {
-            const args = await showArgsQuickPick(quickPickUtil.getQuickPickItems('decodeQuickPickItems'), 'Additional apktool/jadx arguments');
+            const args = await showArgsQuickPick(
+                quickPickUtil.getQuickPickItems("decodeQuickPickItems"),
+                "Additional apktool/jadx arguments"
+            );
             if (args) {
                 const decompileJavaIndex = args.indexOf("decompile_java");
                 let decompileJava = false;
@@ -60,7 +61,10 @@ export namespace UI {
      * @param apktoolYmlPath path of the `apktool.yml` file.
      */
     export async function rebuildAPK(apktoolYmlPath: string): Promise<void> {
-        const args = await showArgsQuickPick(quickPickUtil.getQuickPickItems('rebuildQuickPickItems'), 'Additional apktool arguments');
+        const args = await showArgsQuickPick(
+            quickPickUtil.getQuickPickItems("rebuildQuickPickItems"),
+            "Additional apktool arguments"
+        );
         if (args) {
             apktool.rebuildAPK(apktoolYmlPath, args);
         }
@@ -69,7 +73,9 @@ export namespace UI {
     /**
      * @param apktoolYmlPath path of the `apktool.yml` file.
      */
-    export async function applyMitmPatch(apktoolYmlPath: string): Promise<void> {
+    export async function applyMitmPatch(
+        apktoolYmlPath: string
+    ): Promise<void> {
         mitmTools.applyMitmPatch(apktoolYmlPath);
     }
 }

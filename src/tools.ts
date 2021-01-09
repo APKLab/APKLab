@@ -1,9 +1,8 @@
-import * as child_process from 'child_process';
-import * as fs from 'fs';
-import * as vscode from 'vscode';
-import { extensionConfigName, outputChannel } from './common';
-import * as path from 'path';
-
+import * as child_process from "child_process";
+import * as fs from "fs";
+import * as vscode from "vscode";
+import { extensionConfigName, outputChannel } from "./common";
+import * as path from "path";
 
 /**
  * Options for executeProcess function.
@@ -46,7 +45,9 @@ function getApkName(apktoolYamlPath: string) {
         const regArr = /apkFileName: .*\.apk/.exec(String(fileContent));
         return regArr && regArr.length > 0 ? regArr[0].split(": ")[1] : "";
     } catch (err) {
-        outputChannel.appendLine("couldn't find apkFileName in apktool.yml: " + String(err));
+        outputChannel.appendLine(
+            "couldn't find apkFileName in apktool.yml: " + String(err)
+        );
         return "";
     }
 }
@@ -60,7 +61,9 @@ function executeProcess(processOptions: ProcessOptions) {
     outputChannel.appendLine("-".repeat(processOptions.report.length));
     outputChannel.appendLine(processOptions.report);
     outputChannel.appendLine("-".repeat(processOptions.report.length));
-    outputChannel.appendLine(`${processOptions.command} ${processOptions.args.join(" ")}`);
+    outputChannel.appendLine(
+        `${processOptions.command} ${processOptions.args.join(" ")}`
+    );
 
     vscode.window.withProgress(
         {
@@ -72,30 +75,57 @@ function executeProcess(processOptions: ProcessOptions) {
             return new Promise<void>((resolve) => {
                 progress.report({ message: processOptions.report });
 
-                const cp = child_process.spawn(processOptions.command, processOptions.args, {});
-                cp.stdout.on('data', (data) => outputChannel.appendLine(data.toString().trim()));
-                cp.stderr.on('data', (data) => outputChannel.appendLine(data.toString().trim()));
-                cp.on('error', (data) => {
+                const cp = child_process.spawn(
+                    processOptions.command,
+                    processOptions.args,
+                    {}
+                );
+                cp.stdout.on("data", (data) =>
+                    outputChannel.appendLine(data.toString().trim())
+                );
+                cp.stderr.on("data", (data) =>
+                    outputChannel.appendLine(data.toString().trim())
+                );
+                cp.on("error", (data) => {
                     outputChannel.appendLine(data.toString().trim());
-                    vscode.window.showErrorMessage(`APKLab: ${processOptions.name} process failed.`);
+                    vscode.window.showErrorMessage(
+                        `APKLab: ${processOptions.name} process failed.`
+                    );
                     resolve();
                 });
-                cp.on('exit', (code) => {
-                    if (code === 0 && (processOptions.shouldExist ? fs.existsSync(processOptions.shouldExist) : true)) {
-                        outputChannel.appendLine(`${processOptions.name} process was successful`);
-                        vscode.window.showInformationMessage(`APKLab: ${processOptions.name} process was successful.`);
+                cp.on("exit", (code) => {
+                    if (
+                        code === 0 &&
+                        (processOptions.shouldExist
+                            ? fs.existsSync(processOptions.shouldExist)
+                            : true)
+                    ) {
+                        outputChannel.appendLine(
+                            `${processOptions.name} process was successful`
+                        );
+                        vscode.window.showInformationMessage(
+                            `APKLab: ${processOptions.name} process was successful.`
+                        );
                         if (processOptions.onSuccess) {
                             processOptions.onSuccess();
                         }
                     } else {
-                        outputChannel.appendLine(`${processOptions.name} process exited with code ${code}`);
-                        vscode.window.showErrorMessage(`APKLab: ${processOptions.name} process failed.`);
+                        outputChannel.appendLine(
+                            `${processOptions.name} process exited with code ${code}`
+                        );
+                        vscode.window.showErrorMessage(
+                            `APKLab: ${processOptions.name} process failed.`
+                        );
                     }
                     resolve();
                 });
                 token.onCancellationRequested(() => {
-                    outputChannel.appendLine(`User canceled the ${processOptions.name} process`);
-                    if (!cp.killed) { cp.kill(); }
+                    outputChannel.appendLine(
+                        `User canceled the ${processOptions.name} process`
+                    );
+                    if (!cp.killed) {
+                        cp.kill();
+                    }
                 });
             });
         }
@@ -103,36 +133,60 @@ function executeProcess(processOptions: ProcessOptions) {
 }
 
 export namespace apktool {
-
     /**
      * Decodes(Disassembles) the apk resources & dalvik bytecode using **Apktool**.
      * @param apkFilePath file path Uri for apk file to decode.
      * @param apktoolArgs array of additional args passed to **Apktool**.
      * @param decompileJava if **jadx** needs to decompile the APK.
      */
-    export function decodeAPK(apkFilePath: string, apktoolArgs: string[], decompileJava: boolean): void {
-        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
+    export function decodeAPK(
+        apkFilePath: string,
+        apktoolArgs: string[],
+        decompileJava: boolean
+    ): void {
+        const extensionConfig = vscode.workspace.getConfiguration(
+            extensionConfigName
+        );
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = path.basename(apkFilePath);
-        let apkDecodeDir = path.join(path.dirname(apkFilePath), path.parse(apkFilePath).name);
+        let apkDecodeDir = path.join(
+            path.dirname(apkFilePath),
+            path.parse(apkFilePath).name
+        );
         // don't delete the existing dir if it does exist
         while (fs.existsSync(apkDecodeDir)) {
             apkDecodeDir = apkDecodeDir + "1";
         }
         const report = `Decoding ${apkFileName} into ${apkDecodeDir}`;
-        let args = ["-jar", String(apktoolPath), 'd', apkFilePath, '-o', apkDecodeDir];
+        let args = [
+            "-jar",
+            String(apktoolPath),
+            "d",
+            apkFilePath,
+            "-o",
+            apkDecodeDir,
+        ];
         if (apktoolArgs && apktoolArgs.length > 0) {
             args = args.concat(apktoolArgs);
         }
         const shouldExist = path.join(apkDecodeDir, "apktool.yml");
         executeProcess({
-            name: "Decoding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
+            name: "Decoding",
+            report: report,
+            command: "java",
+            args: args,
+            shouldExist: shouldExist,
+            onSuccess: () => {
                 if (decompileJava) {
                     jadx.decompileAPK(apkFilePath, apkFileName, apkDecodeDir);
                 }
                 // open apkDecodeDir in a new vs code window
-                vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(apkDecodeDir), true);
-            }
+                vscode.commands.executeCommand(
+                    "vscode.openFolder",
+                    vscode.Uri.file(apkDecodeDir),
+                    true
+                );
+            },
         });
     }
 
@@ -141,70 +195,119 @@ export namespace apktool {
      * @param apktoolYmlPath The path of `apktool.yml` file.
      * @param apktoolArgs array of additional args passed to **Apktool**
      */
-    export function rebuildAPK(apktoolYmlPath: string, apktoolArgs: string[]): void {
-        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
+    export function rebuildAPK(
+        apktoolYmlPath: string,
+        apktoolArgs: string[]
+    ): void {
+        const extensionConfig = vscode.workspace.getConfiguration(
+            extensionConfigName
+        );
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = getApkName(apktoolYmlPath);
         if (!apkFileName) {
             return;
         }
         const projectDir = path.parse(apktoolYmlPath).dir;
-        const report = `Rebuilding ${apkFileName} into ${path.basename(projectDir)}${path.sep}dist`;
-        let args = ["-jar", String(apktoolPath), 'b', projectDir];
+        const report = `Rebuilding ${apkFileName} into ${path.basename(
+            projectDir
+        )}${path.sep}dist`;
+        let args = ["-jar", String(apktoolPath), "b", projectDir];
         if (apktoolArgs && apktoolArgs.length > 0) {
             args = args.concat(apktoolArgs);
         }
         const shouldExist = path.join(projectDir, "dist", apkFileName);
         executeProcess({
-            name: "Rebuilding", report: report, command: "java", args: args, shouldExist: shouldExist, onSuccess: () => {
+            name: "Rebuilding",
+            report: report,
+            command: "java",
+            args: args,
+            shouldExist: shouldExist,
+            onSuccess: () => {
                 apkSigner.signAPK(projectDir, apkFileName);
-            }
+            },
         });
     }
-
 
     /**
      * Empty the **ApkTool** resource framework dir.
      */
     export function emptyFrameworkDir(): void {
-        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
+        const extensionConfig = vscode.workspace.getConfiguration(
+            extensionConfigName
+        );
         const apktoolPath = extensionConfig.get("apktoolPath");
         const report = "Cleaning up ApkTool Framework dir";
-        const args = ["-jar", String(apktoolPath), "empty-framework-dir", "--force"];
+        const args = [
+            "-jar",
+            String(apktoolPath),
+            "empty-framework-dir",
+            "--force",
+        ];
         executeProcess({
-            name: "Cleanup Apktool framework dir", report: report, command: "java", args: args
+            name: "Cleanup Apktool framework dir",
+            report: report,
+            command: "java",
+            args: args,
         });
     }
 }
 
 export namespace apkSigner {
-
     /**
      * Signs given apk file using **uber-apk-signer** from projectDir/dist/apkFileName.apk.
      * @param projectDir current directory of the project.
      * @param apkFileName name of the original apk file from `apktool.yml`.
      */
     export function signAPK(projectDir: string, apkFileName: string): void {
-        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
+        const extensionConfig = vscode.workspace.getConfiguration(
+            extensionConfigName
+        );
         const apkSignerPath = extensionConfig.get("apkSignerPath");
         const keystorePath = extensionConfig.get("keystorePath");
         const keystorePassword = extensionConfig.get("keystorePassword");
         const keyAlias = extensionConfig.get("keyAlias");
         const keyPassword = extensionConfig.get("keyPassword");
         const builtApkPath = path.join(projectDir, "dist", apkFileName);
-        const report = `Signing ${path.basename(projectDir)}${path.sep}dist${path.sep}${apkFileName}`;
-        const args = ["-jar", String(apkSignerPath), '-a', builtApkPath, '--allowResign', '--overwrite'];
-        if (keystorePath && fs.existsSync(String(keystorePath)) && keystorePassword && keyAlias && keyPassword) {
-            args.push("--ks", String(keystorePath), "--ksPass", String(keystorePassword), "--ksAlias", String(keyAlias), "--ksKeyPass", String(keyPassword));
+        const report = `Signing ${path.basename(projectDir)}${path.sep}dist${
+            path.sep
+        }${apkFileName}`;
+        const args = [
+            "-jar",
+            String(apkSignerPath),
+            "-a",
+            builtApkPath,
+            "--allowResign",
+            "--overwrite",
+        ];
+        if (
+            keystorePath &&
+            fs.existsSync(String(keystorePath)) &&
+            keystorePassword &&
+            keyAlias &&
+            keyPassword
+        ) {
+            args.push(
+                "--ks",
+                String(keystorePath),
+                "--ksPass",
+                String(keystorePassword),
+                "--ksAlias",
+                String(keyAlias),
+                "--ksKeyPass",
+                String(keyPassword)
+            );
         }
         executeProcess({
-            name: "Signing", report: report, command: "java", args: args, shouldExist: builtApkPath
+            name: "Signing",
+            report: report,
+            command: "java",
+            args: args,
+            shouldExist: builtApkPath,
         });
     }
 }
 
 export namespace adb {
-
     /**
      * Installs the selected APK file to connected android device over ADB.
      * @param apkFilePath absolute path of the APK file.
@@ -214,29 +317,43 @@ export namespace adb {
         const report = `Installing ${apkFileName}`;
         const args = ["install", "-r", apkFilePath];
         executeProcess({
-            name: "Installing", report: report, command: "adb", args: args
+            name: "Installing",
+            report: report,
+            command: "adb",
+            args: args,
         });
     }
 }
 
 export namespace jadx {
-
     /**
      * Decompile the APK file to Java source using **Jadx**.
      * @param apkFilePath path of the APK file.
      * @param apkFileName name of the APK file.
      * @param apkDecodeDir dir where the APK file was decoded.
      */
-    export function decompileAPK(apkFilePath: string, apkFileName: string, apkDecodeDir: string): void {
-        const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
+    export function decompileAPK(
+        apkFilePath: string,
+        apkFileName: string,
+        apkDecodeDir: string
+    ): void {
+        const extensionConfig = vscode.workspace.getConfiguration(
+            extensionConfigName
+        );
         const jadxDirPath = extensionConfig.get("jadxDirPath");
-        const jadxExeName = `jadx${process.platform.startsWith("win") ? ".bat" : ""}`;
+        const jadxExeName = `jadx${
+            process.platform.startsWith("win") ? ".bat" : ""
+        }`;
         const jadxPath = path.join(String(jadxDirPath), "bin", jadxExeName);
         const apkDecompileDir = path.join(apkDecodeDir, "java_src");
         const report = `Decompiling ${apkFileName} into ${apkDecompileDir}`;
         const args = ["-r", "-v", "-ds", apkDecompileDir, apkFilePath];
         executeProcess({
-            name: "Decompiling", report: report, command: jadxPath, args: args, shouldExist: apkDecompileDir
+            name: "Decompiling",
+            report: report,
+            command: jadxPath,
+            args: args,
+            shouldExist: apkDecompileDir,
         });
     }
 }
