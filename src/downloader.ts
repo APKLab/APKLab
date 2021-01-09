@@ -47,9 +47,11 @@ interface Tool {
  * If any tool does not exist, download it.
  */
 export function updateTools() {
-    return new Promise<void>((resolve, reject) => {
+    // TODO: Refactor without async promise
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise<void>(async (resolve, reject) => {
         const extensionConfig = vscode.workspace.getConfiguration(extensionConfigName);
-        Promise.all(config.tools.map(async (tool) => {
+        await Promise.all(config.tools.map(async (tool) => {
             const toolPath = extensionConfig.get(tool.configName);
             if (!toolPath || !fs.existsSync(String(toolPath))) {
                 if (!fs.existsSync(String(apklabDataDir))) {
@@ -63,6 +65,7 @@ export function updateTools() {
         }));
         resolve();
     });
+    // eslint-enable-next-line no-async-promise-executor 
 }
 
 /**
