@@ -111,7 +111,7 @@ async function disableCertificatePinning(directoryPath: string) {
         for (const pattern of METHOD_PATTERNS) {
             patchedContent = patchedContent.replace(pattern, (_, openingLine: string, body: string, closingLine: string) => {
 
-                const bodyLines = body.split('\n').map(line => line.replace(/^    /, ''));
+                const bodyLines = body.split('\n').map(line => line.replace(/^ {4}/, ''));
 
                 const fixLines = openingLine.includes('getAcceptedIssuers') ? RETURN_EMPTY_ARRAY_FIX : RETURN_VOID_FIX;
 
