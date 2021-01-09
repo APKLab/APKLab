@@ -1,7 +1,6 @@
-import * as vscode from 'vscode';
-import * as os from 'os';
-import * as path from 'path';
-
+import * as vscode from "vscode";
+import * as os from "os";
+import * as path from "path";
 
 /**
  * Name of the OutputChannel for the extension.
@@ -11,7 +10,9 @@ const outputChannelName = "APK Lab";
 /**
  * Output channel to write output data to.
  */
-export const outputChannel = vscode.window.createOutputChannel(outputChannelName);
+export const outputChannel = vscode.window.createOutputChannel(
+    outputChannelName
+);
 
 /**
  * Extension related configuration object name.
