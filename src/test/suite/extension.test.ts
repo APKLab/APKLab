@@ -38,5 +38,26 @@ suite("Extension Test Suite", function () {
             }
         });
     });
+
+    test("Decompile SimpleKeyboard.apk", async function () {
+        const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        console.log(`Decompiling ${testApkPath}...`);
+        await apktool.decodeAPK(testApkPath, [], true);
+        const jsonFilePath = path.join(
+            simpleKeyboardDir,
+            "decompiled_files.json"
+        );
+        const jsonFileData = fs.readFileSync(jsonFilePath, "utf-8");
+        const decodedFiles: string[] = JSON.parse(jsonFileData);
+        console.log("Comparing file list...");
+        decodedFiles.forEach((file) => {
+            if (
+                !fs.existsSync(
+                    path.join(simpleKeyboardDir, "test1", "java_src", file)
+                )
+            ) {
+                assert.fail(`File ${file} not found!`);
+            }
+        });
     });
 });
