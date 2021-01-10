@@ -60,4 +60,24 @@ suite("Extension Test Suite", function () {
             }
         });
     });
+
+    test("Rebuild SimpleKeyboard.apk", async function () {
+        const apktoolYmlPath = path.resolve(
+            simpleKeyboardDir,
+            "test",
+            "apktool.yml"
+        );
+        console.log(`Rebuilding apk with ${apktoolYmlPath}...`);
+        await apktool.rebuildAPK(apktoolYmlPath, ["--use-aapt2"]);
+        console.log("Checking for APK output...");
+        const outApkPath = path.join(
+            simpleKeyboardDir,
+            "test",
+            "dist",
+            "test.apk"
+        );
+        if (!fs.existsSync(outApkPath)) {
+            assert.fail(`File ${outApkPath} not found!`);
+        }
+    });
 });
