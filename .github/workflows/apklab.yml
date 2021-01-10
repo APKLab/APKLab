@@ -30,7 +30,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - run: npm install
+      - name: Install dependencies
+        run: npm ci
       - name: Run Linter
         if: contains(matrix.os, 'ubuntu') && matrix.node == 12
         run: npm run lint
