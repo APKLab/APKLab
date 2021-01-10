@@ -180,7 +180,6 @@
         "@typescript-eslint/parser": "^4.12.0",
         "eslint": "^7.17.0",
         "eslint-config-prettier": "^7.1.0",
-        "eslint-plugin-prettier": "^3.3.1",
         "glob": "^7.1.6",
         "mocha": "^7.1.2",
         "prettier": "^2.2.1",
