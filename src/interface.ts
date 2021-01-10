@@ -49,7 +49,7 @@ export namespace UI {
                     decompileJava = true;
                     args.splice(decompileJavaIndex, 1);
                 }
-                apktool.decodeAPK(result[0].fsPath, args, decompileJava);
+                await apktool.decodeAPK(result[0].fsPath, args, decompileJava);
             }
         } else {
             outputChannel.appendLine("APKLAB: no APK file was chosen");
@@ -66,7 +66,7 @@ export namespace UI {
             "Additional apktool arguments"
         );
         if (args) {
-            apktool.rebuildAPK(apktoolYmlPath, args);
+            await apktool.rebuildAPK(apktoolYmlPath, args);
         }
     }
 
@@ -76,6 +76,6 @@ export namespace UI {
     export async function applyMitmPatch(
         apktoolYmlPath: string
     ): Promise<void> {
-        mitmTools.applyMitmPatch(apktoolYmlPath);
+        await mitmTools.applyMitmPatch(apktoolYmlPath);
     }
 }
