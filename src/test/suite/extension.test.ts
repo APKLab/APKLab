@@ -1,5 +1,6 @@
 import * as assert from "assert";
 import { test } from "mocha";
+import * as path from "path";
 import { updateTools } from "../../downloader";
 import { apktool } from "../../tools";
 
@@ -19,9 +20,11 @@ suite("Extension Test Suite", function () {
             });
     });
 
-    test("Sample test", () => {
-        assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-        assert.strictEqual(-1, [1, 2, 3].indexOf(0));
-        apktool.decodeAPK("test.apk", [], true);
-    }).timeout(1200000);
+    test("Sample test", function () {
+        this.timeout(1000000);
+        console.log("here");
+        const testApkPath = path.resolve(__dirname, "../../../test.apk");
+        apktool.decodeAPK(testApkPath, [], true);
+        console.log("reached here");
+    });
 });
