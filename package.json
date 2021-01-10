@@ -1,201 +1,201 @@
 {
-	"name": "apklab",
-	"displayName": "APK Lab",
-	"description": "Android Reverse Engineering WorkBench",
-	"publisher": "Surendrajat",
-	"version": "1.2.0",
-	"license": "SEE LICENSE IN LICENSE",
-	"icon": "assets/icon.png",
-	"engines": {
-		"vscode": "^1.45.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Surendrajat/APKLab.git"
-	},
-	"bugs": {
-		"url": "https://github.com/Surendrajat/APKLab/issues"
-	},
-	"categories": [
-		"Programming Languages",
-		"Other"
-	],
-	"keywords": [
-		"bytecode",
-		"disassembler",
-		"decompiler",
-		"re",
-		"android",
-		"apktool",
-		"jadx",
-		"apksigner",
-		"apk studio",
-		"apk",
-		"reverse engineering",
-		"analysis",
-		"apk editor",
-		"smali",
-		"dalvik"
-	],
-	"activationEvents": [
-		"workspaceContains:apktool.yml",
-		"onCommand:apklab.openApkFile",
-		"onCommand:apklab.emptyFrameworkDir"
-	],
-	"main": "./dist/extension",
-	"contributes": {
-		"commands": [
-			{
-				"command": "apklab.openApkFile",
-				"title": "APKLab: Open an APK"
-			},
-			{
-				"command": "apklab.rebuildApkFile",
-				"title": "APKLab: Rebuild the APK"
-			},
-			{
-				"command": "apklab.patchApkForHttps",
-				"title": "APKLab: Prepare for HTTPS inspection"
-			},
-			{
-				"command": "apklab.installApkFile",
-				"title": "APKLab: Install the APK"
-			},
-			{
-				"command": "apklab.emptyFrameworkDir",
-				"title": "APKLab: Empty ApkTool Framework Dir"
-			}
-		],
-		"menus": {
-			"commandPalette": [
-				{
-					"command": "apklab.rebuildApkFile",
-					"when": "false"
-				},
-				{
-					"command": "apklab.installApkFile",
-					"when": "false"
-				},
-				{
-					"command": "apklab.patchApkForHttps",
-					"when": "false"
-				}
-			],
-			"editor/context": [
-				{
-					"command": "apklab.rebuildApkFile",
-					"when": "resourceFilename == apktool.yml",
-					"group": "navigation"
-				},
-				{
-					"command": "apklab.patchApkForHttps",
-					"when": "resourceFilename == apktool.yml",
-					"group": "navigation"
-				}
-			],
-			"editor/title": [
-				{
-					"command": "apklab.rebuildApkFile",
-					"when": "resourceFilename == apktool.yml"
-				},
-				{
-					"command": "apklab.patchApkForHttps",
-					"when": "resourceFilename == apktool.yml"
-				}
-			],
-			"explorer/context": [
-				{
-					"command": "apklab.installApkFile",
-					"when": "resourceExtname == .apk",
-					"group": "navigation"
-				},
-				{
-					"command": "apklab.rebuildApkFile",
-					"when": "resourceFilename == apktool.yml",
-					"group": "navigation"
-				},
-				{
-					"command": "apklab.patchApkForHttps",
-					"when": "resourceFilename == apktool.yml",
-					"group": "navigation"
-				}
-			]
-		},
-		"configuration": {
-			"title": "APK Lab",
-			"properties": {
-				"apklab.apktoolPath": {
-					"type": "string",
-					"default": "",
-					"markdownDescription": "Put the absolute path of `apktool.jar` here if you want to use a non-latest version."
-				},
-				"apklab.apkSignerPath": {
-					"type": "string",
-					"default": "",
-					"markdownDescription": "Put the absolute path of `uber-apk-signer.jar` here if you want to use a non-latest version."
-				},
-				"apklab.jadxDirPath": {
-					"type": "string",
-					"default": "",
-					"markdownDescription": "Put the absolute path of `jadx-x.y.z` dir here if you want to use a non-latest version."
-				},
-				"apklab.keystorePath": {
-					"type": "string",
-					"default": "",
-					"markdownDescription": "Put the absolute path of your **Java keystore**(`.jks` or `.keystore`) file here."
-				},
-				"apklab.keystorePassword": {
-					"type": "string",
-					"default": "",
-					"markdownDescription": "Put the **password** of your keystore here."
-				},
-				"apklab.keyAlias": {
-					"type": "string",
-					"default": "",
-					"markdownDescription": "Put the **alias** of the used key in the keystore here."
-				},
-				"apklab.keyPassword": {
-					"type": "string",
-					"default": "",
-					"markdownDescription": "Put the **password** of the used key in the keystore here."
-				}
-			}
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "webpack --mode production",
-		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts",
-		"pretest": "npm run webpack && npm run lint",
-		"test": "node ./out/test/runTest.js",
-		"webpack": "webpack --mode development",
-		"watch": "webpack --mode development --watch"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^7.0.2",
-		"@types/node": "^13.11.0",
-		"@types/vscode": "^1.45.0",
-		"@typescript-eslint/eslint-plugin": "^4.12.0",
-		"@typescript-eslint/parser": "^4.12.0",
-		"eslint": "^7.17.0",
-		"eslint-config-prettier": "^7.1.0",
-		"eslint-plugin-prettier": "^3.3.1",
-		"glob": "^7.1.6",
-		"mocha": "^7.1.2",
-		"prettier": "^2.2.1",
-		"ts-loader": "^8.0.10",
-		"typescript": "^4.1.3",
-		"vscode-test": "^1.3.0",
-		"webpack": "^5.4.0",
-		"webpack-cli": "^4.2.0"
-	},
-	"dependencies": {
-		"child_process": "^1.0.2",
-		"escape-string-regexp": "^4.0.0",
-		"extract-zip": "^2.0.1",
-		"globby": "^11.0.1",
-		"path": "^0.12.7",
-		"xml-js": "^1.6.11"
-	}
+    "name": "apklab",
+    "displayName": "APK Lab",
+    "description": "Android Reverse Engineering WorkBench",
+    "publisher": "Surendrajat",
+    "version": "1.2.0",
+    "license": "SEE LICENSE IN LICENSE",
+    "icon": "assets/icon.png",
+    "engines": {
+        "vscode": "^1.45.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Surendrajat/APKLab.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Surendrajat/APKLab/issues"
+    },
+    "categories": [
+        "Programming Languages",
+        "Other"
+    ],
+    "keywords": [
+        "bytecode",
+        "disassembler",
+        "decompiler",
+        "re",
+        "android",
+        "apktool",
+        "jadx",
+        "apksigner",
+        "apk studio",
+        "apk",
+        "reverse engineering",
+        "analysis",
+        "apk editor",
+        "smali",
+        "dalvik"
+    ],
+    "activationEvents": [
+        "workspaceContains:apktool.yml",
+        "onCommand:apklab.openApkFile",
+        "onCommand:apklab.emptyFrameworkDir"
+    ],
+    "main": "./dist/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "apklab.openApkFile",
+                "title": "APKLab: Open an APK"
+            },
+            {
+                "command": "apklab.rebuildApkFile",
+                "title": "APKLab: Rebuild the APK"
+            },
+            {
+                "command": "apklab.patchApkForHttps",
+                "title": "APKLab: Prepare for HTTPS inspection"
+            },
+            {
+                "command": "apklab.installApkFile",
+                "title": "APKLab: Install the APK"
+            },
+            {
+                "command": "apklab.emptyFrameworkDir",
+                "title": "APKLab: Empty ApkTool Framework Dir"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "apklab.rebuildApkFile",
+                    "when": "false"
+                },
+                {
+                    "command": "apklab.installApkFile",
+                    "when": "false"
+                },
+                {
+                    "command": "apklab.patchApkForHttps",
+                    "when": "false"
+                }
+            ],
+            "editor/context": [
+                {
+                    "command": "apklab.rebuildApkFile",
+                    "when": "resourceFilename == apktool.yml",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.patchApkForHttps",
+                    "when": "resourceFilename == apktool.yml",
+                    "group": "navigation"
+                }
+            ],
+            "editor/title": [
+                {
+                    "command": "apklab.rebuildApkFile",
+                    "when": "resourceFilename == apktool.yml"
+                },
+                {
+                    "command": "apklab.patchApkForHttps",
+                    "when": "resourceFilename == apktool.yml"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "apklab.installApkFile",
+                    "when": "resourceExtname == .apk",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.rebuildApkFile",
+                    "when": "resourceFilename == apktool.yml",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.patchApkForHttps",
+                    "when": "resourceFilename == apktool.yml",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "APK Lab",
+            "properties": {
+                "apklab.apktoolPath": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Put the absolute path of `apktool.jar` here if you want to use a non-latest version."
+                },
+                "apklab.apkSignerPath": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Put the absolute path of `uber-apk-signer.jar` here if you want to use a non-latest version."
+                },
+                "apklab.jadxDirPath": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Put the absolute path of `jadx-x.y.z` dir here if you want to use a non-latest version."
+                },
+                "apklab.keystorePath": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Put the absolute path of your **Java keystore**(`.jks` or `.keystore`) file here."
+                },
+                "apklab.keystorePassword": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Put the **password** of your keystore here."
+                },
+                "apklab.keyAlias": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Put the **alias** of the used key in the keystore here."
+                },
+                "apklab.keyPassword": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Put the **password** of the used key in the keystore here."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "webpack --mode production",
+        "compile": "tsc -p ./",
+        "lint": "eslint src --ext ts",
+        "pretest": "npm run webpack && npm run lint",
+        "test": "node ./out/test/runTest.js",
+        "webpack": "webpack --mode development",
+        "watch": "webpack --mode development --watch"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.1",
+        "@types/mocha": "^7.0.2",
+        "@types/node": "^13.11.0",
+        "@types/vscode": "^1.45.0",
+        "@typescript-eslint/eslint-plugin": "^4.12.0",
+        "@typescript-eslint/parser": "^4.12.0",
+        "eslint": "^7.17.0",
+        "eslint-config-prettier": "^7.1.0",
+        "eslint-plugin-prettier": "^3.3.1",
+        "glob": "^7.1.6",
+        "mocha": "^7.1.2",
+        "prettier": "^2.2.1",
+        "ts-loader": "^8.0.10",
+        "typescript": "^4.1.3",
+        "vscode-test": "^1.3.0",
+        "webpack": "^5.4.0",
+        "webpack-cli": "^4.2.0"
+    },
+    "dependencies": {
+        "child_process": "^1.0.2",
+        "escape-string-regexp": "^4.0.0",
+        "extract-zip": "^2.0.1",
+        "globby": "^11.0.1",
+        "path": "^0.12.7",
+        "xml-js": "^1.6.11"
+    }
 }
