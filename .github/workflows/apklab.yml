@@ -34,9 +34,7 @@ jobs:
         run: npm run lint
       - name: Run tests
         if: contains(matrix.os, 'ubuntu') && matrix.node == 12
-        uses: GabrielBB/xvfb-action@v1.2
-        with:
-          run: npm test
+        run: xvfb-run -a npm test
       - name: Package extension
         run: npm install -g vsce && vsce package
       - uses: actions/upload-artifact@v2
