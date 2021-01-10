@@ -56,7 +56,7 @@ function getApkName(apktoolYamlPath: string) {
  * Executes a child_process and calls a callback if provided.
  * @param processOptions Takes a ProcessOptions type to process.
  */
-function executeProcess(processOptions: ProcessOptions) {
+function executeProcess(processOptions: ProcessOptions): Thenable<void> {
     outputChannel.show();
     outputChannel.appendLine("-".repeat(processOptions.report.length));
     outputChannel.appendLine(processOptions.report);
@@ -65,7 +65,7 @@ function executeProcess(processOptions: ProcessOptions) {
         `${processOptions.command} ${processOptions.args.join(" ")}`
     );
 
-    vscode.window.withProgress(
+    return vscode.window.withProgress(
         {
             location: vscode.ProgressLocation.Notification,
             title: "APKLab",
@@ -93,7 +93,7 @@ function executeProcess(processOptions: ProcessOptions) {
                     );
                     resolve();
                 });
-                cp.on("exit", (code) => {
+                cp.on("exit", async (code) => {
                     if (
                         code === 0 &&
                         (processOptions.shouldExist
@@ -107,7 +107,7 @@ function executeProcess(processOptions: ProcessOptions) {
                             `APKLab: ${processOptions.name} process was successful.`
                         );
                         if (processOptions.onSuccess) {
-                            processOptions.onSuccess();
+                            await processOptions.onSuccess();
                         }
                     } else {
                         outputChannel.appendLine(
@@ -139,11 +139,11 @@ export namespace apktool {
      * @param apktoolArgs array of additional args passed to **Apktool**.
      * @param decompileJava if **jadx** needs to decompile the APK.
      */
-    export function decodeAPK(
+    export async function decodeAPK(
         apkFilePath: string,
         apktoolArgs: string[],
         decompileJava: boolean
-    ): void {
+    ): Promise<void> {
         const extensionConfig = vscode.workspace.getConfiguration(
             extensionConfigName
         );
@@ -170,18 +170,22 @@ export namespace apktool {
             args = args.concat(apktoolArgs);
         }
         const shouldExist = path.join(apkDecodeDir, "apktool.yml");
-        executeProcess({
+        await executeProcess({
             name: "Decoding",
             report: report,
             command: "java",
             args: args,
             shouldExist: shouldExist,
-            onSuccess: () => {
+            onSuccess: async () => {
                 if (decompileJava) {
-                    jadx.decompileAPK(apkFilePath, apkFileName, apkDecodeDir);
+                    await jadx.decompileAPK(
+                        apkFilePath,
+                        apkFileName,
+                        apkDecodeDir
+                    );
                 }
                 // open apkDecodeDir in a new vs code window
-                vscode.commands.executeCommand(
+                await vscode.commands.executeCommand(
                     "vscode.openFolder",
                     vscode.Uri.file(apkDecodeDir),
                     true
@@ -195,10 +199,10 @@ export namespace apktool {
      * @param apktoolYmlPath The path of `apktool.yml` file.
      * @param apktoolArgs array of additional args passed to **Apktool**
      */
-    export function rebuildAPK(
+    export async function rebuildAPK(
         apktoolYmlPath: string,
         apktoolArgs: string[]
-    ): void {
+    ): Promise<void> {
         const extensionConfig = vscode.workspace.getConfiguration(
             extensionConfigName
         );
@@ -216,7 +220,7 @@ export namespace apktool {
             args = args.concat(apktoolArgs);
         }
         const shouldExist = path.join(projectDir, "dist", apkFileName);
-        executeProcess({
+        await executeProcess({
             name: "Rebuilding",
             report: report,
             command: "java",
@@ -231,7 +235,7 @@ export namespace apktool {
     /**
      * Empty the **ApkTool** resource framework dir.
      */
-    export function emptyFrameworkDir(): void {
+    export async function emptyFrameworkDir(): Promise<void> {
         const extensionConfig = vscode.workspace.getConfiguration(
             extensionConfigName
         );
@@ -243,7 +247,7 @@ export namespace apktool {
             "empty-framework-dir",
             "--force",
         ];
-        executeProcess({
+        await executeProcess({
             name: "Cleanup Apktool framework dir",
             report: report,
             command: "java",
@@ -258,7 +262,10 @@ export namespace apkSigner {
      * @param projectDir current directory of the project.
      * @param apkFileName name of the original apk file from `apktool.yml`.
      */
-    export function signAPK(projectDir: string, apkFileName: string): void {
+    export async function signAPK(
+        projectDir: string,
+        apkFileName: string
+    ): Promise<void> {
         const extensionConfig = vscode.workspace.getConfiguration(
             extensionConfigName
         );
@@ -297,7 +304,7 @@ export namespace apkSigner {
                 String(keyPassword)
             );
         }
-        executeProcess({
+        await executeProcess({
             name: "Signing",
             report: report,
             command: "java",
@@ -312,11 +319,11 @@ export namespace adb {
      * Installs the selected APK file to connected android device over ADB.
      * @param apkFilePath absolute path of the APK file.
      */
-    export function installAPK(apkFilePath: string): void {
+    export async function installAPK(apkFilePath: string): Promise<void> {
         const apkFileName = path.basename(apkFilePath);
         const report = `Installing ${apkFileName}`;
         const args = ["install", "-r", apkFilePath];
-        executeProcess({
+        await executeProcess({
             name: "Installing",
             report: report,
             command: "adb",
@@ -332,11 +339,11 @@ export namespace jadx {
      * @param apkFileName name of the APK file.
      * @param apkDecodeDir dir where the APK file was decoded.
      */
-    export function decompileAPK(
+    export async function decompileAPK(
         apkFilePath: string,
         apkFileName: string,
         apkDecodeDir: string
-    ): void {
+    ): Promise<void> {
         const extensionConfig = vscode.workspace.getConfiguration(
             extensionConfigName
         );
@@ -348,7 +355,7 @@ export namespace jadx {
         const apkDecompileDir = path.join(apkDecodeDir, "java_src");
         const report = `Decompiling ${apkFileName} into ${apkDecompileDir}`;
         const args = ["-r", "-v", "-ds", apkDecompileDir, apkFilePath];
-        executeProcess({
+        await executeProcess({
             name: "Decompiling",
             report: report,
             command: jadxPath,
