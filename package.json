@@ -167,7 +167,7 @@
         "compile": "tsc -p ./",
         "lint": "eslint src --ext ts && prettier --check .",
         "fix": "prettier --write . && eslint src --ext ts --fix",
-        "pretest": "npm run webpack && npm run lint",
+        "pretest": "npm run compile",
         "test": "node ./out/test/runTest.js",
         "webpack": "webpack --mode development",
         "watch": "webpack --mode development --watch"
