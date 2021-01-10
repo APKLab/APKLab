@@ -165,7 +165,7 @@
     "scripts": {
         "vscode:prepublish": "webpack --mode production",
         "compile": "tsc -p ./",
-        "lint": "eslint src --ext ts",
+        "lint": "eslint src --ext ts && prettier --check .",
         "pretest": "npm run webpack && npm run lint",
         "test": "node ./out/test/runTest.js",
         "webpack": "webpack --mode development",
