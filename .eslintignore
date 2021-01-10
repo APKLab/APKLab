@@ -1,1 +1,4 @@
-src/test/**/*.ts
+.vscode-test
+node_modules
+dist
+out
