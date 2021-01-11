@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
         node: [12, 14]
       fail-fast: false
     runs-on: ${{ matrix.os }}
@@ -39,7 +39,7 @@ jobs:
         if: contains(matrix.os, 'ubuntu') && matrix.node == 12
         run: xvfb-run -a npm test
       - name: Run tests
-        if: contains(matrix.os, 'windows') && matrix.node == 12
+        if: runner.os != 'Linux' && matrix.node == 12
         run: npm test
       - name: Package extension
         run: npm run package
