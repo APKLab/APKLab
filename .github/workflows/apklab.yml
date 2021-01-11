@@ -36,11 +36,15 @@ jobs:
         if: contains(matrix.os, 'ubuntu') && matrix.node == 12
         run: npm run lint
       - name: Run tests
-        if: contains(matrix.os, 'ubuntu') && matrix.node == 12
-        run: xvfb-run -a npm test
-      - name: Run tests
-        if: runner.os != 'Linux' && matrix.node == 12
-        run: npm test
+        if: matrix.node == 12
+        shell: bash
+        run: |
+          if [[ "${{ runner.os }}" = "Linux" ]]
+          then
+            xvfb-run -a npm test
+          else
+            npm test
+          fi
       - name: Package extension
         run: npm run package
       - uses: actions/upload-artifact@v2
