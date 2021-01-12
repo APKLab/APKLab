@@ -5,14 +5,13 @@ import { updateTools } from "../../downloader";
 import { apktool } from "../../tools";
 import * as fs from "fs";
 
-suite("Extension Test Suite", function () {
+const testDataDir = path.resolve(__dirname, "../../../testdata");
+const simpleKeyboardDir = path.join(testDataDir, "simplekeyboard");
+
+describe("Extension Test Suite", function () {
     this.timeout(600000);
-    console.log("Start all tests...");
 
-    const testDataDir = path.resolve(__dirname, "../../../testdata");
-    const simpleKeyboardDir = path.join(testDataDir, "simplekeyboard");
-
-    suiteSetup(async () => {
+    before("Download the tools", async function () {
         console.log("Installing the tools...");
         await updateTools()
             .then(() => {
@@ -22,6 +21,10 @@ suite("Extension Test Suite", function () {
                 console.log("Failed to install tools!");
                 assert.fail("Failed to install tools!");
             });
+    });
+
+    afterEach("Clearing directory", function () {
+        fs.rmdirSync(path.join(simpleKeyboardDir, "test"), { recursive: true });
     });
 
     test("Decode SimpleKeyboard.apk", async function () {
@@ -53,7 +56,7 @@ suite("Extension Test Suite", function () {
         decodedFiles.forEach((file) => {
             if (
                 !fs.existsSync(
-                    path.join(simpleKeyboardDir, "test1", "java_src", file)
+                    path.join(simpleKeyboardDir, "test", "java_src", file)
                 )
             ) {
                 assert.fail(`File ${file} not found!`);
