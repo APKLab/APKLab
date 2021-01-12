@@ -64,6 +64,9 @@ describe("Extension Test Suite", function () {
     });
 
     it("Rebuild SimpleKeyboard.apk", async function () {
+        const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        console.log(`Decoding ${testApkPath}...`);
+        await apktool.decodeAPK(testApkPath, [], false);
         const apktoolYmlPath = path.resolve(
             simpleKeyboardDir,
             "test",
