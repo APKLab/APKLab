@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
         node: [12, 14]
       fail-fast: false
     runs-on: ${{ matrix.os }}
@@ -36,8 +36,15 @@ jobs:
         if: contains(matrix.os, 'ubuntu') && matrix.node == 12
         run: npm run lint
       - name: Run tests
-        if: contains(matrix.os, 'ubuntu') && matrix.node == 12
-        run: xvfb-run -a npm test
+        if: matrix.node == 12
+        shell: bash
+        run: |
+          if [[ "${{ runner.os }}" = "Linux" ]]
+          then
+            xvfb-run -a npm test
+          else
+            npm test
+          fi
       - name: Package extension
         run: npm run package
       - uses: actions/upload-artifact@v2

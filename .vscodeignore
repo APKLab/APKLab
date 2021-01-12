@@ -3,7 +3,6 @@
 out/**
 src/**
 .gitignore
-vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
 **/*.map
@@ -13,3 +12,5 @@ node_modules
 tsconfig.json
 webpack.config.js
 .github/
+testdata
+.*
