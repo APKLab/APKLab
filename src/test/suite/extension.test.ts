@@ -1,5 +1,4 @@
 import * as assert from "assert";
-import { test } from "mocha";
 import * as path from "path";
 import { updateTools } from "../../downloader";
 import { apktool } from "../../tools";
@@ -27,7 +26,7 @@ describe("Extension Test Suite", function () {
         fs.rmdirSync(path.join(simpleKeyboardDir, "test"), { recursive: true });
     });
 
-    test("Decode SimpleKeyboard.apk", async function () {
+    it("Decode SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decoding ${testApkPath}...`);
         await apktool.decodeAPK(testApkPath, [], false);
@@ -42,7 +41,7 @@ describe("Extension Test Suite", function () {
         });
     });
 
-    test("Decompile SimpleKeyboard.apk", async function () {
+    it("Decompile SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decompiling ${testApkPath}...`);
         await apktool.decodeAPK(testApkPath, [], true);
@@ -64,7 +63,7 @@ describe("Extension Test Suite", function () {
         });
     });
 
-    test("Rebuild SimpleKeyboard.apk", async function () {
+    it("Rebuild SimpleKeyboard.apk", async function () {
         const apktoolYmlPath = path.resolve(
             simpleKeyboardDir,
             "test",

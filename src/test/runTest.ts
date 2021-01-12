@@ -14,11 +14,11 @@ async function main() {
 
         // Download VS Code, unzip it and run the integration test
         await runTests({
-            version: 'insiders',
+            version: "insiders",
             extensionDevelopmentPath,
             extensionTestsPath,
             launchArgs: ["--disable-extensions"],
-            extensionTestsEnv: { 'TEST': 'true' }
+            extensionTestsEnv: { TEST: "true" },
         });
     } catch (err) {
         console.error("Failed to run tests");

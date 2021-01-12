@@ -186,7 +186,7 @@ export namespace apktool {
                 }
 
                 // open apkDecodeDir in a new vs code window
-                if(!process.env['TEST']) {
+                if (!process.env["TEST"]) {
                     await vscode.commands.executeCommand(
                         "vscode.openFolder",
                         vscode.Uri.file(apkDecodeDir),
