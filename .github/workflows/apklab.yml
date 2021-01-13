@@ -63,6 +63,7 @@ jobs:
         if: matrix.name == 'lint'
         run: npm run lint
       - name: Package extension
+        if: matrix.name != 'lint'
         run: npm run package
       - name: Run tests
         if: matrix.run_test == true
