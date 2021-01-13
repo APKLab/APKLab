@@ -15,17 +15,17 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 </p>
 
 <p align="center">
-    <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
-        <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=a69&labelColor=000">
+    <a href="https://github.com/surendrajat/apklab">
+        <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=f0f0e0&labelColor=404752">
     </a>
     <a href="https://open-vsx.org/extension/Surendrajat/apklab">
-        <img alt="Download" src="https://img.shields.io/static/v1?label=get%20from&message=open-vsx&color=629&labelColor=000">
+        <img alt="Download" src="https://img.shields.io/static/v1?label=get%20from&message=open-vsx&color=629&labelColor=404752">
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
-        <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab?logo=visual-studio-code&logoColor=blue&labelColor=000&color=blue">
+        <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab?logo=visual-studio-code&logoColor=blue&labelColor=404752&color=blue">
     </a>
-    <a href="https://github.com/Surendrajat/APKLab/actions?query=workflow%3A%22APKLab+CI%22">
-        <img alt="APKLab CI" src="https://github.com/Surendrajat/APKLab/workflows/APKLab%20CI/badge.svg?branch=master&event=push">
+    <a href="https://github.com/Surendrajat/APKLab/actions?query=workflow%3A%22CI%22">
+        <img alt="CI" src="https://github.com/Surendrajat/APKLab/workflows/CI/badge.svg?branch=master&event=push">
     </a>
 </p>
 <p align="center">
