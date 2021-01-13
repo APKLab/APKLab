@@ -184,12 +184,15 @@ export namespace apktool {
                         apkDecodeDir
                     );
                 }
+
                 // open apkDecodeDir in a new vs code window
-                await vscode.commands.executeCommand(
-                    "vscode.openFolder",
-                    vscode.Uri.file(apkDecodeDir),
-                    true
-                );
+                if (!process.env["TEST"]) {
+                    await vscode.commands.executeCommand(
+                        "vscode.openFolder",
+                        vscode.Uri.file(apkDecodeDir),
+                        true
+                    );
+                }
             },
         });
     }

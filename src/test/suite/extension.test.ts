@@ -1,18 +1,16 @@
 import * as assert from "assert";
-import { test } from "mocha";
 import * as path from "path";
 import { updateTools } from "../../downloader";
 import { apktool } from "../../tools";
 import * as fs from "fs";
 
-suite("Extension Test Suite", function () {
+const testDataDir = path.resolve(__dirname, "../../../testdata");
+const simpleKeyboardDir = path.join(testDataDir, "simplekeyboard");
+
+describe("Extension Test Suite", function () {
     this.timeout(600000);
-    console.log("Start all tests...");
 
-    const testDataDir = path.resolve(__dirname, "../../../testdata");
-    const simpleKeyboardDir = path.join(testDataDir, "simplekeyboard");
-
-    suiteSetup(async () => {
+    before("Download the tools", async function () {
         console.log("Installing the tools...");
         await updateTools()
             .then(() => {
@@ -24,7 +22,11 @@ suite("Extension Test Suite", function () {
             });
     });
 
-    test("Decode SimpleKeyboard.apk", async function () {
+    afterEach("Clearing directory", function () {
+        fs.rmdirSync(path.join(simpleKeyboardDir, "test"), { recursive: true });
+    });
+
+    it("Decode SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decoding ${testApkPath}...`);
         await apktool.decodeAPK(testApkPath, [], false);
@@ -39,7 +41,7 @@ suite("Extension Test Suite", function () {
         });
     });
 
-    test("Decompile SimpleKeyboard.apk", async function () {
+    it("Decompile SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decompiling ${testApkPath}...`);
         await apktool.decodeAPK(testApkPath, [], true);
@@ -53,7 +55,7 @@ suite("Extension Test Suite", function () {
         decodedFiles.forEach((file) => {
             if (
                 !fs.existsSync(
-                    path.join(simpleKeyboardDir, "test1", "java_src", file)
+                    path.join(simpleKeyboardDir, "test", "java_src", file)
                 )
             ) {
                 assert.fail(`File ${file} not found!`);
@@ -61,7 +63,10 @@ suite("Extension Test Suite", function () {
         });
     });
 
-    test("Rebuild SimpleKeyboard.apk", async function () {
+    it("Rebuild SimpleKeyboard.apk", async function () {
+        const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        console.log(`Decoding ${testApkPath}...`);
+        await apktool.decodeAPK(testApkPath, [], false);
         const apktoolYmlPath = path.resolve(
             simpleKeyboardDir,
             "test",
