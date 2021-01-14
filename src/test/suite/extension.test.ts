@@ -85,4 +85,33 @@ describe("Extension Test Suite", function () {
             assert.fail(`File ${outApkPath} not found!`);
         }
     });
+
+    it("Empty ApkTool Res Framework dir", async function () {
+        const osAppDataDir =
+            process.env.APPDATA ||
+            (process.platform == "darwin"
+                ? process.env.HOME + "/Library"
+                : process.env.HOME + "/.local/share");
+        const apktoolDefaultFrameworkPath = path.join(
+            osAppDataDir,
+            "apktool",
+            "framework",
+            "1.apk"
+        );
+        console.log(
+            `apktool default framework apk path: ${apktoolDefaultFrameworkPath}`
+        );
+        if (fs.existsSync(apktoolDefaultFrameworkPath)) {
+            console.log(`Emptying apktool res-framework dir...`);
+            await apktool.emptyFrameworkDir();
+            if (fs.existsSync(apktoolDefaultFrameworkPath)) {
+                assert.fail(`Cannot empty apktool res-framework dir...`);
+            }
+            console.log(`Emptied apktool res-framework dir...`);
+        } else {
+            assert.fail(
+                `res-framework dir or default framework apk doesn't exist!`
+            );
+        }
+    });
 });
