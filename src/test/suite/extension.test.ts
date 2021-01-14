@@ -88,12 +88,13 @@ describe("Extension Test Suite", function () {
 
     it("Empty ApkTool Res Framework dir", async function () {
         const osAppDataDir =
-            process.env.APPDATA ||
-            (process.platform == "darwin"
-                ? process.env.HOME + "/Library"
-                : process.env.HOME + "/.local/share");
+            process.platform == "linux"
+                ? "/.local/share"
+                : process.platform == "darwin"
+                ? "/Library"
+                : "\\AppData\\Local";
         const apktoolDefaultFrameworkPath = path.join(
-            osAppDataDir,
+            process.env.HOME + osAppDataDir,
             "apktool",
             "framework",
             "1.apk"
