@@ -1,8 +1,8 @@
 import * as child_process from "child_process";
 import * as fs from "fs";
+import * as path from "path";
 import * as vscode from "vscode";
 import { extensionConfigName, outputChannel } from "./common";
-import * as path from "path";
 
 /**
  * Options for executeProcess function.

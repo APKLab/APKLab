@@ -2,9 +2,9 @@
 // https://github.com/shroudedcode/apk-mitm
 // MIT © Niklas Higi
 
-import * as xml from "xml-js";
 import * as fs from "fs";
 import * as path from "path";
+import * as xml from "xml-js";
 import * as globby from "globby";
 import * as escapeStringRegexp from "escape-string-regexp";
 import * as vscode from "vscode";

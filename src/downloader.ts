@@ -1,11 +1,11 @@
 import { parse as parseUrl } from "url";
 import * as https from "https";
-import * as vscode from "vscode";
-import { extensionConfigName, apklabDataDir, outputChannel } from "./common";
 import * as fs from "fs";
 import * as path from "path";
-import * as config from "./config.json";
+import * as vscode from "vscode";
 import * as extract from "extract-zip";
+import { extensionConfigName, apklabDataDir, outputChannel } from "./common";
+import * as config from "./config.json";
 
 /**
  * Tool details for downloading it if it doesn't exist.
