@@ -1,4 +1,4 @@
-import { parse as parseUrl } from "url";
+import { URL } from "url";
 import * as https from "https";
 import * as fs from "fs";
 import * as path from "path";
@@ -117,20 +117,10 @@ async function DownloadFile(tool: Tool) {
  * @returns a Buffer of the file contents.
  */
 async function downloadFile(urlString: string): Promise<Buffer> {
-    const url = parseUrl(urlString);
-    const config = vscode.workspace.getConfiguration();
-    const strictSSL = config.get("http.proxyStrictSSL", true);
-    const options: https.RequestOptions = {
-        host: url.hostname,
-        path: url.path,
-        port: url.port,
-        rejectUnauthorized: strictSSL,
-    };
-
     const buffers: any[] = [];
 
     return new Promise<Buffer>((resolve, reject) => {
-        const request = https.request(options, (response) => {
+        const request = https.request(new URL(urlString), (response) => {
             if (
                 (response.statusCode === 301 || response.statusCode === 302) &&
                 response.headers.location
