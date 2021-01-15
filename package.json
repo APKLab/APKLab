@@ -16,6 +16,9 @@
     "bugs": {
         "url": "https://github.com/Surendrajat/APKLab/issues"
     },
+    "extensionDependencies": [
+        "LoyieKing.smalise"
+    ],
     "categories": [
         "Programming Languages",
         "Other"
