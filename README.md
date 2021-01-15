@@ -56,7 +56,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - Android resource frameworks management (Coming soon!)
 - Support for user-provided keystore for APK signing
 - Download and configure missing dependencies
-- Excellent Smali language support with [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise)
+- Excellent Smali language support with [**Smalise**](https://github.com/LoyieKing/Smalise)
 - Supports Linux, Windows, and Mac
 
 ## Getting Started
@@ -98,9 +98,6 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - **adb**
 
   > Run **`adb devices`** in your Shell, if not found check [this guide](https://www.xda-developers.com/install-adb-windows-macos-linux/).
-
-- [**Smalise**](https://marketplace.visualstudio.com/items?itemName=LoyieKing.smalise) (recommended)
-  > It makes working with `smali` files a breeze.
 
 ## Extension Settings
 
@@ -151,3 +148,4 @@ For bug reports, feature requests or simply discussing an idea, please open an i
 - [iBotPeaches](https://github.com/iBotPeaches), [brutall](https://github.com/brutall) and [JesusFreke](https://github.com/JesusFreke) for Apktool & Smali
 - [patrickfav](https://github.com/patrickfav) for uber-apk-signer
 - [skylot](https://github.com/skylot) for Jadx
+- [Loyie King](https://github.com/LoyieKing) for Smalise
