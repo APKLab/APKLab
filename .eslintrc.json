@@ -13,16 +13,42 @@
         },
         "project": "tsconfig.json"
     },
-    "plugins": ["@typescript-eslint"],
+    "plugins": ["import", "@typescript-eslint"],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
         "prettier",
         "prettier/@typescript-eslint"
     ],
     "rules": {
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/explicit-module-boundary-types": "error",
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        "import/export": "off",
+        "import/extensions": ["error", "never"],
+        "import/named": "off",
+        "import/namespace": "off",
+        "import/newline-after-import": "warn",
+        "import/no-cycle": "off",
+        "import/no-dynamic-require": "error",
+        "import/no-default-export": "error",
+        "import/no-duplicates": "error",
+        "import/no-self-import": "error",
+        "import/no-unresolved": ["error", { "ignore": ["vscode"] }],
+        "import/order": [
+            "warn",
+            {
+                "groups": [
+                    "builtin",
+                    "external",
+                    "internal",
+                    ["index", "sibling", "parent"]
+                ],
+                "newlines-between": "never"
+            }
+        ]
     }
 }

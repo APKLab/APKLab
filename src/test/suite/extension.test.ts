@@ -1,8 +1,8 @@
 import * as assert from "assert";
 import * as path from "path";
+import * as fs from "fs";
 import { updateTools } from "../../downloader";
 import { apktool } from "../../tools";
-import * as fs from "fs";
 
 const testDataDir = path.resolve(__dirname, "../../../testdata");
 const simpleKeyboardDir = path.join(testDataDir, "simplekeyboard");

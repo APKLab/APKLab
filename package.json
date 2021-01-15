@@ -182,6 +182,7 @@
         "@typescript-eslint/parser": "^4.12.0",
         "eslint": "^7.17.0",
         "eslint-config-prettier": "^7.1.0",
+        "eslint-plugin-import": "^2.22.1",
         "glob": "^7.1.6",
         "mocha": "^8.2.1",
         "prettier": "^2.2.1",
