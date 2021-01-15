@@ -168,7 +168,7 @@
         "lint": "eslint src --ext ts && prettier --check .",
         "fix": "prettier --write . && eslint src --ext ts --fix",
         "clean": "git clean -Xdf -e !node_modules -e !node_modules/**/* -e !.vscode-test -e !.vscode-test/**/*",
-        "pretest": "npm run clean && npm run compile",
+        "pretest": "npm run compile",
         "test": "node ./out/test/runTest.js",
         "package": "vsce package",
         "watch": "webpack --mode development --watch"
