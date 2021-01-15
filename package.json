@@ -198,10 +198,8 @@
     },
     "dependencies": {
         "escape-string-regexp": "^4.0.0",
-        "execa": "^5.0.0",
         "extract-zip": "^2.0.1",
         "globby": "^11.0.1",
-        "path": "^0.12.7",
         "xml-js": "^1.6.11"
     }
 }
