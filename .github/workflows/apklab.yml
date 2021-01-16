@@ -24,10 +24,10 @@ jobs:
           ]
         include:
           - name: lint
-            os: ubuntu-latest
+            os: ubuntu-20.04
             node: 12
           - name: linux-build-test
-            os: ubuntu-latest
+            os: ubuntu-20.04
             node: 12
             run_test: true
           - name: macos-build-test
@@ -39,7 +39,7 @@ jobs:
             node: 12
             run_test: true
           - name: node14-build
-            os: ubuntu-latest
+            os: ubuntu-20.04
             node: 14
 
     steps:
