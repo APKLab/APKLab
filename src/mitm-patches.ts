@@ -2,7 +2,6 @@ import * as path from "path";
 import * as apkMitm from "apk-mitm";
 import * as vscode from "vscode";
 import { outputChannel } from "./common";
-import { quickPickUtil } from "./quick-pick.util";
 
 // Defined in webpack config
 declare const APK_MITM_VERSION: string;
@@ -29,8 +28,6 @@ export async function applyMitmPatches(apktoolYmlPath: string): Promise<void> {
         await apkMitm
             .observeListr(apkMitm.applyPatches(decodeDir))
             .forEach((line) => outputChannel.appendLine(line));
-
-        quickPickUtil.setQuickPickDefault("rebuildQuickPickItems", "--debug");
 
         outputChannel.appendLine("\nSuccessfully applied MITM patches!");
         vscode.window.showInformationMessage(
