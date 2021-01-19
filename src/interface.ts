@@ -1,7 +1,6 @@
 import { QuickPickItem, window } from "vscode";
 import { apktool } from "./tools";
 import { outputChannel } from "./common";
-import { mitmTools } from "./mitm-tools";
 import { quickPickUtil } from "./quick-pick.util";
 
 export namespace UI {
@@ -68,14 +67,5 @@ export namespace UI {
         if (args) {
             await apktool.rebuildAPK(apktoolYmlPath, args);
         }
-    }
-
-    /**
-     * @param apktoolYmlPath path of the `apktool.yml` file.
-     */
-    export async function applyMitmPatch(
-        apktoolYmlPath: string
-    ): Promise<void> {
-        await mitmTools.applyMitmPatch(apktoolYmlPath);
     }
 }

@@ -3,6 +3,7 @@ import { adb, apktool } from "./tools";
 import { outputChannel } from "./common";
 import { updateTools } from "./downloader";
 import { UI } from "./interface";
+import { applyMitmPatches } from "./mitm-patches";
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Activated apklab extension!");
@@ -53,7 +54,7 @@ export function activate(context: vscode.ExtensionContext): void {
         (uri: vscode.Uri) => {
             updateTools()
                 .then(() => {
-                    UI.applyMitmPatch(uri.fsPath);
+                    applyMitmPatches(uri.fsPath);
                 })
                 .catch(() => {
                     outputChannel.appendLine(
