@@ -40,7 +40,7 @@ const config = {
         new webpack.NormalModuleReplacementPlugin(
             /^any-observable$/,
             // See the file for why this is necessary
-            path.join(__dirname, "src/any-observable-fix.js")
+            path.join(__dirname, "src/any-observable-fix.ts")
         ),
         new webpack.DefinePlugin({
             APK_MITM_VERSION: JSON.stringify(
