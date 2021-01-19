@@ -42,6 +42,11 @@ const config = {
             // See the file for why this is necessary
             path.join(__dirname, "src/any-observable-fix.js")
         ),
+        new webpack.DefinePlugin({
+            APK_MITM_VERSION: JSON.stringify(
+                require("apk-mitm/package.json").version
+            ),
+        }),
     ],
 };
 module.exports = config;

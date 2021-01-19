@@ -4,6 +4,9 @@ import * as vscode from "vscode";
 import { outputChannel } from "./common";
 import { quickPickUtil } from "./quick-pick.util";
 
+// Defined in webpack config
+declare const APK_MITM_VERSION: string;
+
 export namespace mitmTools {
     /**
      * Apply patch to intercept HTTPS calls
@@ -13,12 +16,16 @@ export namespace mitmTools {
         apktoolYmlPath: string
     ): Promise<void> {
         try {
-            const report = "Applying patch for HTTPS inspection (MITM)";
+            const report = "Applying patches for HTTPS inspection (MITM)";
 
             outputChannel.show();
             outputChannel.appendLine("-".repeat(report.length));
             outputChannel.appendLine(report);
             outputChannel.appendLine("-".repeat(report.length));
+
+            outputChannel.appendLine(
+                `Using apk-mitm v${APK_MITM_VERSION} (https://github.com/shroudedcode/apk-mitm)\n`
+            );
 
             const decodeDir = path.dirname(apktoolYmlPath);
 
@@ -31,15 +38,15 @@ export namespace mitmTools {
                 "--debug"
             );
 
-            outputChannel.appendLine("MITM Patch applied successfully");
+            outputChannel.appendLine("\nSuccessfully applied MITM patches!");
             vscode.window.showInformationMessage(
-                `APKLab: MITM Patch applied successfully`
+                "APKLab: Successfully applied MITM patches!"
             );
         } catch (err) {
             outputChannel.appendLine(err);
-            outputChannel.appendLine("Failed to apply MITM patch");
+            outputChannel.appendLine("Failed to apply MITM patches!");
             vscode.window.showErrorMessage(
-                `APKLab: Failed to apply MITM patch`
+                "APKLab: Failed to apply MITM patches!"
             );
         }
     }
