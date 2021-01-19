@@ -11,13 +11,17 @@ describe("Extension Test Suite", function () {
     this.timeout(600000);
 
     before("Download the tools", async function () {
+        // check if the testdata submodule is cloned
+        if (!fs.existsSync(simpleKeyboardDir)) {
+            assert.fail("testdata submodule is not cloned");
+        }
+        // install the tools needed by APKLab
         console.log("Installing the tools...");
         await updateTools()
             .then(() => {
                 console.log("Tools Installed!");
             })
             .catch(() => {
-                console.log("Failed to install tools!");
                 assert.fail("Failed to install tools!");
             });
     });
