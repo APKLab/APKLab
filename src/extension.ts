@@ -51,17 +51,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // command for patching files for https inspection
     const patchApkForHttpsCommand = vscode.commands.registerCommand(
         "apklab.patchApkForHttps",
-        (uri: vscode.Uri) => {
-            updateTools()
-                .then(() => {
-                    applyMitmPatches(uri.fsPath);
-                })
-                .catch(() => {
-                    outputChannel.appendLine(
-                        "Can't download/update dependencies!"
-                    );
-                });
-        }
+        (uri: vscode.Uri) => applyMitmPatches(uri.fsPath)
     );
 
     // command to empty apktool framework resource dir
