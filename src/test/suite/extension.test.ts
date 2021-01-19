@@ -4,12 +4,13 @@ import * as fs from "fs";
 import { updateTools } from "../../downloader";
 import { apktool } from "../../tools";
 
-const testDataDir = path.resolve(__dirname, "../../../testdata");
-const simpleKeyboardDir = path.join(testDataDir, "simplekeyboard");
-
 describe("Extension Test Suite", function () {
     this.timeout(600000);
 
+    const testDataDir = path.resolve(__dirname, "../../../testdata");
+    const simpleKeyboardDir = path.join(testDataDir, "simplekeyboard");
+
+    // one time setup
     before("Download the tools", async function () {
         // check if the testdata submodule is cloned
         if (!fs.existsSync(simpleKeyboardDir)) {
@@ -26,10 +27,12 @@ describe("Extension Test Suite", function () {
             });
     });
 
+    // cleanup test dir after each test
     afterEach("Clearing directory", function () {
         fs.rmdirSync(path.join(simpleKeyboardDir, "test"), { recursive: true });
     });
 
+    // test the Decode feature (uses ApkTool)
     it("Decode SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decoding ${testApkPath}...`);
@@ -45,6 +48,7 @@ describe("Extension Test Suite", function () {
         });
     });
 
+    // test the Decompile feature (uses Jadx)
     it("Decompile SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decompiling ${testApkPath}...`);
@@ -67,6 +71,7 @@ describe("Extension Test Suite", function () {
         });
     });
 
+    // test the Rebuild & Sign feature (uses ApkTool & uber-apk-signer)
     it("Rebuild SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decoding ${testApkPath}...`);
@@ -90,6 +95,7 @@ describe("Extension Test Suite", function () {
         }
     });
 
+    // test the `empty-framework-dir` feature (uses ApkTool)
     it("Empty ApkTool Res Framework dir", async function () {
         const osAppDataDir =
             process.platform == "linux"
