@@ -3,6 +3,7 @@
 "use strict";
 
 const path = require("path");
+const webpack = require("webpack");
 
 /**@type {import('webpack').Configuration}*/
 const config = {
@@ -35,5 +36,12 @@ const config = {
             },
         ],
     },
+    plugins: [
+        new webpack.NormalModuleReplacementPlugin(
+            /^any-observable$/,
+            // See the file for why this is necessary
+            path.join(__dirname, "src/any-observable-fix.js")
+        ),
+    ],
 };
 module.exports = config;
