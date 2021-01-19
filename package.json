@@ -199,9 +199,6 @@
     },
     "dependencies": {
         "apk-mitm": "^0.10.1",
-        "escape-string-regexp": "^4.0.0",
-        "extract-zip": "^2.0.1",
-        "globby": "^11.0.1",
-        "xml-js": "^1.6.11"
+        "extract-zip": "^2.0.1"
     }
 }
