@@ -34,6 +34,12 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
      */
     decodeQuickPickItems: [
         {
+            label: "quark_analysis",
+            detail:
+                "Detect potential malicious activities in APK using Quark-Engine.",
+            description: "[Use Quark-Engine]",
+        },
+        {
             label: "decompile_java",
             detail: "Decompiles APK to Java source using Jadx",
             description: "[Use Jadx]",

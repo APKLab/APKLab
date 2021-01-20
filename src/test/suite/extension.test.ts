@@ -36,7 +36,7 @@ describe("Extension Test Suite", function () {
     it("Decode SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decoding ${testApkPath}...`);
-        await apktool.decodeAPK(testApkPath, [], false);
+        await apktool.decodeAPK(testApkPath, [], false, false);
         const jsonFilePath = path.join(simpleKeyboardDir, "decoded_files.json");
         const jsonFileData = fs.readFileSync(jsonFilePath, "utf-8");
         const decodedFiles: string[] = JSON.parse(jsonFileData);
@@ -52,7 +52,7 @@ describe("Extension Test Suite", function () {
     it("Decompile SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decompiling ${testApkPath}...`);
-        await apktool.decodeAPK(testApkPath, [], true);
+        await apktool.decodeAPK(testApkPath, [], true, false);
         const jsonFilePath = path.join(
             simpleKeyboardDir,
             "decompiled_files.json"
@@ -71,11 +71,42 @@ describe("Extension Test Suite", function () {
         });
     });
 
+    // Quark test unit
+    it("Quark-engine Analysis", async function () {
+        const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        console.log(`Decoding ${testApkPath}...`);
+        await apktool.decodeAPK(testApkPath, [], false, true);
+
+        // Testing report generate
+        const reportJsonSamplePath = path.join(
+            simpleKeyboardDir,
+            "quark_report.json"
+        );
+        const reportJsonSampleData = fs.readFileSync(
+            reportJsonSamplePath,
+            "utf-8"
+        );
+
+        const reportFile = path.join(
+            simpleKeyboardDir,
+            "test",
+            "quarkReport.json"
+        );
+        if (!fs.existsSync(reportFile)) {
+            assert.fail(`Report data ${reportFile} not found!`);
+        }
+        const reportData = fs.readFileSync(reportFile, "utf-8");
+        console.log("Comparing analysis report...");
+        if (!reportJsonSampleData.localeCompare(reportData)) {
+            assert.fail(`Quark report data not matched!`);
+        }
+    });
+
     // test the Rebuild & Sign feature (uses ApkTool & uber-apk-signer)
     it("Rebuild SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         console.log(`Decoding ${testApkPath}...`);
-        await apktool.decodeAPK(testApkPath, [], false);
+        await apktool.decodeAPK(testApkPath, [], false, false);
         const apktoolYmlPath = path.resolve(
             simpleKeyboardDir,
             "test",

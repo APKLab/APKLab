@@ -42,6 +42,7 @@
     ],
     "activationEvents": [
         "workspaceContains:apktool.yml",
+        "workspaceContains:quarkReport.json",
         "onCommand:apklab.openApkFile",
         "onCommand:apklab.emptyFrameworkDir"
     ],
@@ -67,6 +68,10 @@
             {
                 "command": "apklab.emptyFrameworkDir",
                 "title": "APKLab: Empty ApkTool Framework Dir"
+            },
+            {
+                "command": "apklab.quarkReport",
+                "title": "APKLab: Show Quark analysis report"
             }
         ],
         "menus": {
@@ -82,6 +87,10 @@
                 {
                     "command": "apklab.patchApkForHttps",
                     "when": "false"
+                },
+                {
+                    "command": "apklab.quarkReport",
+                    "when": "false"
                 }
             ],
             "editor/context": [
@@ -94,6 +103,11 @@
                     "command": "apklab.patchApkForHttps",
                     "when": "resourceFilename == apktool.yml",
                     "group": "navigation"
+                },
+                {
+                    "command": "apklab.quarkReport",
+                    "when": "resourceFilename == quarkReport.json",
+                    "group": "navigation"
                 }
             ],
             "editor/title": [
@@ -104,6 +118,10 @@
                 {
                     "command": "apklab.patchApkForHttps",
                     "when": "resourceFilename == apktool.yml"
+                },
+                {
+                    "command": "apklab.quarkReport",
+                    "when": "resourceFilename == quarkReport.json"
                 }
             ],
             "explorer/context": [
@@ -120,6 +138,11 @@
                 {
                     "command": "apklab.patchApkForHttps",
                     "when": "resourceFilename == apktool.yml",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.quarkReport",
+                    "when": "resourceFilename == quarkReport.json",
                     "group": "navigation"
                 }
             ]

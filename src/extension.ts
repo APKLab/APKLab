@@ -4,6 +4,7 @@ import { outputChannel } from "./common";
 import { updateTools } from "./downloader";
 import { UI } from "./interface";
 import { applyMitmPatches } from "./mitm-patches";
+import { Quark } from "./quark-tools";
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Activated apklab extension!");
@@ -70,11 +71,20 @@ export function activate(context: vscode.ExtensionContext): void {
         }
     );
 
+    // command to show quark analysis report as web view
+    const quarkReportCommand = vscode.commands.registerCommand(
+        "apklab.quarkReport",
+        (uri: vscode.Uri) => {
+            Quark.showSummaryReport(uri.fsPath);
+        }
+    );
+
     context.subscriptions.push(
         openApkFileCommand,
         rebuildAPkFileCommand,
         installAPkFileCommand,
         patchApkForHttpsCommand,
-        emptyFrameworkDirCommand
+        emptyFrameworkDirCommand,
+        quarkReportCommand
     );
 }

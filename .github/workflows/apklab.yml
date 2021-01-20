@@ -69,10 +69,15 @@ jobs:
         if: matrix.run_test == true
         shell: bash
         run: |
-          if [[ "${{ runner.os }}" = "Linux" ]]
-          then
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            export PATH="/home/runner/.local/bin:$PATH"
+            pip install quark-engine
             xvfb-run -a npm test
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            pip install quark-engine
+            npm test
           else
+            python3 -m pip install quark-engine
             npm test
           fi
       - uses: actions/upload-artifact@v2

@@ -2,6 +2,7 @@ import { QuickPickItem, window } from "vscode";
 import { apktool } from "./tools";
 import { outputChannel } from "./common";
 import { quickPickUtil } from "./quick-pick.util";
+import { Quark } from "./quark-tools";
 
 export namespace UI {
     /**
@@ -43,12 +44,33 @@ export namespace UI {
             );
             if (args) {
                 const decompileJavaIndex = args.indexOf("decompile_java");
+                const quarkAnalysisIndex = args.indexOf("quark_analysis");
                 let decompileJava = false;
+                let quarkAnalysis = false;
                 if (decompileJavaIndex > -1) {
                     decompileJava = true;
                     args.splice(decompileJavaIndex, 1);
                 }
-                await apktool.decodeAPK(result[0].fsPath, args, decompileJava);
+                if (quarkAnalysisIndex > -1) {
+                    quarkAnalysis = true;
+                    args.splice(quarkAnalysisIndex, 1);
+                    if (!Quark.checkQuarkInstalled()) {
+                        quarkAnalysis = false;
+                        window.showErrorMessage(
+                            "APKLab: Quark command not found, \
+                            please make sure you have installed python3 and Quark-Engine. \
+                            Check here to install Quark-Engine: \
+                            https://github.com/quark-engine/quark-engine"
+                        );
+                        return;
+                    }
+                }
+                await apktool.decodeAPK(
+                    result[0].fsPath,
+                    args,
+                    decompileJava,
+                    quarkAnalysis
+                );
             }
         } else {
             outputChannel.appendLine("APKLAB: no APK file was chosen");
