@@ -45,6 +45,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - Decode all the resources from an APK
 - Disassemble the APK to Dalvik bytecode aka Smali
 - Decompile the APK to Java source
+- Initialize project directory as Git repo
 - Analyze & Hack effectively with feature-rich VS Code
 - Apply MITM patch for HTTPS inspection
 - Build an APK from Smali and resources
@@ -129,6 +130,13 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - **`apklab.keyAlias`**: Put the **alias** of the used key in the keystore here.
 
 - **`apklab.keyPassword`**: Put the **password** of the used key in the keystore here.
+
+</details>
+
+<details>
+  <summary>Additional configuration</summary>
+
+- **`apklab.initDecodedDirAsGit`**: Initialize decoded APK directory as **Git** repository.
 
 </details>
 

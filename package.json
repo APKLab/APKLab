@@ -165,7 +165,7 @@
                 "apklab.initDecodedDirAsGit": {
                     "type": "boolean",
                     "default": "true",
-                    "markdownDescription": "Initialize decoded APK directory as Git repository."
+                    "markdownDescription": "Initialize decoded APK directory as **Git** repository."
                 }
             }
         }
