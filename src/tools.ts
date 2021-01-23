@@ -32,6 +32,10 @@ interface ProcessOptions {
      * Callback on success.
      */
     onSuccess?: CallableFunction;
+    /**
+     * Execute command using shell
+     */
+    shell?: boolean;
 }
 
 /**
@@ -78,7 +82,9 @@ function executeProcess(processOptions: ProcessOptions): Thenable<void> {
                 const cp = child_process.spawn(
                     processOptions.command,
                     processOptions.args,
-                    {}
+                    {
+                        shell: processOptions.shell,
+                    }
                 );
                 cp.stdout.on("data", (data) =>
                     outputChannel.appendLine(data.toString().trim())
@@ -132,6 +138,38 @@ function executeProcess(processOptions: ProcessOptions): Thenable<void> {
     );
 }
 
+/**
+ * Initialize a direcotry as **Git** repository.
+ * @param dirPath Directory path for repository.
+ * @param commitMsg Message for initial commit.
+ */
+export async function initGitDir(
+    dirPath: string,
+    commitMsg: string
+): Promise<void> {
+    try {
+        // .gitignore content
+        const gitignore = "/build\n/dist\n";
+        await fs.promises.writeFile(
+            path.join(dirPath, ".gitignore"),
+            gitignore
+        );
+        const initCmd = `cd "${dirPath}" && git init && git add -A && git commit -m "${commitMsg}"`;
+        const report = `Initializing ${dirPath} as Git repository`;
+        await executeProcess({
+            name: "Initializing Git",
+            report: report,
+            command: initCmd,
+            args: [],
+            shell: true,
+        });
+    } catch (err) {
+        outputChannel.appendLine(
+            `Error: Initializing decoded dir as Git repository: ${err.message}`
+        );
+    }
+}
+
 export namespace apktool {
     /**
      * Decodes(Disassembles) the apk resources & dalvik bytecode using **Apktool**.
@@ -149,6 +187,7 @@ export namespace apktool {
         );
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = path.basename(apkFilePath);
+        const initializeGit = extensionConfig.get("initDecodedDirAsGit");
         let apkDecodeDir = path.join(
             path.dirname(apkFilePath),
             path.parse(apkFilePath).name
@@ -183,6 +222,11 @@ export namespace apktool {
                         apkFileName,
                         apkDecodeDir
                     );
+                }
+
+                // Initialize decoded dir as git repo
+                if (initializeGit) {
+                    await initGitDir(apkDecodeDir, "Initial APK decode");
                 }
 
                 // open apkDecodeDir in a new vs code window
