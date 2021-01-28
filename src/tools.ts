@@ -154,7 +154,8 @@ export async function initGitDir(
             path.join(dirPath, ".gitignore"),
             gitignore
         );
-        const initCmd = `cd "${dirPath}" && git init && git add -A && git commit -m "${commitMsg}"`;
+        let initCmd = `cd "${dirPath}" && git init && git config core.safecrlf false`;
+        initCmd += ` && git add -A && git commit -q -m "${commitMsg}"`;
         const report = `Initializing ${dirPath} as Git repository`;
         await executeProcess({
             name: "Initializing Git",
