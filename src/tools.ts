@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
 import { extensionConfigName, outputChannel } from "./common";
-
+import { Quark } from "./quark-tools";
 /**
  * Options for executeProcess function.
  */
@@ -176,11 +176,13 @@ export namespace apktool {
      * @param apkFilePath file path Uri for apk file to decode.
      * @param apktoolArgs array of additional args passed to **Apktool**.
      * @param decompileJava if **jadx** needs to decompile the APK.
+     * @param quarkAnalysis if **Quark-Engine** analyze APK.
      */
     export async function decodeAPK(
         apkFilePath: string,
         apktoolArgs: string[],
-        decompileJava: boolean
+        decompileJava: boolean,
+        quarkAnalysis: boolean
     ): Promise<void> {
         const extensionConfig = vscode.workspace.getConfiguration(
             extensionConfigName
@@ -222,6 +224,10 @@ export namespace apktool {
                         apkFileName,
                         apkDecodeDir
                     );
+                }
+                // quark analysis
+                if (quarkAnalysis) {
+                    await Quark.analyzeAPK(apkFilePath, apkDecodeDir);
                 }
 
                 // Initialize decoded dir as git repo
