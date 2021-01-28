@@ -11,7 +11,7 @@ The ultimate Android RE experience right inside your <a href="https://code.visua
 </h4>
 
 <p align="center">
-APKLab seamlessly integrates the best open-source tools: <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/skylot/jadx">Jadx</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a>, <a href="https://github.com/shroudedcode/apk-mitm/">apk-mitm</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
+APKLab seamlessly integrates the best open-source tools: <a href='https://github.com/quark-engine/quark-engine'>Quark-Engine</a>, <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/skylot/jadx">Jadx</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a>, <a href="https://github.com/shroudedcode/apk-mitm/">apk-mitm</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
 </p>
 
 <p align="center">
@@ -45,6 +45,7 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - Decode all the resources from an APK
 - Disassemble the APK to Dalvik bytecode aka Smali
 - Decompile the APK to Java source
+- Malware Analysis using Quark-Engine
 - Initialize project directory as Git repo
 - Analyze & Hack effectively with feature-rich VS Code
 - Apply MITM patch for HTTPS inspection
@@ -95,10 +96,13 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 ## Requirements
 
 - **JDK 8+**
-  > Run **`java -version`** in your Shell, if not found download from [here](https://adoptopenjdk.net/).
+  > Run **`java -version`** in your Shell, if not found, download from [here](https://adoptopenjdk.net/).
 - **adb**
 
-  > Run **`adb devices`** in your Shell, if not found check [this guide](https://www.xda-developers.com/install-adb-windows-macos-linux/).
+  > Run **`adb devices`** in your Shell, if not found, check [this guide](https://www.xda-developers.com/install-adb-windows-macos-linux/).
+
+- **quark-engine >=21.01.6** (for malware analysis)
+  > Run **`quark`** in your Shell, if not found, check [official docs](https://github.com/quark-engine/quark-engine).
 
 ## Extension Settings
 
@@ -153,6 +157,7 @@ For bug reports, feature requests or simply discussing an idea, please open an i
 - [Feimaomii](https://github.com/Feimaomii) for the awesome logo
 - [Aman Sharma](https://github.com/amsharma44) for active contribution
 - [Niklas Higi](https://github.com/shroudedcode) for apk-mitm
+- [Shaun Dang](https://github.com/pulorsok), [JunWei Song](https://github.com/krnick) & [KunYu Chen](https://github.com/18z) for Quark-Engine
 - [iBotPeaches](https://github.com/iBotPeaches), [brutall](https://github.com/brutall) and [JesusFreke](https://github.com/JesusFreke) for Apktool & Smali
 - [patrickfav](https://github.com/patrickfav) for uber-apk-signer
 - [skylot](https://github.com/skylot) for Jadx
