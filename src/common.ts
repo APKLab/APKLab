@@ -5,7 +5,7 @@ import * as vscode from "vscode";
 /**
  * Name of the OutputChannel for the extension.
  */
-const outputChannelName = "APK Lab";
+const outputChannelName = "APKLab";
 
 /**
  * Output channel to write output data to.

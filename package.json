@@ -1,6 +1,6 @@
 {
     "name": "apklab",
-    "displayName": "APK Lab",
+    "displayName": "APKLab",
     "description": "Android Reverse Engineering WorkBench",
     "publisher": "Surendrajat",
     "version": "1.2.0",
@@ -148,7 +148,7 @@
             ]
         },
         "configuration": {
-            "title": "APK Lab",
+            "title": "APKLab",
             "properties": {
                 "apklab.apktoolPath": {
                     "type": "string",
