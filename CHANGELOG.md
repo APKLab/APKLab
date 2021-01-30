@@ -1,5 +1,19 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Integrated [Quark-Engine](https://github.com/quark-engine/quark-engine) for Malware Analysis (thanks [Shaun Dang](https://github.com/pulorsok))
+- Integrated [apk-mitm](https://github.com/shroudedcode/apk-mitm) natively (thanks [Niklas Higi](https://github.com/shroudedcode))
+- Initialize decoded project directory as Git repo (thanks [Aman](https://github.com/amsharma44))
+- Add [**Smalise**](https://github.com/LoyieKing/Smalise) as an extension dependency
+- Various code-quality improvements and integration tests
+
+### Fixed
+
+- Don't decode `assets/*.dex` by default (Apktool)
+
 ## [1.2.0] - 2020-12-20
 
 ### Added
