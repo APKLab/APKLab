@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- apk-mitm updated to v0.11.1
+
 ## [1.3.0] - 2020-01-30
 
 ### Added

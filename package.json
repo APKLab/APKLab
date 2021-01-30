@@ -226,7 +226,7 @@
         "webpack-cli": "^4.2.0"
     },
     "dependencies": {
-        "apk-mitm": "^0.11.0",
+        "apk-mitm": "^0.11.1",
         "extract-zip": "^2.0.1"
     }
 }
