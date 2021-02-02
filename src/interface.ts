@@ -91,7 +91,7 @@ export namespace UI {
                     await Quark.analyzeAPK(apkFilePath, projectDir);
                 }
 
-                // Initialize decoded dir as git repo
+                // Initialize project dir as git repo
                 await initGitDir(projectDir, "Initial APKLab project");
             }
         } else {

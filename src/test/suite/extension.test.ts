@@ -79,7 +79,7 @@ describe("Extension Test Suite", function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         const projectDir = path.resolve(simpleKeyboardDir, "test");
 
-        console.log(`Decoding ${testApkPath}...`);
+        console.log(`Analyzing ${testApkPath}...`);
         await Quark.analyzeAPK(testApkPath, projectDir);
 
         // Testing report generate
