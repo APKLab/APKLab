@@ -219,7 +219,7 @@
         "glob": "^7.1.6",
         "mocha": "^8.2.1",
         "prettier": "^2.2.1",
-        "ts-loader": "^8.0.10",
+        "ts-loader": "^8.0.14",
         "typescript": "^4.1.3",
         "vsce": "^1.85.0",
         "vscode-test": "^1.5.0",
