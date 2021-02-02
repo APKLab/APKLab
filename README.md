@@ -1,6 +1,6 @@
 <h1 align="center">
-  <a href="https://github.com/surendrajat/apklab">
-    <img src="https://raw.githubusercontent.com/surendrajat/apklab/master/assets/icon.png" alt="APKLab" height="96px" width="100px">
+  <a href="https://apklab.surendrajat.xyz">
+    <img src="https://raw.githubusercontent.com/APKLab/apklab/master/assets/icon.png" alt="APKLab" height="96px" width="100px">
   </a>
   <br>
   APKLab
@@ -15,7 +15,7 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 </p>
 
 <p align="center">
-    <a href="https://github.com/surendrajat/apklab">
+    <a href="https://github.com/APKLab/APKLab">
         <img alt="Version" src="https://img.shields.io/visual-studio-marketplace/v/surendrajat.apklab?color=f0f0e0&labelColor=404752">
     </a>
     <a href="https://open-vsx.org/extension/Surendrajat/apklab">
@@ -24,8 +24,8 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
         <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab?logo=visual-studio-code&logoColor=blue&labelColor=404752&color=blue">
     </a>
-    <a href="https://github.com/Surendrajat/APKLab/actions?query=workflow%3A%22CI%22">
-        <img alt="CI" src="https://github.com/Surendrajat/APKLab/workflows/CI/badge.svg?branch=master&event=push">
+    <a href="https://github.com/APKLab/APKLab/actions?query=workflow%3A%22CI%22">
+        <img alt="CI" src="https://github.com/APKLab/APKLab/workflows/CI/badge.svg?branch=master&event=push">
     </a>
 </p>
 <p align="center">
@@ -67,7 +67,7 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 
 - Open the Command Palette (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) ➜ <kbd>APKLab: Open an APK</kbd>
 
-  ![decode.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/decode.gif)
+  ![decode.gif](https://github.com/APKLab/APKLab/raw/master/assets/decode.gif)
 
 - Or Just open an existing Apktool project folder
 
@@ -75,19 +75,19 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 
 - Right-Click on or inside `apktool.yml` file ➜ <kbd>APKLab: Prepare for HTTPS inspection</kbd>
 
-  ![mitm.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/mitm.gif)
+  ![mitm.gif](https://github.com/APKLab/APKLab/raw/master/assets/mitm.gif)
 
 #### ReBuild and Sign APK
 
 - Right-Click on or inside `apktool.yml` file ➜ <kbd>APKLab: Rebuild the APK</kbd>
 
-  ![rebuild.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/rebuild.gif)
+  ![rebuild.gif](https://github.com/APKLab/APKLab/raw/master/assets/rebuild.gif)
 
 #### Install APK to device
 
 - Right-Click on `.apk` file (in `dist` directory) ➜ <kbd>APKLab: Install the APK</kbd>
 
-  ![install.gif](https://github.com/Surendrajat/APKLab/raw/master/assets/install.gif)
+  ![install.gif](https://github.com/APKLab/APKLab/raw/master/assets/install.gif)
 
 #### Clean ApkTool frameworks dir
 
@@ -148,9 +148,9 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 
 ## Contribution Guide
 
-For bug reports, feature requests or simply discussing an idea, please open an issue [here](https://github.com/Surendrajat/APKLab/issues). PRs are always welcome.
+For bug reports, feature requests or simply discussing an idea, please open an issue [here](https://github.com/APKLab/APKLab/issues). PRs are always welcome.
 
-## [Changelog](https://github.com/Surendrajat/APKLab/blob/master/CHANGELOG.md)
+## [Changelog](https://github.com/APKLab/APKLab/blob/master/CHANGELOG.md)
 
 ## Credits
 
