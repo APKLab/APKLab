@@ -2,7 +2,8 @@ import * as assert from "assert";
 import * as path from "path";
 import * as fs from "fs";
 import { updateTools } from "../../downloader";
-import { apktool } from "../../tools";
+import { apktool, jadx } from "../../tools";
+import { Quark } from "../../quark-tools";
 
 describe("Extension Test Suite", function () {
     this.timeout(600000);
@@ -35,8 +36,9 @@ describe("Extension Test Suite", function () {
     // test the Decode feature (uses ApkTool)
     it("Decode SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        const projectDir = path.resolve(simpleKeyboardDir, "test");
         console.log(`Decoding ${testApkPath}...`);
-        await apktool.decodeAPK(testApkPath, [], false, false);
+        await apktool.decodeAPK(testApkPath, projectDir, []);
         const jsonFilePath = path.join(simpleKeyboardDir, "decoded_files.json");
         const jsonFileData = fs.readFileSync(jsonFilePath, "utf-8");
         const decodedFiles: string[] = JSON.parse(jsonFileData);
@@ -51,16 +53,17 @@ describe("Extension Test Suite", function () {
     // test the Decompile feature (uses Jadx)
     it("Decompile SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        const projectDir = path.resolve(simpleKeyboardDir, "test");
         console.log(`Decompiling ${testApkPath}...`);
-        await apktool.decodeAPK(testApkPath, [], true, false);
+        await jadx.decompileAPK(testApkPath, projectDir);
         const jsonFilePath = path.join(
             simpleKeyboardDir,
             "decompiled_files.json"
         );
         const jsonFileData = fs.readFileSync(jsonFilePath, "utf-8");
-        const decodedFiles: string[] = JSON.parse(jsonFileData);
+        const decompiledFiles: string[] = JSON.parse(jsonFileData);
         console.log("Comparing file list...");
-        decodedFiles.forEach((file) => {
+        decompiledFiles.forEach((file) => {
             if (
                 !fs.existsSync(
                     path.join(simpleKeyboardDir, "test", "java_src", file)
@@ -74,8 +77,10 @@ describe("Extension Test Suite", function () {
     // Quark test unit
     it("Quark-engine Analysis", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        const projectDir = path.resolve(simpleKeyboardDir, "test");
+
         console.log(`Decoding ${testApkPath}...`);
-        await apktool.decodeAPK(testApkPath, [], false, true);
+        await Quark.analyzeAPK(testApkPath, projectDir);
 
         // Testing report generate
         const reportJsonSamplePath = path.join(
@@ -105,8 +110,10 @@ describe("Extension Test Suite", function () {
     // test the Rebuild & Sign feature (uses ApkTool & uber-apk-signer)
     it("Rebuild SimpleKeyboard.apk", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        const projectDir = path.resolve(simpleKeyboardDir, "test");
+
         console.log(`Decoding ${testApkPath}...`);
-        await apktool.decodeAPK(testApkPath, [], false, false);
+        await apktool.decodeAPK(testApkPath, projectDir, []);
         const apktoolYmlPath = path.resolve(
             simpleKeyboardDir,
             "test",

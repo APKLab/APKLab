@@ -140,7 +140,7 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 <details>
   <summary>Additional configuration</summary>
 
-- **`apklab.initDecodedDirAsGit`**: Initialize decoded APK directory as **Git** repository.
+- **`apklab.initProjectDirAsGit`**: Initialize project output directory as **Git** repository.
 
 </details>
 

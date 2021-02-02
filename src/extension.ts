@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext): void {
         async () => {
             updateTools()
                 .then(async () => {
-                    UI.decompileAPK();
+                    UI.openApkFile();
                 })
                 .catch(() => {
                     outputChannel.appendLine(

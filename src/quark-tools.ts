@@ -278,13 +278,13 @@ export namespace Quark {
     /**
      * Analyzing APK using Quark-Engine.
      * @param apkFilePath The path of APK file.
-     * @param apkDecodedDir The path of the decoded directory.
+     * @param projectDir project output dir for decode/decompile/analysis.
      */
     export async function analyzeAPK(
         apkFilePath: string,
-        apkDecodedDir: string
+        projectDir: string
     ): Promise<void> {
-        const reportPath = path.join(apkDecodedDir, `quarkReport.json`);
+        const reportPath = path.join(projectDir, `quarkReport.json`);
         const script = `quark -a ${apkFilePath} -o ${reportPath}`;
 
         await vscode.window.withProgress(
