@@ -21,7 +21,6 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
     <a href="https://open-vsx.org/extension/Surendrajat/apklab">
         <img alt="Download" src="https://img.shields.io/static/v1?label=get%20from&message=open-vsx&color=629&labelColor=404752">
     </a>
-<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FAPKLab%2FAPKLab?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FAPKLab%2FAPKLab.svg?type=shield"/></a>
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
         <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab?logo=visual-studio-code&logoColor=blue&labelColor=404752&color=blue">
     </a>
