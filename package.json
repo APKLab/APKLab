@@ -9,6 +9,7 @@
     "engines": {
         "vscode": "^1.45.0"
     },
+    "homepage": "https://apklab.surendrajat.xyz",
     "repository": {
         "type": "git",
         "url": "https://github.com/APKLab/APKLab.git"
