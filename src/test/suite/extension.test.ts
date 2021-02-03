@@ -78,6 +78,7 @@ describe("Extension Test Suite", function () {
     it("Quark-engine Analysis", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         const projectDir = path.resolve(simpleKeyboardDir, "test");
+        fs.mkdirSync(projectDir);
 
         console.log(`Analyzing ${testApkPath}...`);
         await Quark.analyzeAPK(testApkPath, projectDir);

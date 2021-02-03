@@ -74,7 +74,7 @@ export namespace UI {
                     path.dirname(apkFilePath),
                     path.parse(apkFilePath).name
                 );
-                // don't delete the existing dir if it does exist
+                // don't delete the existing dir if it already exists
                 while (fs.existsSync(projectDir)) {
                     projectDir = projectDir + "1";
                 }
