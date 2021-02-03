@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as fs from "fs";
-import { QuickPickItem, window } from "vscode";
+import { commands, QuickPickItem, Uri, window } from "vscode";
 import { apktool, initGitDir, jadx } from "./tools";
 import { outputChannel } from "./common";
 import { quickPickUtil } from "./quick-pick.util";
@@ -68,7 +68,7 @@ export namespace UI {
                     }
                 }
 
-                // project directory
+                // project directory name
                 const apkFilePath = result[0].fsPath;
                 let projectDir = path.join(
                     path.dirname(apkFilePath),
@@ -93,6 +93,15 @@ export namespace UI {
 
                 // Initialize project dir as git repo
                 await initGitDir(projectDir, "Initial APKLab project");
+
+                // open project dir in a new window
+                if (!process.env["TEST"]) {
+                    await commands.executeCommand(
+                        "vscode.openFolder",
+                        Uri.file(projectDir),
+                        true
+                    );
+                }
             }
         } else {
             outputChannel.appendLine("APKLAB: no APK file was chosen");
