@@ -74,7 +74,7 @@ describe("Extension Test Suite", function () {
         });
     });
 
-    // Quark test unit
+    // test the Malware Analysis feature (uses Quark-Engine)
     it("Quark-engine Analysis", async function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         const projectDir = path.resolve(simpleKeyboardDir, "test");
@@ -83,7 +83,7 @@ describe("Extension Test Suite", function () {
         console.log(`Analyzing ${testApkPath}...`);
         await Quark.analyzeAPK(testApkPath, projectDir);
 
-        // Testing report generate
+        // Testing report generation
         const reportJsonSamplePath = path.join(
             simpleKeyboardDir,
             "quark_report.json"

@@ -7,7 +7,7 @@ import { outputChannel } from "./common";
 import { quarkSummaryReportHTML } from "./quark_html";
 /**
  * Read and parse the JSON file of quark analysis report.
- * @param reportPath The path of the report file.
+ * @param reportPath The path of the `quarkReport.json` file.
  * @returns return parsed report data.
  */
 function parseReport(reportPath: string) {
@@ -35,14 +35,14 @@ function parseReport(reportPath: string) {
                 const parentFunction: string[] = items[0].split(" ");
                 const apiCalls: any = items[1];
 
-                const parentClassname = parentFunction[0].replace(";", "");
+                const parentClassName = parentFunction[0].replace(";", "");
                 delete parentFunction[0];
                 const parentMethodName: string = parentFunction.join("");
                 const functionId = `${crimeId}-f${functionIndex}`;
 
                 newFunctionObj[functionId] = {
                     function: {
-                        class: parentClassname,
+                        class: parentClassName,
                         method: parentMethodName,
                     },
                     apis: [apiCalls["first"], apiCalls["second"]],
@@ -153,20 +153,20 @@ function getApiCallPosition(
 
 /**
  * Search and highlight where APIs called in source code.
- * @param apkDecodeDir The path of the decoded directory.
+ * @param projectDir project output dir for decode/decompile/analysis.
  * @param parentFunction The data of parent function where APIs called from.
  * @param apiCalls The smali code that executes native APIs.
  */
 function navigateSourceCode(
-    apkDecodeDir: string,
+    projectDir: string,
     parentFunction: any,
     apiCalls: Array<any>
 ) {
-    const smaliPath = functionToPath(apkDecodeDir, parentFunction);
+    const smaliPath = functionToPath(projectDir, parentFunction);
     vscode.workspace.openTextDocument(smaliPath).then((doc) => {
         vscode.window.showTextDocument(doc, vscode.ViewColumn.One).then((e) => {
-            const parentdecorationsArray: vscode.DecorationOptions[] = [];
-            const apidecorationsArray: vscode.DecorationOptions[] = [];
+            const parentDecorationsArray: vscode.DecorationOptions[] = [];
+            const apiDecorationsArray: vscode.DecorationOptions[] = [];
 
             const mdSegment: number[] | false = searchFunctionSegment(
                 doc,
@@ -204,8 +204,8 @@ function navigateSourceCode(
             const secApiDecoration = {
                 range: new vscode.Range(secApi, secApi),
             };
-            apidecorationsArray.push(fstApiDecoration);
-            apidecorationsArray.push(secApiDecoration);
+            apiDecorationsArray.push(fstApiDecoration);
+            apiDecorationsArray.push(secApiDecoration);
 
             const methodSegmentDecoration = {
                 range: new vscode.Range(
@@ -213,9 +213,9 @@ function navigateSourceCode(
                     new vscode.Position(mdSegment[1], 0)
                 ),
             };
-            parentdecorationsArray.push(methodSegmentDecoration);
+            parentDecorationsArray.push(methodSegmentDecoration);
 
-            const parentdecorationType = vscode.window.createTextEditorDecorationType(
+            const parentDecorationType = vscode.window.createTextEditorDecorationType(
                 {
                     isWholeLine: true,
                     dark: {
@@ -226,7 +226,7 @@ function navigateSourceCode(
                     },
                 }
             );
-            const apidecorationType = vscode.window.createTextEditorDecorationType(
+            const apiDecorationType = vscode.window.createTextEditorDecorationType(
                 {
                     fontWeight: "bold",
                     isWholeLine: true,
@@ -239,8 +239,8 @@ function navigateSourceCode(
                 }
             );
 
-            e.setDecorations(parentdecorationType, parentdecorationsArray);
-            e.setDecorations(apidecorationType, apidecorationsArray);
+            e.setDecorations(parentDecorationType, parentDecorationsArray);
+            e.setDecorations(apiDecorationType, apiDecorationsArray);
 
             e.selection = new vscode.Selection(
                 parentFunctionPosition,
@@ -337,10 +337,10 @@ export namespace Quark {
 
     /**
      * Show Quark APK analysis report in WebView panel.
-     * @param reportPath the path of the report file.
+     * @param reportPath the path of the `quarkReport.json` file.
      */
     export async function showSummaryReport(reportPath: string): Promise<void> {
-        const apkDecodeDir = path.dirname(reportPath);
+        const projectDir = path.dirname(reportPath);
         const report: any = parseReport(reportPath);
 
         await vscode.commands.executeCommand(
@@ -362,7 +362,7 @@ export namespace Quark {
             switch (message.command) {
                 case "navigate":
                     navigateSourceCode(
-                        apkDecodeDir,
+                        projectDir,
                         report[message.cid]["api_call"][message.functionId][
                             "function"
                         ],

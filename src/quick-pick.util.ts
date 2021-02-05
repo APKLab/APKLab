@@ -7,7 +7,7 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
     rebuildQuickPickItems: [
         {
             label: "--use-aapt2",
-            detail: "Use the aapt2 binary instead of appt",
+            detail: "Use the aapt2 binary instead of aapt",
             alwaysShow: true,
             picked: true,
         },
@@ -78,13 +78,13 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
 };
 
 export namespace quickPickUtil {
-    export function getQuickPickItems(catagory: string): QuickPickItem[] {
-        return quickPickItems[catagory];
+    export function getQuickPickItems(category: string): QuickPickItem[] {
+        return quickPickItems[category];
     }
 
-    export function setQuickPickDefault(catagory: string, label: string): void {
-        if (quickPickItems[catagory]) {
-            const targetOption = quickPickItems[catagory].filter(
+    export function setQuickPickDefault(category: string, label: string): void {
+        if (quickPickItems[category]) {
+            const targetOption = quickPickItems[category].filter(
                 (x) => x.label === label
             )[0];
             if (targetOption) {
