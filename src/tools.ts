@@ -375,7 +375,7 @@ export namespace jadx {
         const apkDecompileDir = path.join(projectDir, "java_src");
         const apkFileName = path.basename(apkFilePath);
         const report = `Decompiling ${apkFileName} into ${apkDecompileDir}`;
-        const args = ["-r", "-v", "-ds", apkDecompileDir, apkFilePath];
+        const args = ["-r", "-q", "-v", "-ds", apkDecompileDir, apkFilePath];
         await executeProcess({
             name: "Decompiling",
             report: report,
