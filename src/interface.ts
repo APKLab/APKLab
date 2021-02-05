@@ -1,5 +1,7 @@
-import { QuickPickItem, window } from "vscode";
-import { apktool } from "./tools";
+import * as path from "path";
+import * as fs from "fs";
+import { commands, QuickPickItem, Uri, window } from "vscode";
+import { apktool, initGitDir, jadx } from "./tools";
 import { outputChannel } from "./common";
 import { quickPickUtil } from "./quick-pick.util";
 import { Quark } from "./quark-tools";
@@ -28,7 +30,7 @@ export namespace UI {
     /**
      * Show a APK file chooser window and decompile that APK.
      */
-    export async function decompileAPK(): Promise<void> {
+    export async function openApkFile(): Promise<void> {
         // browse for an APK file
         const result = await window.showOpenDialog({
             canSelectFolders: false,
@@ -40,7 +42,7 @@ export namespace UI {
         if (result && result.length === 1) {
             const args = await showArgsQuickPick(
                 quickPickUtil.getQuickPickItems("decodeQuickPickItems"),
-                "Additional apktool/jadx arguments"
+                "Additional features & Apktool/Jadx arguments"
             );
             if (args) {
                 const decompileJavaIndex = args.indexOf("decompile_java");
@@ -65,12 +67,41 @@ export namespace UI {
                         return;
                     }
                 }
-                await apktool.decodeAPK(
-                    result[0].fsPath,
-                    args,
-                    decompileJava,
-                    quarkAnalysis
+
+                // project directory name
+                const apkFilePath = result[0].fsPath;
+                let projectDir = path.join(
+                    path.dirname(apkFilePath),
+                    path.parse(apkFilePath).name
                 );
+                // don't delete the existing dir if it already exists
+                while (fs.existsSync(projectDir)) {
+                    projectDir = projectDir + "1";
+                }
+
+                // decode APK
+                await apktool.decodeAPK(apkFilePath, projectDir, args);
+
+                // decompile APK
+                if (decompileJava) {
+                    await jadx.decompileAPK(apkFilePath, projectDir);
+                }
+                // quark analysis
+                if (quarkAnalysis) {
+                    await Quark.analyzeAPK(apkFilePath, projectDir);
+                }
+
+                // Initialize project dir as git repo
+                await initGitDir(projectDir, "Initial APKLab project");
+
+                // open project dir in a new window
+                if (!process.env["TEST"]) {
+                    await commands.executeCommand(
+                        "vscode.openFolder",
+                        Uri.file(projectDir),
+                        true
+                    );
+                }
             }
         } else {
             outputChannel.appendLine("APKLAB: no APK file was chosen");
@@ -84,7 +115,7 @@ export namespace UI {
     export async function rebuildAPK(apktoolYmlPath: string): Promise<void> {
         const args = await showArgsQuickPick(
             quickPickUtil.getQuickPickItems("rebuildQuickPickItems"),
-            "Additional apktool arguments"
+            "Additional Apktool arguments"
         );
         if (args) {
             await apktool.rebuildAPK(apktoolYmlPath, args);

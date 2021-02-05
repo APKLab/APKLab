@@ -23,10 +23,10 @@ export async function applyMitmPatches(apktoolYmlPath: string): Promise<void> {
             `Using apk-mitm v${APK_MITM_VERSION} (https://github.com/shroudedcode/apk-mitm)\n`
         );
 
-        const decodeDir = path.dirname(apktoolYmlPath);
+        const projectDir = path.dirname(apktoolYmlPath);
 
         await apkMitm
-            .observeListr(apkMitm.applyPatches(decodeDir))
+            .observeListr(apkMitm.applyPatches(projectDir))
             .forEach((line) => outputChannel.appendLine(line));
 
         outputChannel.appendLine("\nSuccessfully applied MITM patches!");

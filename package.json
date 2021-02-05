@@ -186,10 +186,10 @@
                     "default": "",
                     "markdownDescription": "Put the **password** of the used key in the keystore here."
                 },
-                "apklab.initDecodedDirAsGit": {
+                "apklab.initProjectDirAsGit": {
                     "type": "boolean",
                     "default": "true",
-                    "markdownDescription": "Initialize decoded APK directory as **Git** repository."
+                    "markdownDescription": "Initialize project output directory as **Git** repository."
                 }
             }
         }
