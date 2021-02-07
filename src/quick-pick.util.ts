@@ -40,11 +40,6 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
             description: "[Use Quark-Engine]",
         },
         {
-            label: "decompile_java",
-            detail: "Decompiles APK to Java source using Jadx",
-            description: "[Use Jadx]",
-        },
-        {
             label: "--no-src",
             detail: "Do not decompile dex to smali (-s)",
             alwaysShow: true,
@@ -73,6 +68,35 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
             label: "--no-debug-info",
             detail:
                 "Prevents baksmali from writing out debug info (.local, .param, .line, etc). (-b)",
+        },
+        {
+            label: "decompile_java",
+            detail: "Decompiles APK to Java source using Jadx",
+            description: "[Use Jadx]",
+        },
+        {
+            label: "--deobf",
+            detail: "Activate deobfuscation for Jadx",
+            alwaysShow: true,
+        },
+        {
+            label: "--deobf-min",
+            detail:
+                "Set the minimal length of name during deobfuscation, renamed if shorter, default: 3",
+        },
+        {
+            label: "--deobf-max",
+            detail:
+                "Set the maximal length of name during deobfuscation, renamed if longer, default: 64",
+        },
+        {
+            label: "--deobf-rewrite-cfg",
+            detail: "Force to save deobfuscation map",
+        },
+        {
+            label: "--deobf-use-sourcename",
+            detail:
+                "Use source file name as class name alias during deobfuscation",
         },
     ],
 };

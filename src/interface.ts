@@ -49,10 +49,7 @@ export namespace UI {
                 const quarkAnalysisIndex = args.indexOf("quark_analysis");
                 let decompileJava = false;
                 let quarkAnalysis = false;
-                if (decompileJavaIndex > -1) {
-                    decompileJava = true;
-                    args.splice(decompileJavaIndex, 1);
-                }
+                let jadxArgs: string[] = [];
                 if (quarkAnalysisIndex > -1) {
                     quarkAnalysis = true;
                     args.splice(quarkAnalysisIndex, 1);
@@ -66,6 +63,11 @@ export namespace UI {
                         );
                         return;
                     }
+                }
+                if (decompileJavaIndex > -1) {
+                    decompileJava = true;
+                    args.splice(decompileJavaIndex, 1);
+                    jadxArgs = args.splice(decompileJavaIndex);
                 }
 
                 // project directory name
@@ -84,7 +86,7 @@ export namespace UI {
 
                 // decompile APK
                 if (decompileJava) {
-                    await jadx.decompileAPK(apkFilePath, projectDir);
+                    await jadx.decompileAPK(apkFilePath, projectDir, jadxArgs);
                 }
                 // quark analysis
                 if (quarkAnalysis) {
