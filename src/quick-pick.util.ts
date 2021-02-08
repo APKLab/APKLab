@@ -40,63 +40,44 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
             description: "[Use Quark-Engine]",
         },
         {
-            label: "--no-src",
-            detail: "Do not decompile dex to smali (-s)",
-            alwaysShow: true,
-        },
-        {
-            label: "--no-res",
-            detail: "Do not decompile resources (-r)",
-            alwaysShow: true,
-        },
-        {
-            label: "--force-manifest",
-            detail:
-                "Forces decode of AndroidManifest regardless of decoding of resources flag.",
-        },
-        {
-            label: "--no-assets",
-            detail: "Prevents decoding/copying of unknown asset files.",
-            alwaysShow: true,
-        },
-        {
-            label: "--only-main-classes",
-            detail: "Only disassemble dex classes in root (classes[0-9]*.dex)",
-            picked: true,
-        },
-        {
-            label: "--no-debug-info",
-            detail:
-                "Prevents baksmali from writing out debug info (.local, .param, .line, etc). (-b)",
-        },
-        {
             label: "decompile_java",
             detail: "Decompiles APK to Java source using Jadx",
             description: "[Use Jadx]",
         },
         {
-            label: "--deobf",
-            detail: "Activate deobfuscation for Jadx",
+            label: "--no-src (apktool)",
+            detail: "Do not decompile dex to smali (-s)",
             alwaysShow: true,
         },
         {
-            label: "--deobf-min",
-            detail:
-                "Set the minimal length of name during deobfuscation, renamed if shorter, default: 3",
+            label: "--no-res (apktool)",
+            detail: "Do not decompile resources (-r)",
+            alwaysShow: true,
         },
         {
-            label: "--deobf-max",
+            label: "--force-manifest (apktool)",
             detail:
-                "Set the maximal length of name during deobfuscation, renamed if longer, default: 64",
+                "Forces decode of AndroidManifest regardless of decoding of resources flag.",
         },
         {
-            label: "--deobf-rewrite-cfg",
-            detail: "Force to save deobfuscation map",
+            label: "--no-assets (apktool)",
+            detail: "Prevents decoding/copying of unknown asset files.",
+            alwaysShow: true,
         },
         {
-            label: "--deobf-use-sourcename",
+            label: "--only-main-classes (apktool)",
+            detail: "Only disassemble dex classes in root (classes[0-9]*.dex)",
+            picked: true,
+        },
+        {
+            label: "--no-debug-info (apktool)",
             detail:
-                "Use source file name as class name alias during deobfuscation",
+                "Prevents baksmali from writing out debug info (.local, .param, .line, etc). (-b)",
+        },
+        {
+            label: "--deobf (jadx)",
+            detail: "Activate deobfuscation for Jadx",
+            alwaysShow: true,
         },
     ],
 };
