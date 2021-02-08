@@ -195,7 +195,7 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "npm run clean && webpack --mode production",
+        "vscode:prepublish": "npm run clean && webpack --mode production --devtool hidden-source-map",
         "compile": "tsc -p ./",
         "lint": "eslint src --ext ts && prettier --check .",
         "fix": "prettier --write . && eslint src --ext ts --fix",
@@ -203,7 +203,7 @@
         "pretest": "npm run compile",
         "test": "node ./out/test/runTest.js",
         "package": "vsce package",
-        "watch": "webpack --mode development --watch"
+        "watch": "webpack --watch"
     },
     "devDependencies": {
         "@types/glob": "^7.1.3",
