@@ -55,7 +55,7 @@ describe("Extension Test Suite", function () {
         const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
         const projectDir = path.resolve(simpleKeyboardDir, "test");
         console.log(`Decompiling ${testApkPath}...`);
-        await jadx.decompileAPK(testApkPath, projectDir);
+        await jadx.decompileAPK(testApkPath, projectDir, []);
         const jsonFilePath = path.join(
             simpleKeyboardDir,
             "decompiled_files.json"

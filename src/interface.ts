@@ -24,7 +24,9 @@ export namespace UI {
             matchOnDescription: true,
             ignoreFocusOut: true,
         });
-        return result ? result.map<string>((item) => item.label) : undefined;
+        return result
+            ? result.map<string>((item) => item.label.split(" ")[0])
+            : undefined;
     }
 
     /**
@@ -47,8 +49,13 @@ export namespace UI {
             if (args) {
                 const decompileJavaIndex = args.indexOf("decompile_java");
                 const quarkAnalysisIndex = args.indexOf("quark_analysis");
+                const jadxOptionsIndex = args.indexOf("--deobf");
                 let decompileJava = false;
                 let quarkAnalysis = false;
+                let jadxArgs: string[] = [];
+                if (jadxOptionsIndex > -1) {
+                    jadxArgs = args.splice(jadxOptionsIndex, 1);
+                }
                 if (decompileJavaIndex > -1) {
                     decompileJava = true;
                     args.splice(decompileJavaIndex, 1);
@@ -84,7 +91,7 @@ export namespace UI {
 
                 // decompile APK
                 if (decompileJava) {
-                    await jadx.decompileAPK(apkFilePath, projectDir);
+                    await jadx.decompileAPK(apkFilePath, projectDir, jadxArgs);
                 }
                 // quark analysis
                 if (quarkAnalysis) {

@@ -359,10 +359,12 @@ export namespace jadx {
      * Decompile the APK file to Java source using **Jadx**.
      * @param apkFilePath path of the APK file.
      * @param projectDir project output dir for decode/decompile/analysis.
+     * @param jadxArgs array of additional args passed to **Jadx**.
      */
     export async function decompileAPK(
         apkFilePath: string,
-        projectDir: string
+        projectDir: string,
+        jadxArgs: string[]
     ): Promise<void> {
         const extensionConfig = vscode.workspace.getConfiguration(
             extensionConfigName
@@ -375,7 +377,10 @@ export namespace jadx {
         const apkDecompileDir = path.join(projectDir, "java_src");
         const apkFileName = path.basename(apkFilePath);
         const report = `Decompiling ${apkFileName} into ${apkDecompileDir}`;
-        const args = ["-r", "-q", "-v", "-ds", apkDecompileDir, apkFilePath];
+        let args = ["-r", "-q", "-v", "-ds", apkDecompileDir, apkFilePath];
+        if (jadxArgs && jadxArgs.length > 0) {
+            args = jadxArgs.concat(args);
+        }
         await executeProcess({
             name: "Decompiling",
             report: report,
