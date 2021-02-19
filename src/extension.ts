@@ -1,3 +1,5 @@
+import * as fs from "fs";
+import * as path from "path";
 import * as vscode from "vscode";
 import { outputChannel } from "./data/constants";
 import { updateTools } from "./utils/downloader";
@@ -88,4 +90,17 @@ export function activate(context: vscode.ExtensionContext): void {
         emptyFrameworkDirCommand,
         quarkReportCommand
     );
+
+    // check if open folder contains `quarkReport.json` file
+    // if it exists, show it as a report on open
+    const folders = vscode.workspace.workspaceFolders;
+    if (folders && folders.length > 0) {
+        const quarkReportFile = path.join(
+            folders[0].uri.fsPath,
+            "quarkReport.json"
+        );
+        if (fs.existsSync(quarkReportFile)) {
+            Quark.showSummaryReport(quarkReportFile);
+        }
+    }
 }

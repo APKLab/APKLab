@@ -294,9 +294,6 @@ export namespace Quark {
             command: "quark",
             args: ["-a", apkFilePath, "-o", jsonReportPath],
             shouldExist: jsonReportPath,
-            onSuccess: () => {
-                showSummaryReport(jsonReportPath);
-            },
         });
     }
 
