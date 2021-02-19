@@ -3,8 +3,8 @@ import * as fs from "fs";
 import * as child_process from "child_process";
 import * as vscode from "vscode";
 import * as glob from "glob";
-import { outputChannel } from "./common";
-import { quarkSummaryReportHTML } from "./quark_html";
+import { outputChannel } from "../data/constants";
+import { quarkSummaryReportHTML } from "../utils/quark-html";
 /**
  * Read and parse the JSON file of quark analysis report.
  * @param reportPath The path of the `quarkReport.json` file.

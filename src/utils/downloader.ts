@@ -4,8 +4,12 @@ import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
 import * as extract from "extract-zip";
-import { extensionConfigName, apklabDataDir, outputChannel } from "./common";
-import * as config from "./config.json";
+import {
+    extensionConfigName,
+    apklabDataDir,
+    outputChannel,
+} from "../data/constants";
+import * as config from "../data/config.json";
 
 /**
  * Tool details for downloading it if it doesn't exist.

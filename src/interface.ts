@@ -1,10 +1,12 @@
 import * as path from "path";
 import * as fs from "fs";
 import { commands, QuickPickItem, Uri, window } from "vscode";
-import { apktool, initGitDir, jadx } from "./tools";
-import { outputChannel } from "./common";
-import { quickPickUtil } from "./quick-pick.util";
-import { Quark } from "./quark-tools";
+import { outputChannel } from "./data/constants";
+import { quickPickUtil } from "./utils/quick-picks";
+import { Quark } from "./tools/quark-engine";
+import { apktool } from "./tools/apktool";
+import { initGitDir } from "./tools/git";
+import { jadx } from "./tools/jadx";
 
 export namespace UI {
     /**
