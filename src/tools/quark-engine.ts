@@ -341,7 +341,7 @@ export namespace Quark {
      */
     export async function showSummaryReport(reportPath: string): Promise<void> {
         const projectDir = path.dirname(reportPath);
-        const report: any = parseReport(reportPath);
+        const report: { [key: string]: any } = parseReport(reportPath);
 
         await vscode.commands.executeCommand(
             "workbench.action.editorLayoutTwoColumns"
