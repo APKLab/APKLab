@@ -5,7 +5,7 @@ import { outputChannel } from "./data/constants";
 import { quickPickUtil } from "./utils/quick-picks";
 import { Quark } from "./tools/quark-engine";
 import { apktool } from "./tools/apktool";
-import { initGitDir } from "./tools/git";
+import { git } from "./tools/git";
 import { jadx } from "./tools/jadx";
 
 export namespace UI {
@@ -101,7 +101,7 @@ export namespace UI {
                 }
 
                 // Initialize project dir as git repo
-                await initGitDir(projectDir, "Initial APKLab project");
+                await git.initGitDir(projectDir, "Initial APKLab project");
 
                 // open project dir in a new window
                 if (!process.env["TEST"]) {

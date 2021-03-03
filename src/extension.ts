@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { outputChannel } from "./data/constants";
 import { updateTools } from "./utils/downloader";
 import { UI } from "./interface";
-import { applyMitmPatches } from "./tools/apk-mitm";
+import { apkMitm } from "./tools/apk-mitm";
 import { Quark } from "./tools/quark-engine";
 import { adb } from "./tools/adb";
 import { apktool } from "./tools/apktool";
@@ -53,7 +53,7 @@ export function activate(context: vscode.ExtensionContext): void {
     // command for patching files for https inspection
     const patchApkForHttpsCommand = vscode.commands.registerCommand(
         "apklab.patchApkForHttps",
-        (uri: vscode.Uri) => applyMitmPatches(uri.fsPath)
+        (uri: vscode.Uri) => apkMitm.applyMitmPatches(uri.fsPath)
     );
 
     // command to empty apktool framework resource dir
