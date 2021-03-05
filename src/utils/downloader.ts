@@ -14,7 +14,7 @@ import * as config from "../data/config.json";
 /**
  * Tool details for downloading it if it doesn't exist.
  */
-interface Tool {
+type Tool = {
     /**
      * Name of the tool.
      */
@@ -43,7 +43,7 @@ interface Tool {
      * If it's a zip file then where to extract it?
      */
     unzipDir?: string;
-}
+};
 
 /**
  * Check the tools from `config.json`

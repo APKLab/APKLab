@@ -6,7 +6,7 @@ import { outputChannel } from "../data/constants";
 /**
  * Options for executeProcess function.
  */
-interface ProcessOptions {
+type ProcessOptions = {
     /**
      * Name of the process. Eg: `Decoding`.
      */
@@ -35,7 +35,7 @@ interface ProcessOptions {
      * Execute command using shell
      */
     shell?: boolean;
-}
+};
 
 /**
  * Executes a child_process and calls a callback if provided.
