@@ -3,8 +3,9 @@ import * as fs from "fs";
 import * as child_process from "child_process";
 import * as vscode from "vscode";
 import * as glob from "glob";
-import { outputChannel } from "./common";
-import { quarkSummaryReportHTML } from "./quark_html";
+import { outputChannel } from "../data/constants";
+import { quarkSummaryReportHTML } from "../utils/quark-html";
+
 /**
  * Read and parse the JSON file of quark analysis report.
  * @param reportPath The path of the `quarkReport.json` file.
@@ -341,7 +342,7 @@ export namespace Quark {
      */
     export async function showSummaryReport(reportPath: string): Promise<void> {
         const projectDir = path.dirname(reportPath);
-        const report: any = parseReport(reportPath);
+        const report: { [key: string]: any } = parseReport(reportPath);
 
         await vscode.commands.executeCommand(
             "workbench.action.editorLayoutTwoColumns"

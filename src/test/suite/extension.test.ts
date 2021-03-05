@@ -1,9 +1,10 @@
 import * as assert from "assert";
 import * as path from "path";
 import * as fs from "fs";
-import { updateTools } from "../../downloader";
-import { apktool, jadx } from "../../tools";
-import { Quark } from "../../quark-tools";
+import { updateTools } from "../../utils/downloader";
+import { Quark } from "../../tools/quark-engine";
+import { apktool } from "../../tools/apktool";
+import { jadx } from "../../tools/jadx";
 
 describe("Extension Test Suite", function () {
     this.timeout(600000);

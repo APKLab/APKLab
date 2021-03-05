@@ -1,10 +1,12 @@
 import * as path from "path";
 import * as fs from "fs";
 import { commands, QuickPickItem, Uri, window } from "vscode";
-import { apktool, initGitDir, jadx } from "./tools";
-import { outputChannel } from "./common";
-import { quickPickUtil } from "./quick-pick.util";
-import { Quark } from "./quark-tools";
+import { outputChannel } from "./data/constants";
+import { quickPickUtil } from "./utils/quick-picks";
+import { Quark } from "./tools/quark-engine";
+import { apktool } from "./tools/apktool";
+import { git } from "./tools/git";
+import { jadx } from "./tools/jadx";
 
 export namespace UI {
     /**
@@ -99,7 +101,7 @@ export namespace UI {
                 }
 
                 // Initialize project dir as git repo
-                await initGitDir(projectDir, "Initial APKLab project");
+                await git.initGitDir(projectDir, "Initial APKLab project");
 
                 // open project dir in a new window
                 if (!process.env["TEST"]) {
