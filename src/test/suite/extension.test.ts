@@ -103,6 +103,8 @@ describe("Extension Test Suite", function () {
         if (!isValidJSON) {
             assert.fail(`Quark report data is not valid!`);
         }
+        // showing summary report is a better test overall, I guess
+        await Quark.showSummaryReport(reportFile);
     });
 
     // test the Rebuild & Sign feature (uses ApkTool & uber-apk-signer)
