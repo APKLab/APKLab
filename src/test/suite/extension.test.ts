@@ -93,6 +93,7 @@ describe("Extension Test Suite", function () {
         );
 
         console.log("Validating analysis report...");
+        // some basic structure tests and checks for fixed values
         const isValidJSON =
             reportData.md5 === "43f18bf40ee1896b24dceb3de355bc9f" &&
             reportData.apk_filename === "test.apk" &&
