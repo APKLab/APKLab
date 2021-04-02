@@ -72,12 +72,15 @@ jobs:
           if [ "$RUNNER_OS" == "Linux" ]; then
             export PATH="/home/runner/.local/bin:$PATH"
             pip install quark-engine
+            freshquark
             xvfb-run -a npm test
           elif [ "$RUNNER_OS" == "Windows" ]; then
             pip install quark-engine
+            freshquark
             npm test
           else
             python3 -m pip install quark-engine
+            freshquark
             npm test
           fi
       - uses: actions/upload-artifact@v2
