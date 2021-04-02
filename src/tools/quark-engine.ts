@@ -297,6 +297,9 @@ export namespace Quark {
             command: "quark",
             args: args,
             shouldExist: jsonReportPath,
+            onSuccess: () => {
+                showSummaryReport(jsonReportPath);
+            },
         });
     }
 
