@@ -288,14 +288,11 @@ export namespace Quark {
     ): Promise<void> {
         const jsonReportPath = path.join(projectDir, `quarkReport.json`);
 
-        const report = `Analyzing ${apkFilePath}`;
-        const args = ["-a", apkFilePath, "-o", jsonReportPath];
-
         await executeProcess({
             name: "Quark analysis",
-            report: report,
+            report: `Analyzing ${apkFilePath}`,
             command: "quark",
-            args: args,
+            args: ["-a", apkFilePath, "-o", jsonReportPath],
             shouldExist: jsonReportPath,
             onSuccess: () => {
                 showSummaryReport(jsonReportPath);
