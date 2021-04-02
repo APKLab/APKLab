@@ -94,17 +94,13 @@ describe("Extension Test Suite", function () {
             "utf-8"
         );
 
-        const reportFile = path.join(
-            simpleKeyboardDir,
-            "test",
-            "quarkReport.json"
-        );
+        const reportFile = path.join(projectDir, "quarkReport.json");
         if (!fs.existsSync(reportFile)) {
             assert.fail(`Report data ${reportFile} not found!`);
         }
         const reportData = fs.readFileSync(reportFile, "utf-8");
         console.log("Comparing analysis report...");
-        if (!reportJsonSampleData.localeCompare(reportData)) {
+        if (reportJsonSampleData.localeCompare(reportData) != 0) {
             assert.fail(`Quark report data not matched!`);
         }
     });
