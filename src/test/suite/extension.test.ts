@@ -84,29 +84,28 @@ describe("Extension Test Suite", function () {
         console.log(`Analyzing ${testApkPath}...`);
         await Quark.analyzeAPK(testApkPath, projectDir);
 
-        // Testing report generation
-        const reportJsonSamplePath = path.join(
-            simpleKeyboardDir,
-            "quark_report.json"
-        );
-        const reportJsonSampleData = fs.readFileSync(
-            reportJsonSamplePath,
-            "utf-8"
+        const reportFile = path.join(projectDir, "quarkReport.json");
+        if (!fs.existsSync(reportFile)) {
+            assert.fail(`Analysis Report file ${reportFile} not found!`);
+        }
+        const reportData: { [key: string]: any } = JSON.parse(
+            fs.readFileSync(reportFile, "utf-8")
         );
 
-        const reportFile = path.join(
-            simpleKeyboardDir,
-            "test",
-            "quarkReport.json"
-        );
-        if (!fs.existsSync(reportFile)) {
-            assert.fail(`Report data ${reportFile} not found!`);
+        console.log("Validating analysis report...");
+        // some basic structure tests and checks for fixed values
+        const isValidJSON =
+            reportData.md5 === "43f18bf40ee1896b24dceb3de355bc9f" &&
+            reportData.apk_filename === "test.apk" &&
+            reportData.size_bytes === 874736 &&
+            Object.prototype.hasOwnProperty.call(reportData, "threat_level") &&
+            Object.prototype.hasOwnProperty.call(reportData, "total_score") &&
+            reportData.crimes.length > 0;
+        if (!isValidJSON) {
+            assert.fail(`Quark report data is not valid!`);
         }
-        const reportData = fs.readFileSync(reportFile, "utf-8");
-        console.log("Comparing analysis report...");
-        if (!reportJsonSampleData.localeCompare(reportData)) {
-            assert.fail(`Quark report data not matched!`);
-        }
+        // showing summary report is a better test overall, I guess
+        await Quark.showSummaryReport(reportFile);
     });
 
     // test the Rebuild & Sign feature (uses ApkTool & uber-apk-signer)
