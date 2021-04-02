@@ -5,6 +5,7 @@ import * as vscode from "vscode";
 import * as glob from "glob";
 import { outputChannel } from "../data/constants";
 import { quarkSummaryReportHTML } from "../utils/quark-html";
+import { executeProcess } from "../utils/executor";
 
 /**
  * Read and parse the JSON file of quark analysis report.
@@ -285,55 +286,18 @@ export namespace Quark {
         apkFilePath: string,
         projectDir: string
     ): Promise<void> {
-        const reportPath = path.join(projectDir, `quarkReport.json`);
-        const script = `quark -a ${apkFilePath} -o ${reportPath}`;
+        const jsonReportPath = path.join(projectDir, `quarkReport.json`);
 
-        await vscode.window.withProgress(
-            {
-                location: vscode.ProgressLocation.Notification,
-                title: "Quark analysis",
-                cancellable: true,
-            },
-            (_, token) => {
-                return new Promise<void>((resolve) => {
-                    const quarkProcess = child_process.exec(script);
+        const report = `Analyzing ${apkFilePath}`;
+        const args = ["-a", apkFilePath, "-o", jsonReportPath];
 
-                    if (quarkProcess.stderr) {
-                        quarkProcess.stderr.on("data", async (data) => {
-                            if (data.includes("Error:")) {
-                                outputChannel.append(`Error: ${data}`);
-                                vscode.window.showErrorMessage(
-                                    "APKLab: Quark analysis failed!"
-                                );
-                                resolve();
-                            }
-                        });
-                    }
-
-                    quarkProcess.on("error", async (code) => {
-                        outputChannel.appendLine(`Error: ${code}`);
-                        vscode.window.showErrorMessage(
-                            "APKLab: Quark analysis failed!"
-                        );
-                        resolve();
-                    });
-
-                    quarkProcess.on("close", async () => {
-                        if (fs.existsSync(reportPath)) {
-                            showSummaryReport(reportPath);
-                        }
-                        resolve();
-                    });
-
-                    token.onCancellationRequested(() => {
-                        outputChannel.appendLine(
-                            `User canceled the Quark analysis`
-                        );
-                        quarkProcess.kill();
-                    });
-                });
-            }
-        );
+        await executeProcess({
+            name: "Quark analysis",
+            report: report,
+            command: "quark",
+            args: args,
+            shouldExist: jsonReportPath,
+        });
     }
 
     /**
