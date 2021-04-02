@@ -98,7 +98,9 @@ export function executeProcess(processOptions: ProcessOptions): Thenable<void> {
                         }
                     } else {
                         outputChannel.appendLine(
-                            `${processOptions.name} process exited with code ${code}`
+                            code !== 0
+                                ? `${processOptions.name} process exited with code ${code}`
+                                : `${processOptions.name} process didn't create ${processOptions.shouldExist}`
                         );
                         vscode.window.showErrorMessage(
                             `APKLab: ${processOptions.name} process failed.`
