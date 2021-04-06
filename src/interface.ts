@@ -56,7 +56,7 @@ export namespace UI {
                 let quarkAnalysis = false;
                 let jadxArgs: string[] = [];
                 if (jadxOptionsIndex > -1) {
-                    jadxArgs = args.splice(jadxOptionsIndex, 1);
+                    jadxArgs = args.splice(jadxOptionsIndex, 2);
                 }
                 if (decompileJavaIndex > -1) {
                     decompileJava = true;

@@ -79,6 +79,11 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
             detail: "Activate deobfuscation for Jadx",
             alwaysShow: true,
         },
+        {
+            label: "--show-bad-code (jadx)",
+            detail: "show inconsistent code (incorrectly decompiled)",
+            alwaysShow: true,
+        },
     ],
 };
 
