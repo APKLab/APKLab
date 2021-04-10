@@ -48,15 +48,15 @@ export namespace UI {
 
             if (quickPickItems) {
                 const args = quickPickItems.map<string>((item) => item.label);
-                const argsIndex = quickPickItems.map<string | undefined>(
+                const argDescriptions = quickPickItems.map<string | undefined>(
                     (item) => item.description
                 );
-                const decompileJavaIndex = argsIndex.indexOf("[Use Jadx]");
-                const quarkAnalysisIndex = argsIndex.indexOf(
+                const decompileJavaIndex = argDescriptions.indexOf("[Use Jadx]");
+                const quarkAnalysisIndex = argDescriptions.indexOf(
                     "[Use Quark-Engine]"
                 );
-                const jadxOptionsIndex = argsIndex.indexOf("jadx");
-                const jadxOptionsNumber = argsIndex.filter(
+                const jadxOptionsIndex = argDescriptions.indexOf("jadx");
+                const jadxOptionsNumber = argDescriptions.filter(
                     (item) => item === "jadx"
                 ).length;
                 let decompileJava = false;
