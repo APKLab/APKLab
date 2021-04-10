@@ -51,7 +51,9 @@ export namespace UI {
                 const argDescriptions = quickPickItems.map<string | undefined>(
                     (item) => item.description
                 );
-                const decompileJavaIndex = argDescriptions.indexOf("[Use Jadx]");
+                const decompileJavaIndex = argDescriptions.indexOf(
+                    "[Use Jadx]"
+                );
                 const quarkAnalysisIndex = argDescriptions.indexOf(
                     "[Use Quark-Engine]"
                 );
