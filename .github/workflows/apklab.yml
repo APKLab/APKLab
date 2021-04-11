@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - v*
   pull_request:
     branches:
       - master
@@ -88,3 +90,34 @@ jobs:
         with:
           name: apklab.vsix
           path: apklab*.vsix
+
+  release:
+    name: release
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Package extension
+        run: npm run package
+      - name: Release [open-vsx]
+        run: |
+          npm i ovsx
+          npx ovsx publish apklab*.vsix -p ${{ secrets.OPEN_VSX_TOKEN }}
+      - name: Release [marketplace]
+        run: npx vsce publish -p ${{ secrets.VS_MARKETPLACE_TOKEN }}
