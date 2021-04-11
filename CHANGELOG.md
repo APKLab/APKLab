@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- apk-mitm updated to v0.12.0
+- New [GitHub Org](https://github.com/APKLab) and [website](https://apklab.surendrajat.xyz)
+- Add 'show inconsistent code' arg to jadx (#127) (thanks @psolyca)
+- Add deobfuscation args to jadx (#117) (thanks @psolyca)
+
+### Fixed
+
+- show quark analysis report on project open (#121)
+- use common process executor for quark analysis (#125)
+- refactor project src dir structure (#122)
+- dep: bump dependencies (#128)
+- CI: fix Quark analysis tests (#126)
+
 ## [1.3.1] - 2021-01-30
 
 ### Added
