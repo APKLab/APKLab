@@ -18,17 +18,14 @@ export namespace UI {
     export async function showArgsQuickPick(
         items: QuickPickItem[],
         placeHolder: string
-    ): Promise<string[] | undefined> {
-        const result = await window.showQuickPick(items, {
+    ): Promise<QuickPickItem[] | undefined> {
+        return await window.showQuickPick(items, {
             placeHolder: placeHolder,
             canPickMany: true,
             matchOnDetail: true,
             matchOnDescription: true,
             ignoreFocusOut: true,
         });
-        return result
-            ? result.map<string>((item) => item.label.split(" ")[0])
-            : undefined;
     }
 
     /**
@@ -44,19 +41,31 @@ export namespace UI {
             openLabel: "Select an APK file",
         });
         if (result && result.length === 1) {
-            const args = await showArgsQuickPick(
+            const quickPickItems = await showArgsQuickPick(
                 quickPickUtil.getQuickPickItems("decodeQuickPickItems"),
                 "Additional features & Apktool/Jadx arguments"
             );
-            if (args) {
-                const decompileJavaIndex = args.indexOf("decompile_java");
-                const quarkAnalysisIndex = args.indexOf("quark_analysis");
-                const jadxOptionsIndex = args.indexOf("--deobf");
+
+            if (quickPickItems) {
+                const args = quickPickItems.map<string>((item) => item.label);
+                const argDescriptions = quickPickItems.map<string | undefined>(
+                    (item) => item.description
+                );
+                const decompileJavaIndex = argDescriptions.indexOf(
+                    "[Use Jadx]"
+                );
+                const quarkAnalysisIndex = argDescriptions.indexOf(
+                    "[Use Quark-Engine]"
+                );
+                const jadxOptionsIndex = argDescriptions.indexOf("jadx");
+                const jadxOptionsNumber = argDescriptions.filter(
+                    (item) => item === "jadx"
+                ).length;
                 let decompileJava = false;
                 let quarkAnalysis = false;
                 let jadxArgs: string[] = [];
                 if (jadxOptionsIndex > -1) {
-                    jadxArgs = args.splice(jadxOptionsIndex, 1);
+                    jadxArgs = args.splice(jadxOptionsIndex, jadxOptionsNumber);
                 }
                 if (decompileJavaIndex > -1) {
                     decompileJava = true;
@@ -122,10 +131,13 @@ export namespace UI {
      * @param apktoolYmlPath path of the `apktool.yml` file.
      */
     export async function rebuildAPK(apktoolYmlPath: string): Promise<void> {
-        const args = await showArgsQuickPick(
+        const quickPickItems = await showArgsQuickPick(
             quickPickUtil.getQuickPickItems("rebuildQuickPickItems"),
             "Additional Apktool arguments"
         );
+        const args = quickPickItems
+            ? quickPickItems.map<string>((item) => item.label)
+            : undefined;
         if (args) {
             await apktool.rebuildAPK(apktoolYmlPath, args);
         }
