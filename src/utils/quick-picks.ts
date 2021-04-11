@@ -88,7 +88,7 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
         },
         {
             label: "--show-bad-code",
-            detail: "show inconsistent code (incorrectly decompiled)",
+            detail: "Show inconsistent code (incorrectly decompiled)",
             description: "jadx",
             alwaysShow: true,
         },
