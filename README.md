@@ -45,8 +45,9 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 - Decode all the resources from an APK
 - Disassemble the APK to Dalvik bytecode aka Smali
 - Decompile the APK to Java source
-- Malware Analysis using Quark-Engine
-- Initialize project directory as Git repo
+- Interactive Malware Analysis Report
+- Initialize Project dir as Git repo
+- Excellent Smali language support with [**Smalise**](https://github.com/LoyieKing/Smalise)
 - Analyze & Hack effectively with feature-rich VS Code
 - Apply MITM patch for HTTPS inspection
 - Build an APK from Smali and resources
@@ -58,8 +59,20 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 - Android resource frameworks management (Coming soon!)
 - Support for user-provided keystore for APK signing
 - Download and configure missing dependencies
-- Excellent Smali language support with [**Smalise**](https://github.com/LoyieKing/Smalise)
 - Supports Linux, Windows, and Mac
+
+## Requirements
+
+- **JDK 8+**
+
+  > Run **`java -version`** in your Shell, if not found, download from [here](https://adoptopenjdk.net/).
+
+- **quark-engine >=21.01.6** (for malware analysis)
+
+  > Run **`quark`** in your Shell, if not found, check [official docs](https://github.com/quark-engine/quark-engine).
+
+- **adb**
+  > Run **`adb devices`** in your Shell, if not found, check [this guide](https://www.xda-developers.com/install-adb-windows-macos-linux/).
 
 ## Getting Started
 
@@ -92,17 +105,6 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 #### Clean ApkTool frameworks dir
 
 - Open the Command Palette (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) ➜ <kbd>APKLab: Empty ApkTool Framework Dir</kbd>
-
-## Requirements
-
-- **JDK 8+**
-  > Run **`java -version`** in your Shell, if not found, download from [here](https://adoptopenjdk.net/).
-- **adb**
-
-  > Run **`adb devices`** in your Shell, if not found, check [this guide](https://www.xda-developers.com/install-adb-windows-macos-linux/).
-
-- **quark-engine >=21.01.6** (for malware analysis)
-  > Run **`quark`** in your Shell, if not found, check [official docs](https://github.com/quark-engine/quark-engine).
 
 ## Extension Settings
 
@@ -145,6 +147,8 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 </details>
 
 ## Known Issues
+
+Please check our [Bug tracker](https://github.com/APKLab/APKLab/issues) for known issues.
 
 ## Contribution Guide
 
