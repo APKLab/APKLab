@@ -10,9 +10,8 @@ const outputChannelName = "APKLab";
 /**
  * Output channel to write output data to.
  */
-export const outputChannel = vscode.window.createOutputChannel(
-    outputChannelName
-);
+export const outputChannel =
+    vscode.window.createOutputChannel(outputChannelName);
 
 /**
  * Extension related configuration object name.

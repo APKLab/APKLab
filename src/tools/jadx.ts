@@ -15,9 +15,8 @@ export namespace jadx {
         projectDir: string,
         jadxArgs: string[]
     ): Promise<void> {
-        const extensionConfig = vscode.workspace.getConfiguration(
-            extensionConfigName
-        );
+        const extensionConfig =
+            vscode.workspace.getConfiguration(extensionConfigName);
         const jadxDirPath = extensionConfig.get("jadxDirPath");
         const jadxExeName = `jadx${
             process.platform.startsWith("win") ? ".bat" : ""

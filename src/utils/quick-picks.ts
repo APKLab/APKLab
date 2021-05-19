@@ -13,14 +13,12 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
         },
         {
             label: "--debug",
-            detail:
-                'Build APK in Debug mode by adding debuggable="true" to AndroidManifest file',
+            detail: 'Build APK in Debug mode by adding debuggable="true" to AndroidManifest file',
             alwaysShow: true,
         },
         {
             label: "--force-all",
-            detail:
-                "Overwrites existing files during build, reassembling the resources.arsc file and dex file(s)",
+            detail: "Overwrites existing files during build, reassembling the resources.arsc file and dex file(s)",
             alwaysShow: true,
         },
         {
@@ -35,8 +33,7 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
     decodeQuickPickItems: [
         {
             label: "quark_analysis",
-            detail:
-                "Detect potential malicious activities in APK using Quark-Engine.",
+            detail: "Detect potential malicious activities in APK using Quark-Engine.",
             description: "[Use Quark-Engine]",
         },
         {
@@ -58,8 +55,7 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
         },
         {
             label: "--force-manifest",
-            detail:
-                "Forces decode of AndroidManifest regardless of decoding of resources flag.",
+            detail: "Forces decode of AndroidManifest regardless of decoding of resources flag.",
             description: "apktool",
         },
         {
@@ -76,8 +72,7 @@ const quickPickItems: { [index: string]: QuickPickItem[] } = {
         },
         {
             label: "--no-debug-info",
-            detail:
-                "Prevents baksmali from writing out debug info (.local, .param, .line, etc). (-b)",
+            detail: "Prevents baksmali from writing out debug info (.local, .param, .line, etc). (-b)",
             description: "apktool",
         },
         {

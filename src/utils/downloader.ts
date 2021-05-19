@@ -53,9 +53,8 @@ export function updateTools(): Promise<void> {
     // TODO: Refactor without async promise
     // eslint-disable-next-line no-async-promise-executor
     return new Promise<void>(async (resolve, reject) => {
-        const extensionConfig = vscode.workspace.getConfiguration(
-            extensionConfigName
-        );
+        const extensionConfig =
+            vscode.workspace.getConfiguration(extensionConfigName);
         await Promise.all(
             config.tools.map(async (tool) => {
                 const toolPath = extensionConfig.get(tool.configName);

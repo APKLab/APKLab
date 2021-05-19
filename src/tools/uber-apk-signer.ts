@@ -14,9 +14,8 @@ export namespace apkSigner {
         projectDir: string,
         apkFileName: string
     ): Promise<void> {
-        const extensionConfig = vscode.workspace.getConfiguration(
-            extensionConfigName
-        );
+        const extensionConfig =
+            vscode.workspace.getConfiguration(extensionConfigName);
         const apkSignerPath = extensionConfig.get("apkSignerPath");
         const keystorePath = extensionConfig.get("keystorePath");
         const keystorePassword = extensionConfig.get("keystorePassword");
