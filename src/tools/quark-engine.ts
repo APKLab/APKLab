@@ -217,8 +217,8 @@ function navigateSourceCode(
             };
             parentDecorationsArray.push(methodSegmentDecoration);
 
-            const parentDecorationType = vscode.window.createTextEditorDecorationType(
-                {
+            const parentDecorationType =
+                vscode.window.createTextEditorDecorationType({
                     isWholeLine: true,
                     dark: {
                         backgroundColor: "#193435",
@@ -226,10 +226,9 @@ function navigateSourceCode(
                     light: {
                         backgroundColor: "#dcfddc",
                     },
-                }
-            );
-            const apiDecorationType = vscode.window.createTextEditorDecorationType(
-                {
+                });
+            const apiDecorationType =
+                vscode.window.createTextEditorDecorationType({
                     fontWeight: "bold",
                     isWholeLine: true,
                     dark: {
@@ -238,8 +237,7 @@ function navigateSourceCode(
                     light: {
                         backgroundColor: "#ffc2c3",
                     },
-                }
-            );
+                });
 
             e.setDecorations(parentDecorationType, parentDecorationsArray);
             e.setDecorations(apiDecorationType, apiDecorationsArray);

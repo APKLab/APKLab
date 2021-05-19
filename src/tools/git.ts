@@ -14,9 +14,8 @@ export namespace git {
         projectDir: string,
         commitMsg: string
     ): Promise<void> {
-        const extensionConfig = vscode.workspace.getConfiguration(
-            extensionConfigName
-        );
+        const extensionConfig =
+            vscode.workspace.getConfiguration(extensionConfigName);
         const initializeGit = extensionConfig.get("initProjectDirAsGit");
         if (!initializeGit) return;
         try {

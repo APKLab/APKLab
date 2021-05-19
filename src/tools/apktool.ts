@@ -35,9 +35,8 @@ export namespace apktool {
         projectDir: string,
         apktoolArgs: string[]
     ): Promise<void> {
-        const extensionConfig = vscode.workspace.getConfiguration(
-            extensionConfigName
-        );
+        const extensionConfig =
+            vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = path.basename(apkFilePath);
 
@@ -72,9 +71,8 @@ export namespace apktool {
         apktoolYmlPath: string,
         apktoolArgs: string[]
     ): Promise<void> {
-        const extensionConfig = vscode.workspace.getConfiguration(
-            extensionConfigName
-        );
+        const extensionConfig =
+            vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
         const apkFileName = getApkName(apktoolYmlPath);
         if (!apkFileName) {
@@ -105,9 +103,8 @@ export namespace apktool {
      * Empty the **ApkTool** resource framework dir.
      */
     export async function emptyFrameworkDir(): Promise<void> {
-        const extensionConfig = vscode.workspace.getConfiguration(
-            extensionConfigName
-        );
+        const extensionConfig =
+            vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
         const report = "Cleaning up ApkTool Framework dir";
         const args = [
