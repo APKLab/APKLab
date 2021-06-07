@@ -136,6 +136,7 @@ async function downloadFile(urlString: string): Promise<Buffer> {
                     "Download failed with response code: " + response.statusCode
                 );
                 reject("Failed");
+                return;
             }
 
             // Downloading - hook up events
