@@ -1,3 +1,4 @@
+import * as os from "os";
 import * as path from "path";
 import * as fs from "fs";
 import * as child_process from "child_process";
@@ -285,13 +286,13 @@ export namespace Quark {
         projectDir: string
     ): Promise<void> {
         const jsonReportPath = path.join(projectDir, `quarkReport.json`);
-
+        const cmd = `cd ${path.join(os.homedir(), ".quark-engine")} ; quark`;
         await executeProcess({
             name: "Quark analysis",
             report: `Analyzing ${apkFilePath}`,
-            command: "quark",
+            command: cmd,
             args: ["-a", apkFilePath, "-o", jsonReportPath],
-            shouldExist: jsonReportPath,
+            shell: true,
         });
     }
 
