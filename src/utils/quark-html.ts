@@ -252,6 +252,34 @@ export function quarkSummaryReportHTML(report: { [key: string]: any }): string {
         .vscode-dark .api a{
             color: #ff9696;
         }
+
+        .treemap-btn {
+            margin-top: 15px;
+            background: none;
+            border: 1px solid rgb(0, 196, 104);
+            color: rgb(0, 196, 104);
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .treemap-btn:hover {
+            background-color: rgb(0, 97, 52);
+            border: 1px solid rgb(0, 97, 52);
+            color: white;
+            border: none;
+        }
+
+        .treemap-container {
+            font-size: 18px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
     `;
 
     const reportHTML = `
@@ -267,6 +295,7 @@ ${style}
 </head>
 <body>
 <div class="container-table100">
+<h1>Quark Analysis</h1>
 			<div class="wrap-table100">
 					<div class="table100 ver5 m-b-110">
 					<div class="table100-head">
@@ -289,7 +318,13 @@ ${style}
 					</div>
 				</div>
 			</div>
+            <div class="treemap-container">
+                <hr>
+                <p>See the reference treemap graph for rule classification</p>
+                <button class="treemap-btn" onclick="treemap()">Reference Tree</button>
+            </div>
         </div>
+
     </body>
     </html>
     <script>
@@ -308,6 +343,13 @@ ${style}
             cid: cid
         });
     }
+
+    function treemap() {
+        vscode.postMessage({
+            command: 'treemap',
+        });
+    }
+
     function a(id){
         const matcher = "[id^='" + id + "-']"
         var elements = document.querySelectorAll(matcher);

@@ -1,3 +1,4 @@
+import * as os from "os";
 import * as path from "path";
 import * as fs from "fs";
 import * as child_process from "child_process";
@@ -261,7 +262,7 @@ export namespace Quark {
      * @return if quark installed or not
      */
     export function checkQuarkInstalled(): boolean {
-        const cmd = "quark";
+        const cmd = `cd ${path.join(os.homedir(), ".quark-engine")} ; quark`;
 
         outputChannel.appendLine(`exec: ${cmd}`);
 
@@ -285,14 +286,41 @@ export namespace Quark {
         projectDir: string
     ): Promise<void> {
         const jsonReportPath = path.join(projectDir, `quarkReport.json`);
+        const projectQuarkDir = path.join(projectDir, `quark`);
 
+        if (!fs.existsSync(projectQuarkDir)) {
+            fs.mkdirSync(projectQuarkDir);
+        }
+
+        const cmd = `cd ${projectQuarkDir} ; quark`;
         await executeProcess({
             name: "Quark analysis",
             report: `Analyzing ${apkFilePath}`,
-            command: "quark",
-            args: ["-a", apkFilePath, "-o", jsonReportPath],
-            shouldExist: jsonReportPath,
+            command: cmd,
+            args: ["-a", apkFilePath, "-s", "-c", "-o", jsonReportPath],
+            shell: true,
         });
+    }
+
+    export async function showTreeMap(projectDir: string): Promise<void> {
+        const treeMapPath = path.join(
+            projectDir,
+            `quark`,
+            `rules_classification.png`
+        );
+
+        if (!fs.existsSync(treeMapPath)) {
+            vscode.window.showErrorMessage(
+                "APKLab: The tree map file doesn't exist!"
+            );
+            return;
+        }
+        const uri = vscode.Uri.file(treeMapPath);
+        await vscode.commands.executeCommand(
+            "vscode.open",
+            uri,
+            vscode.ViewColumn.One
+        );
     }
 
     /**
@@ -331,6 +359,8 @@ export namespace Quark {
                         ]
                     );
                     break;
+                case "treemap":
+                    showTreeMap(projectDir);
             }
         });
     }
