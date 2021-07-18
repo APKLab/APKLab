@@ -60,13 +60,13 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
       - name: Run Linter
         if: matrix.name == 'lint'
-        run: npm run lint
+        run: yarn lint
       - name: Package extension
         if: matrix.name != 'lint'
-        run: npm run package
+        run: yarn package
       - name: Run tests
         if: matrix.run_test == true
         shell: bash
@@ -75,15 +75,15 @@ jobs:
             export PATH="/home/runner/.local/bin:$PATH"
             pip install quark-engine
             freshquark
-            xvfb-run -a npm test
+            xvfb-run -a yarn test
           elif [ "$RUNNER_OS" == "Windows" ]; then
             pip install quark-engine
             freshquark
-            npm test
+            yarn test
           else
             python3 -m pip install quark-engine
             freshquark
-            npm test
+            yarn test
           fi
       - uses: actions/upload-artifact@v2
         if: matrix.name == 'linux-build-test'
@@ -112,12 +112,12 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
       - name: Package extension
-        run: npm run package
+        run: yarn package
       - name: Release [open-vsx]
         run: |
-          npm i ovsx
-          npx ovsx publish apklab*.vsix -p ${{ secrets.OPEN_VSX_TOKEN }}
+          yarn add ovsx
+          yarn ovsx publish apklab*.vsix -p ${{ secrets.OPEN_VSX_TOKEN }}
       - name: Release [marketplace]
-        run: npx vsce publish -p ${{ secrets.VS_MARKETPLACE_TOKEN }}
+        run: yarn vsce publish -p ${{ secrets.VS_MARKETPLACE_TOKEN }} --yarn
