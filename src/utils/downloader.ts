@@ -94,7 +94,7 @@ async function DownloadFile(tool: Tool) {
                 outputChannel.appendLine(
                     `Extracted ${filePath} into ${configPath}`
                 );
-            } catch (err) {
+            } catch (err: any) {
                 outputChannel.appendLine(
                     `Error: Extracting file ${filePath}: ${err.message}`
                 );

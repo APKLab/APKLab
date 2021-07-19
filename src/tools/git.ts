@@ -35,7 +35,7 @@ export namespace git {
                 args: [],
                 shell: true,
             });
-        } catch (err) {
+        } catch (err: any) {
             outputChannel.appendLine(
                 `Error: Initializing project dir as Git repository: ${err.message}`
             );

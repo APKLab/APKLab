@@ -36,7 +36,7 @@ export namespace apkMitm {
             vscode.window.showInformationMessage(
                 "APKLab: Successfully applied MITM patches!"
             );
-        } catch (err) {
+        } catch (err: any) {
             outputChannel.appendLine(err);
             outputChannel.appendLine("Failed to apply MITM patches!");
             vscode.window.showErrorMessage(
