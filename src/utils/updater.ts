@@ -5,6 +5,7 @@ import * as config from "../data/config.json";
 import { apklabDataDir, extensionConfigName } from "../data/constants";
 import { apktool } from "../tools/apktool";
 import { downloadTool } from "./downloader";
+
 /**
  * Tool details for downloading it if it doesn't exist.
  */
@@ -39,7 +40,11 @@ export type Tool = {
     unzipDir?: string;
 };
 
-export function updateTools(): void {
+/**
+ * Check the tools from `config.json`
+ * If any tool does not exist or does not match given file name, download it.
+ */
+export async function updateTools(): Promise<void> {
     const needsUpdate: Tool[] = [];
     const extensionConfig =
         vscode.workspace.getConfiguration(extensionConfigName);
@@ -57,6 +62,7 @@ export function updateTools(): void {
     });
 
     if (needsUpdate.length > 0) {
+        // show update notification
         vscode.window
             .showInformationMessage(
                 "APKLab: Some of the tools can be updated to the latest version.",
@@ -66,15 +72,18 @@ export function updateTools(): void {
             .then(async (updateAction) => {
                 if (updateAction == "Update tools") {
                     needsUpdate.forEach(async (tool) => {
-                        await vscode.workspace
+                        // remove tool path from configuration & download it
+                        vscode.workspace
                             .getConfiguration(extensionConfigName)
                             .update(
                                 tool.configName,
                                 "",
                                 vscode.ConfigurationTarget.Global
-                            );
+                            )
+                            .then(async () => {
+                                await downloadTool(tool);
+                            });
                     });
-                    await checkAndInstallTools();
                 }
             });
     }
@@ -101,6 +110,7 @@ export function checkAndInstallTools(): Promise<void> {
                     if (!filepath) {
                         reject();
                     } else if (tool.name === "apktool") {
+                        // remove old res framework on apktool install
                         await apktool.emptyFrameworkDir();
                     }
                 }
