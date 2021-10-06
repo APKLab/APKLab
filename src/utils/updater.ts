@@ -55,9 +55,11 @@ export async function updateTools(): Promise<void> {
         fs.writeFileSync(firstRunFile, "");
         return;
     }
-    const needsUpdate: Tool[] = [];
     const extensionConfig =
         vscode.workspace.getConfiguration(extensionConfigName);
+    if (!extensionConfig.get("updateTools")) return; // if updates are disabled, skip it
+
+    const needsUpdate: Tool[] = [];
     config.tools.forEach((tool) => {
         const toolPath = extensionConfig.get(tool.configName);
         if (
