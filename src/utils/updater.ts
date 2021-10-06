@@ -45,6 +45,16 @@ export type Tool = {
  * If any tool does not exist or does not match given file name, download it.
  */
 export async function updateTools(): Promise<void> {
+    // create apklabDataDir if it doesn't exist
+    if (!fs.existsSync(String(apklabDataDir))) {
+        fs.mkdirSync(apklabDataDir);
+    }
+    // create first_run_completed file if it doesn't exist
+    const firstRunFile = path.resolve(apklabDataDir, "first_run_completed");
+    if (!fs.existsSync(firstRunFile)) {
+        fs.writeFileSync(firstRunFile, "");
+        return;
+    }
     const needsUpdate: Tool[] = [];
     const extensionConfig =
         vscode.workspace.getConfiguration(extensionConfigName);
