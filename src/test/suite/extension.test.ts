@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import * as path from "path";
 import * as fs from "fs";
-import { updateTools } from "../../utils/downloader";
+import { checkAndInstallTools } from "../../utils/updater";
 import { Quark } from "../../tools/quark-engine";
 import { apktool } from "../../tools/apktool";
 import { jadx } from "../../tools/jadx";
@@ -20,7 +20,7 @@ describe("Extension Test Suite", function () {
         }
         // install the tools needed by APKLab
         console.log("Installing the tools...");
-        await updateTools()
+        await checkAndInstallTools()
             .then(() => {
                 console.log("Tools Installed!");
             })
