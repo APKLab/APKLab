@@ -19,7 +19,9 @@ import { Tool } from "./updater";
 export async function downloadTool(tool: Tool): Promise<string | null> {
     try {
         outputChannel.show();
+        outputChannel.appendLine("-".repeat(50));
         outputChannel.appendLine(`Downloading file: ${tool.fileName}`);
+        outputChannel.appendLine("-".repeat(50));
         const buffer = await downloadFile(tool.downloadUrl);
         const filePath = path.join(apklabDataDir, tool.fileName);
         fs.writeFileSync(filePath, buffer);
