@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- apktool updated to v2.6.0
+- apk-mitm updated to v1.1.0
+- feat: auto update check for tools on startup
+- (dev) use `yarn` instead of `npm`
+- (ci) auto publish release on tag
+- (ci) use yarn cache for faster builds
+- (ci) migrate to nodejs v14
+
+### Fixed
+
+- fixed some bug/warning
+- (dev) updated other dependencies
+
 ## [1.4.0] - 2021-04-11
 
 ### Added
