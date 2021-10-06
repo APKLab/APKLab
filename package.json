@@ -165,6 +165,11 @@
                     "default": "",
                     "markdownDescription": "Put the absolute path of `jadx-x.y.z` dir here if you want to use a non-latest version."
                 },
+                "apklab.updateTools": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Wether APKLab should check for tools(apklab, jadx...) update and show a notification."
+                },
                 "apklab.keystorePath": {
                     "type": "string",
                     "default": "",

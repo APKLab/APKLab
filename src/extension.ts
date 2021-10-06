@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
 import { outputChannel } from "./data/constants";
-import { updateTools } from "./utils/downloader";
+import { checkAndInstallTools, updateTools } from "./utils/updater";
 import { UI } from "./interface";
 import { apkMitm } from "./tools/apk-mitm";
 import { Quark } from "./tools/quark-engine";
@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext): void {
     const openApkFileCommand = vscode.commands.registerCommand(
         "apklab.openApkFile",
         async () => {
-            updateTools()
+            checkAndInstallTools()
                 .then(async () => {
                     UI.openApkFile();
                 })
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext): void {
     const rebuildAPkFileCommand = vscode.commands.registerCommand(
         "apklab.rebuildApkFile",
         (uri: vscode.Uri) => {
-            updateTools()
+            checkAndInstallTools()
                 .then(() => {
                     UI.rebuildAPK(uri.fsPath);
                 })
@@ -62,7 +62,7 @@ export function activate(context: vscode.ExtensionContext): void {
     const emptyFrameworkDirCommand = vscode.commands.registerCommand(
         "apklab.emptyFrameworkDir",
         () => {
-            updateTools()
+            checkAndInstallTools()
                 .then(() => {
                     apktool.emptyFrameworkDir();
                 })
@@ -103,4 +103,7 @@ export function activate(context: vscode.ExtensionContext): void {
             Quark.showSummaryReport(quarkReportFile);
         }
     }
+
+    // check for the tools update
+    updateTools();
 }
