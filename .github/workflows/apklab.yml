@@ -67,7 +67,7 @@ jobs:
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
             export PATH="/home/runner/.local/bin:$PATH"
-            pip install -U quark-engine
+            pip install -U quark-engine click
           elif [ "$RUNNER_OS" == "Windows" ]; then
             pip install -U quark-engine
           else
