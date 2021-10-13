@@ -68,10 +68,14 @@ jobs:
             export PATH="/home/runner/.local/bin:$PATH"
             pip install quark-engine
             freshquark
+            quark -a testdata/simplekeyboard/test.apk -o testdata/simplekeyboard/quarkReport.json
+            ls -l testdata/simplekeyboard/
             xvfb-run -a yarn test
           elif [ "$RUNNER_OS" == "Windows" ]; then
             pip install quark-engine
             freshquark
+            quark -a testdata/simplekeyboard/test.apk -o testdata/simplekeyboard/quarkReport.json
+            ls -l testdata/simplekeyboard/
             yarn test
           else
             python3 -m pip install quark-engine
