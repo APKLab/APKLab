@@ -61,6 +61,7 @@ jobs:
         if: matrix.name != 'lint'
         run: yarn package
       - name: Install quark-engine
+        continue-on-error: true
         if: matrix.run_test == true
         shell: bash
         run: |
