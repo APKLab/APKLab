@@ -60,28 +60,30 @@ jobs:
       - name: Package extension
         if: matrix.name != 'lint'
         run: yarn package
-      - name: Run tests
+      - name: Install quark-engine
         if: matrix.run_test == true
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
             export PATH="/home/runner/.local/bin:$PATH"
             pip install -U quark-engine click
-            freshquark
-            quark --help
-            # quark -a testdata/simplekeyboard/test.apk -o testdata/simplekeyboard/quarkReport.json
-            # ls -l testdata/simplekeyboard/
-            xvfb-run -a yarn test
           elif [ "$RUNNER_OS" == "Windows" ]; then
             pip install -U quark-engine click
-            freshquark
-            quark --help
-            # quark -a testdata/simplekeyboard/test.apk -o testdata/simplekeyboard/quarkReport.json
-            # ls -l testdata/simplekeyboard/
-            yarn test
           else
             python3 -m pip install -U quark-engine
-            freshquark
+          fi
+          # get quark-engine rules
+          freshquark
+          # check if it installed properly
+          quark --help
+          quark -a testdata/simplekeyboard/test.apk -s
+      - name: Run tests
+        if: matrix.run_test == true
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            xvfb-run -a yarn test
+          else
             yarn test
           fi
       - uses: actions/upload-artifact@v2
