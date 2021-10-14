@@ -70,13 +70,7 @@ jobs:
         if: matrix.run_test == true
         shell: bash
         run: |
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            pip install -U quark-engine
-          elif [ "$RUNNER_OS" == "Windows" ]; then
-            pip install -U quark-engine
-          else
-            pip install -U quark-engine
-          fi
+          pip install -U quark-engine
           # get quark-engine rules
           freshquark
           # check if it installed properly
