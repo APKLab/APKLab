@@ -75,7 +75,7 @@ jobs:
           elif [ "$RUNNER_OS" == "Windows" ]; then
             pip install -U quark-engine
           else
-            python3 -m pip install -U quark-engine
+            pip install -U quark-engine
           fi
           # get quark-engine rules
           freshquark
