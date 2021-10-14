@@ -60,6 +60,11 @@ jobs:
       - name: Package extension
         if: matrix.name != 'lint'
         run: yarn package
+      - name: Setup python 3.8
+        if: matrix.run_test == true
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
       - name: Install quark-engine
         continue-on-error: true
         if: matrix.run_test == true
