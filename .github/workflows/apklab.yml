@@ -60,22 +60,36 @@ jobs:
       - name: Package extension
         if: matrix.name != 'lint'
         run: yarn package
-      - name: Run tests
+      - name: Setup python 3.8
+        if: matrix.run_test == true
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install quark-engine
+        continue-on-error: true
         if: matrix.run_test == true
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
             export PATH="/home/runner/.local/bin:$PATH"
-            pip install quark-engine
-            freshquark
-            xvfb-run -a yarn test
+            pip install -U quark-engine click
           elif [ "$RUNNER_OS" == "Windows" ]; then
-            pip install quark-engine
-            freshquark
-            yarn test
+            pip install -U quark-engine
           else
-            python3 -m pip install quark-engine
-            freshquark
+            python3 -m pip install -U quark-engine
+          fi
+          # get quark-engine rules
+          freshquark
+          # check if it installed properly
+          quark --help
+          quark -a testdata/simplekeyboard/test.apk -s
+      - name: Run tests
+        if: matrix.run_test == true
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            xvfb-run -a yarn test
+          else
             yarn test
           fi
       - uses: actions/upload-artifact@v2
