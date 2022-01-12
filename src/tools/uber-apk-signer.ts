@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import { extensionConfigName } from "../data/constants";
+import { extensionConfigName, outputChannel } from "../data/constants";
 import { executeProcess } from "../utils/executor";
 
 export namespace apkSigner {
@@ -17,8 +17,8 @@ export namespace apkSigner {
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
         const apkSignerPath = extensionConfig.get("apkSignerPath");
-        var keystorePath = extensionConfig.get("keystorePath");
-        keystorePath = Function('return `' + keystorePath + '`;')()
+        const keystorePathTmp = extensionConfig.get("keystorePath");
+        const keystorePath = eval("`" + keystorePathTmp + "`");
         const keystorePassword = extensionConfig.get("keystorePassword");
         const keyAlias = extensionConfig.get("keyAlias");
         const keyPassword = extensionConfig.get("keyPassword");
