@@ -17,7 +17,8 @@ export namespace apkSigner {
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
         const apkSignerPath = extensionConfig.get("apkSignerPath");
-        const keystorePath = extensionConfig.get("keystorePath");
+        var keystorePath = extensionConfig.get("keystorePath");
+        keystorePath = Function('return `' + keystorePath + '`;')()
         const keystorePassword = extensionConfig.get("keystorePassword");
         const keyAlias = extensionConfig.get("keyAlias");
         const keyPassword = extensionConfig.get("keyPassword");
