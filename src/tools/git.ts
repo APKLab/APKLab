@@ -25,7 +25,10 @@ export namespace git {
                 path.join(projectDir, ".gitignore"),
                 gitignore
             );
-            let initCmd = `cd "${projectDir}" && git init && git config core.safecrlf false`;
+            const cdCmd = `cd${
+                process.platform.startsWith("win") ? " /d" : ""
+            }`;
+            let initCmd = `${cdCmd} "${projectDir}" && git init && git config core.safecrlf false`;
             initCmd += ` && git add -A && git commit -q -m "${commitMsg}"`;
             const report = `Initializing ${projectDir} as Git repository`;
             await executeProcess({
