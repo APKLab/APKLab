@@ -22,9 +22,11 @@ export namespace apkMitm {
             outputChannel.appendLine(report);
             outputChannel.appendLine("-".repeat(report.length));
 
-            outputChannel.appendLine(
-                `Using apk-mitm v${APK_MITM_VERSION} (https://github.com/shroudedcode/apk-mitm)\n`
-            );
+            if (!process.env["TEST"]) {
+                outputChannel.appendLine(
+                    `Using apk-mitm v${APK_MITM_VERSION} (https://github.com/shroudedcode/apk-mitm)\n`
+                );
+            }
 
             const projectDir = path.dirname(apktoolYmlPath);
 

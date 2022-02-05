@@ -5,6 +5,8 @@ import { checkAndInstallTools } from "../../utils/updater";
 import { Quark } from "../../tools/quark-engine";
 import { apktool } from "../../tools/apktool";
 import { jadx } from "../../tools/jadx";
+import { git } from "../../tools/git";
+import { apkMitm } from "../../tools/apk-mitm";
 
 describe("Extension Test Suite", function () {
     this.timeout(600000);
@@ -162,6 +164,62 @@ describe("Extension Test Suite", function () {
             assert.fail(
                 `res-framework dir or default framework apk doesn't exist!`
             );
+        }
+    });
+
+    // test apk-mitm patch (uses apk-mitm)
+    it("Patch for HTTPS inspection(apk-mitm)", async function () {
+        const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        const projectDir = path.resolve(simpleKeyboardDir, "test");
+
+        console.log(`Decoding ${testApkPath}...`);
+        await apktool.decodeAPK(testApkPath, projectDir, []);
+        const apktoolYmlPath = path.resolve(projectDir, "apktool.yml");
+
+        console.log(`Patching app with apk-mitm...`);
+        await apkMitm.applyMitmPatches(apktoolYmlPath);
+
+        console.log("Checking for network security config file...");
+        const nscFile = path.join(projectDir, "res", "xml", "nsc_mitm.xml");
+        if (!fs.existsSync(nscFile)) {
+            assert.fail(`NSC File ${nscFile} not found!`);
+        }
+    });
+
+    // test the git init thingy (uses git)
+    it("git init in project dir", async function () {
+        const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        const projectDir = path.resolve(simpleKeyboardDir, "test");
+
+        console.log(`Decoding ${testApkPath}...`);
+        await apktool.decodeAPK(testApkPath, projectDir, []);
+
+        console.log(`git init in ${projectDir}...`);
+        await git.initGitDir(projectDir, "initial commit 0abcd1234");
+
+        console.log("Validating .gitignore file...");
+        const gitignoreFile = path.join(projectDir, ".gitignore");
+        if (!fs.existsSync(gitignoreFile)) {
+            assert.fail(`.gitignore file ${gitignoreFile} not found!`);
+        }
+        const gitignoreData = fs.readFileSync(gitignoreFile, "utf-8");
+        if (gitignoreData !== "/build\n/dist\n")
+            assert.fail(`${gitignoreFile} doesn't contain ${gitignoreData}`);
+
+        console.log("Validating .git dir...");
+        const gitDir = path.join(projectDir, ".git");
+        if (
+            !fs.existsSync(gitDir) ||
+            !fs.existsSync(path.join(gitDir, "HEAD")) ||
+            !fs.existsSync(path.join(gitDir, "config"))
+        ) {
+            assert.fail(`.git/ dir ${gitDir} not valid!`);
+        }
+        console.log("Validating git config file...");
+        const gitConfigFile = path.join(gitDir, "config");
+        const gitConfigData = fs.readFileSync(gitConfigFile, "utf-8");
+        if (!gitConfigData.includes("safecrlf = false")) {
+            assert.fail(`git config file ${gitConfigFile} not valid!`);
         }
     });
 });
