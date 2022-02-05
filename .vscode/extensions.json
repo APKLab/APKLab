@@ -4,6 +4,6 @@
         "esbenp.prettier-vscode",
         "EditorConfig.EditorConfig",
         // Required for `watch` task
-        "eamodio.tsl-problem-matcher"
+        "amodio.tsl-problem-matcher"
     ]
 }
