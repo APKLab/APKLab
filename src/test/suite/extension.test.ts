@@ -5,6 +5,7 @@ import { checkAndInstallTools } from "../../utils/updater";
 import { Quark } from "../../tools/quark-engine";
 import { apktool } from "../../tools/apktool";
 import { jadx } from "../../tools/jadx";
+import { apkMitm } from "../../tools/apk-mitm";
 
 describe("Extension Test Suite", function () {
     this.timeout(600000);
@@ -162,6 +163,25 @@ describe("Extension Test Suite", function () {
             assert.fail(
                 `res-framework dir or default framework apk doesn't exist!`
             );
+        }
+    });
+
+    // test apk-mitm patch (uses apk-mitm)
+    it("Patch for HTTPS inspection(apk-mitm)", async function () {
+        const testApkPath = path.resolve(simpleKeyboardDir, "test.apk");
+        const projectDir = path.resolve(simpleKeyboardDir, "test");
+
+        console.log(`Decoding ${testApkPath}...`);
+        await apktool.decodeAPK(testApkPath, projectDir, []);
+        const apktoolYmlPath = path.resolve(projectDir, "apktool.yml");
+
+        console.log(`Patching app with apk-mitm...`);
+        await apkMitm.applyMitmPatches(apktoolYmlPath);
+
+        console.log("Checking for network security config file...");
+        const nscFile = path.join(projectDir, "res", "xml", "nsc_mitm.xml");
+        if (!fs.existsSync(nscFile)) {
+            assert.fail(`NSC File ${nscFile} not found!`);
         }
     });
 });
