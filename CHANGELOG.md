@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.0] - 2022-02-05
+
+### Added
+
+- Jadx updated to v1.3.2
+- (ci) more tests
+
+### Fixed
+
+- fixed an issue related to Windows `cd` command (thanks @Forgo7ten)
+- (ci) attempt to fix quark tests on Windows (again!)
+- (dev) fixed the webpack-problem-matcher extension name
+- (dev) updated deps
+
 ## [1.5.0] - 2021-10-07
 
 ### Added
