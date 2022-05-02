@@ -1,24 +1,11 @@
 {
-    "env": {
-        "es6": true,
-        "node": true
-    },
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 2019,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "impliedStrict": true
-        },
-        "project": "tsconfig.json"
-    },
     "plugins": ["import", "@typescript-eslint"],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:import/errors",
-        "plugin:import/warnings",
+        "plugin:import/recommended",
         "plugin:import/typescript",
         "prettier"
     ],
