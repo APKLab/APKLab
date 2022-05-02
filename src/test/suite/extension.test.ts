@@ -33,7 +33,9 @@ describe("Extension Test Suite", function () {
 
     // cleanup test dir after each test
     afterEach("Clearing directory", function () {
-        fs.rmdirSync(path.join(simpleKeyboardDir, "test"), { recursive: true });
+        const tmpTestDir = path.join(simpleKeyboardDir, "test");
+        if (fs.existsSync(tmpTestDir))
+            fs.rmSync(tmpTestDir, { recursive: true });
     });
 
     // test the Decode feature (uses ApkTool)
