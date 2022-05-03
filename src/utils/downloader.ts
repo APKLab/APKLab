@@ -58,7 +58,7 @@ export async function downloadTool(tool: Tool): Promise<string | null> {
  * @param urlString download URL for the file.
  * @returns a Buffer of the file contents.
  */
-async function downloadFile(urlString: string): Promise<Buffer> {
+export async function downloadFile(urlString: string): Promise<Buffer> {
     const buffers: any[] = [];
 
     return new Promise<Buffer>((resolve, reject) => {

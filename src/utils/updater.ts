@@ -1,10 +1,13 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import * as config from "../data/config.json";
-import { apklabDataDir, extensionConfigName } from "../data/constants";
+import {
+    apklabDataDir,
+    extensionConfigName,
+    updaterConfigURL,
+} from "../data/constants";
 import { apktool } from "../tools/apktool";
-import { downloadTool } from "./downloader";
+import { downloadFile, downloadTool } from "./downloader";
 
 /**
  * Tool details for downloading it if it doesn't exist.
@@ -41,7 +44,12 @@ export type Tool = {
 };
 
 /**
- * Check the tools from `config.json`
+ * structure of update config data
+ */
+type Config = { tools: Tool[] };
+
+/**
+ * Check the tools in update config
  * If any tool does not exist or does not match given file name, download it.
  */
 export async function updateTools(): Promise<void> {
@@ -60,6 +68,8 @@ export async function updateTools(): Promise<void> {
     if (!extensionConfig.get("updateTools")) return; // if updates are disabled, skip it
 
     const needsUpdate: Tool[] = [];
+
+    const config = await getUpdateConfig();
     config.tools.forEach((tool) => {
         const toolPath = extensionConfig.get(tool.configName);
         if (
@@ -77,7 +87,7 @@ export async function updateTools(): Promise<void> {
         // show update notification
         vscode.window
             .showInformationMessage(
-                "APKLab: Some of the tools can be updated to the latest version.",
+                "APKLab: Some of the needed tools are missing or outdated.",
                 "Update tools",
                 "Cancel"
             )
@@ -102,7 +112,7 @@ export async function updateTools(): Promise<void> {
 }
 
 /**
- * Check the tools from `config.json`
+ * Check the tools in update config
  * If any tool does not exist, download it.
  */
 export function checkAndInstallTools(): Promise<void> {
@@ -111,6 +121,7 @@ export function checkAndInstallTools(): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
+        const config = await getUpdateConfig();
         await Promise.all(
             config.tools.map(async (tool) => {
                 const toolPath = extensionConfig.get(tool.configName);
@@ -131,4 +142,28 @@ export function checkAndInstallTools(): Promise<void> {
         resolve();
     });
     // eslint-enable-next-line no-async-promise-executor
+}
+
+/**
+ * download the dynamic update data and save it locally.
+ * refresh the local `config.json` file if it's older than 24h
+ * @returns Config object with tools update data
+ */
+async function getUpdateConfig(): Promise<Config> {
+    const configFile = path.resolve(apklabDataDir, "config.json");
+    let configJsonData = { tools: [] };
+
+    if (fs.existsSync(configFile)) {
+        configJsonData = JSON.parse(fs.readFileSync(configFile, "utf-8"));
+        if (Date.now() - fs.statSync(configFile).mtimeMs < 86400000) {
+            return configJsonData;
+        }
+    }
+    const buffer = await downloadFile(updaterConfigURL);
+    const config = JSON.parse(Buffer.from(buffer).toString("utf-8"));
+    if (config && config.tools) {
+        fs.writeFileSync(configFile, buffer);
+        return config;
+    }
+    return configJsonData;
 }

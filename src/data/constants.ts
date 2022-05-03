@@ -22,3 +22,10 @@ export const extensionConfigName = "apklab";
  * Data dir for the extension to download dependencies, etc.
  */
 export const apklabDataDir = path.join(os.homedir(), ".apklab");
+
+/**
+ * URL to get the updater JSON data
+ */
+
+export const updaterConfigURL =
+    "https://apklab.surendrajat.xyz/apklab_update_config.json";
