@@ -7,6 +7,7 @@ import { apktool } from "../../tools/apktool";
 import { jadx } from "../../tools/jadx";
 import { git } from "../../tools/git";
 import { apkMitm } from "../../tools/apk-mitm";
+import { apklabDataDir } from "../../data/constants";
 
 describe("Extension Test Suite", function () {
     this.timeout(600000);
@@ -19,6 +20,10 @@ describe("Extension Test Suite", function () {
         // check if the testdata submodule is cloned
         if (!fs.existsSync(simpleKeyboardDir)) {
             assert.fail("testdata submodule is not cloned");
+        }
+        // create apklabDataDir
+        if (!fs.existsSync(String(apklabDataDir))) {
+            fs.mkdirSync(apklabDataDir);
         }
         // install the tools needed by APKLab
         console.log("Installing the tools...");

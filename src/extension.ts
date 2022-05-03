@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import { outputChannel } from "./data/constants";
+import { apklabDataDir, outputChannel } from "./data/constants";
 import { checkAndInstallTools, updateTools } from "./utils/updater";
 import { UI } from "./interface";
 import { apkMitm } from "./tools/apk-mitm";
@@ -11,6 +11,11 @@ import { apktool } from "./tools/apktool";
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Activated apklab extension!");
+
+    // create apklabDataDir if it doesn't exist
+    if (!fs.existsSync(String(apklabDataDir))) {
+        fs.mkdirSync(apklabDataDir);
+    }
 
     // command for opening an apk file for decoding
     const openApkFileCommand = vscode.commands.registerCommand(

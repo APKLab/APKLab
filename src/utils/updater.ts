@@ -53,10 +53,6 @@ type Config = { tools: Tool[] };
  * If any tool does not exist or does not match given file name, download it.
  */
 export async function updateTools(): Promise<void> {
-    // create apklabDataDir if it doesn't exist
-    if (!fs.existsSync(String(apklabDataDir))) {
-        fs.mkdirSync(apklabDataDir);
-    }
     // create first_run_completed file if it doesn't exist
     const firstRunFile = path.resolve(apklabDataDir, "first_run_completed");
     if (!fs.existsSync(firstRunFile)) {
@@ -126,9 +122,6 @@ export function checkAndInstallTools(): Promise<void> {
             config.tools.map(async (tool) => {
                 const toolPath = extensionConfig.get(tool.configName);
                 if (!toolPath || !fs.existsSync(String(toolPath))) {
-                    if (!fs.existsSync(String(apklabDataDir))) {
-                        fs.mkdirSync(apklabDataDir);
-                    }
                     const filepath = await downloadTool(tool);
                     if (!filepath) {
                         reject();
