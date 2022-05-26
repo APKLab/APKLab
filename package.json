@@ -72,6 +72,10 @@
             {
                 "command": "apklab.quarkReport",
                 "title": "APKLab: Show Quark analysis report"
+            },
+            {
+                "command": "apklab.decompileSmali",
+                "title": "APKLab: Convert this Smali file to Java"
             }
         ],
         "menus": {
@@ -91,6 +95,10 @@
                 {
                     "command": "apklab.quarkReport",
                     "when": "false"
+                },
+                {
+                    "command": "apklab.decompileSmali",
+                    "when": "false"
                 }
             ],
             "editor/context": [
@@ -107,6 +115,11 @@
                 {
                     "command": "apklab.quarkReport",
                     "when": "resourceFilename == quarkReport.json",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.decompileSmali",
+                    "when": "resourceExtname == .smali",
                     "group": "navigation"
                 }
             ],
@@ -143,6 +156,11 @@
                 {
                     "command": "apklab.quarkReport",
                     "when": "resourceFilename == quarkReport.json",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.decompileSmali",
+                    "when": "resourceExtname == .smali",
                     "group": "navigation"
                 }
             ]

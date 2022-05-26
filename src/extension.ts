@@ -87,13 +87,22 @@ export function activate(context: vscode.ExtensionContext): void {
         }
     );
 
+    // command to show quark analysis report as web view
+    const decompileSmaliCommand = vscode.commands.registerCommand(
+        "apklab.decompileSmali",
+        (uri: vscode.Uri) => {
+            console.log(uri.fsPath);
+        }
+    );
+
     context.subscriptions.push(
         openApkFileCommand,
         rebuildAPkFileCommand,
         installAPkFileCommand,
         patchApkForHttpsCommand,
         emptyFrameworkDirCommand,
-        quarkReportCommand
+        quarkReportCommand,
+        decompileSmaliCommand
     );
 
     // check if open folder contains `quarkReport.json` file
