@@ -21,26 +21,26 @@ jobs:
           - linux-build-test
           - macos-build-test
           - windows-build-test
-          - node16-build
+          - node18-build
         include:
           - name: lint
-            os: ubuntu-20.04
-            node: 14
+            os: ubuntu-22.04
+            node: 16
           - name: linux-build-test
-            os: ubuntu-20.04
-            node: 14
+            os: ubuntu-22.04
+            node: 16
             run_test: true
           - name: macos-build-test
             os: macos-latest
-            node: 14
+            node: 16
             run_test: true
           - name: windows-build-test
             os: windows-latest
-            node: 14
-            run_test: true
-          - name: node16-build
-            os: ubuntu-20.04
             node: 16
+            run_test: true
+          - name: node18-build
+            os: ubuntu-22.04
+            node: 18
 
     steps:
       - name: Checkout repo
@@ -60,11 +60,11 @@ jobs:
       - name: Package extension
         if: matrix.name != 'lint'
         run: yarn package
-      - name: Setup python 3.8
+      - name: Setup python 3.10
         if: matrix.run_test == true
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8
+          python-version: 3.10
       - name: Install quark-engine
         continue-on-error: true
         if: matrix.run_test == true
@@ -94,7 +94,7 @@ jobs:
   release:
     name: release
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repo
