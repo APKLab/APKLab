@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.6.1] - 2022-07-31
+
+### Added
+
+- fetch tools update data dynamically
+
 ## [1.6.0] - 2022-02-05
 
 ### Added
