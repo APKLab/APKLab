@@ -25,7 +25,7 @@ export namespace jadx {
         const apkDecompileDir = path.join(projectDir, "java_src");
         const apkFileName = path.basename(apkFilePath);
         const report = `Decompiling ${apkFileName} into ${apkDecompileDir}`;
-        let args = ["-r", "-q", "-v", "-ds", apkDecompileDir, apkFilePath];
+        let args = ["-r", "-q", "-ds", apkDecompileDir, apkFilePath];
         if (jadxArgs && jadxArgs.length > 0) {
             args = jadxArgs.concat(args);
         }
