@@ -168,7 +168,7 @@
                 "apklab.updateTools": {
                     "type": "boolean",
                     "default": true,
-                    "markdownDescription": "Wether APKLab should check for tools(apklab, jadx...) update and show a notification."
+                    "markdownDescription": "Whether APKLab should check for tools (for apklab, jadx...) update and show a notification."
                 },
                 "apklab.keystorePath": {
                     "type": "string",

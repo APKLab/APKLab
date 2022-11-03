@@ -143,7 +143,7 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
   <summary>Additional configuration</summary>
 
 - **`apklab.initProjectDirAsGit`**: Initialize project output directory as **Git** repository.
-- **`apklab.updateTools`**: Wether APKLab should check for tools(apklab, jadx...) update and show a notification.
+- **`apklab.updateTools`**: Whether APKLab should check for tools (for apklab, jadx...) update and show a notification.
 
 </details>
 
