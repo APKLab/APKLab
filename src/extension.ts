@@ -8,6 +8,7 @@ import { apkMitm } from "./tools/apk-mitm";
 import { Quark } from "./tools/quark-engine";
 import { adb } from "./tools/adb";
 import { apktool } from "./tools/apktool";
+import { updateSmaliDebugLines } from "./utils/source-line-updater";
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Activated apklab extension!");
@@ -46,6 +47,28 @@ export function activate(context: vscode.ExtensionContext): void {
                         "Can't download/update dependencies!"
                     );
                 });
+        }
+    );
+
+    const updateSmaliLines = vscode.commands.registerCommand(
+        "apklab.updateSmaliLines",
+        (uri: vscode.Uri) => {
+            vscode.window.withProgress(
+                {
+                    location: vscode.ProgressLocation.Notification,
+                    title: "Remapping smali line numbers",
+                    cancellable: false,
+                },
+                (progress) => {
+                    const p = new Promise<void>((resolve) => {
+                        updateSmaliDebugLines(uri.fsPath, progress).then(
+                            resolve
+                        );
+                    });
+
+                    return p;
+                }
+            );
         }
     );
 
@@ -93,7 +116,8 @@ export function activate(context: vscode.ExtensionContext): void {
         installAPkFileCommand,
         patchApkForHttpsCommand,
         emptyFrameworkDirCommand,
-        quarkReportCommand
+        quarkReportCommand,
+        updateSmaliLines
     );
 
     // check if open folder contains `quarkReport.json` file
