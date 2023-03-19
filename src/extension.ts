@@ -57,6 +57,29 @@ export function activate(context: vscode.ExtensionContext): void {
         }
     );
 
+    // command for rebuilding and installing the apk
+    const rebuildAndInstallAPkFileCommand = vscode.commands.registerCommand(
+        "apklab.rebuildAndInstallApkFile",
+        (uri: vscode.Uri) => {
+            checkAndInstallTools()
+                .then(async () => {
+                    await UI.rebuildAPK(uri.fsPath);
+                    const parentPath = path.parse(uri.fsPath).dir;
+                    const apkPath = path.join(
+                        parentPath,
+                        "dist",
+                        apktool.getApkNameFromApkToolYaml(uri.fsPath)
+                    );
+                    await adb.installAPK(apkPath);
+                })
+                .catch(() => {
+                    outputChannel.appendLine(
+                        "Can't download/update dependencies!"
+                    );
+                });
+        }
+    );
+
     // command for patching files for https inspection
     const patchApkForHttpsCommand = vscode.commands.registerCommand(
         "apklab.patchApkForHttps",
@@ -91,6 +114,7 @@ export function activate(context: vscode.ExtensionContext): void {
         openApkFileCommand,
         rebuildAPkFileCommand,
         installAPkFileCommand,
+        rebuildAndInstallAPkFileCommand,
         patchApkForHttpsCommand,
         emptyFrameworkDirCommand,
         quarkReportCommand
