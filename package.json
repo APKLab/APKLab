@@ -192,7 +192,7 @@
                 },
                 "apklab.initProjectDirAsGit": {
                     "type": "boolean",
-                    "default": "true",
+                    "default": "false",
                     "markdownDescription": "Initialize project output directory as **Git** repository."
                 }
             }
