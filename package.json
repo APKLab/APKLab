@@ -66,6 +66,10 @@
                 "title": "APKLab: Install the APK"
             },
             {
+                "command": "apklab.rebuildAndInstallApkFile",
+                "title": "APKLab: Rebuild and Install the APK"
+            },
+            {
                 "command": "apklab.emptyFrameworkDir",
                 "title": "APKLab: Empty ApkTool Framework Dir"
             },
@@ -85,6 +89,10 @@
                     "when": "false"
                 },
                 {
+                    "command": "apklab.rebuildAndInstallApkFile",
+                    "when": "false"
+                },
+                {
                     "command": "apklab.patchApkForHttps",
                     "when": "false"
                 },
@@ -96,6 +104,11 @@
             "editor/context": [
                 {
                     "command": "apklab.rebuildApkFile",
+                    "when": "resourceFilename == apktool.yml",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.rebuildAndInstallApkFile",
                     "when": "resourceFilename == apktool.yml",
                     "group": "navigation"
                 },
@@ -116,6 +129,10 @@
                     "when": "resourceFilename == apktool.yml"
                 },
                 {
+                    "command": "apklab.rebuildAndInstallApkFile",
+                    "when": "resourceFilename == apktool.yml"
+                },
+                {
                     "command": "apklab.patchApkForHttps",
                     "when": "resourceFilename == apktool.yml"
                 },
@@ -132,6 +149,11 @@
                 },
                 {
                     "command": "apklab.rebuildApkFile",
+                    "when": "resourceFilename == apktool.yml",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.rebuildAndInstallApkFile",
                     "when": "resourceFilename == apktool.yml",
                     "group": "navigation"
                 },

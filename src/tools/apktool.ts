@@ -120,4 +120,8 @@ export namespace apktool {
             args: args,
         });
     }
+
+    export const getApkNameFromApkToolYaml = (apktoolYamlPath: string): string => {
+        return getApkName(apktoolYamlPath)
+    }
 }
