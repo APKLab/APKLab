@@ -1,13 +1,14 @@
 import * as assert from "assert";
 import * as path from "path";
 import * as fs from "fs";
+import { ConfigurationTarget, workspace } from "vscode";
 import { checkAndInstallTools } from "../../utils/updater";
 import { Quark } from "../../tools/quark-engine";
 import { apktool } from "../../tools/apktool";
 import { jadx } from "../../tools/jadx";
 import { git } from "../../tools/git";
 import { apkMitm } from "../../tools/apk-mitm";
-import { apklabDataDir } from "../../data/constants";
+import { apklabDataDir, extensionConfigName } from "../../data/constants";
 
 describe("Extension Test Suite", function () {
     this.timeout(600000);
@@ -202,6 +203,9 @@ describe("Extension Test Suite", function () {
         await apktool.decodeAPK(testApkPath, projectDir, []);
 
         console.log(`git init in ${projectDir}...`);
+        await workspace
+            .getConfiguration(extensionConfigName)
+            .update("initProjectDirAsGit", true, ConfigurationTarget.Global);
         await git.initGitDir(projectDir, "initial commit 0abcd1234");
 
         console.log("Validating .gitignore file...");
