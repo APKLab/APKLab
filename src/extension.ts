@@ -63,10 +63,14 @@ export function activate(context: vscode.ExtensionContext): void {
         (uri: vscode.Uri) => {
             checkAndInstallTools()
                 .then(async () => {
-                    await UI.rebuildAPK(uri.fsPath)
-                    const parentPath = path.parse(uri.fsPath).dir
-                    const apkPath = path.join(parentPath, "dist", apktool.getApkNameFromApkToolYaml(uri.fsPath))
-                    await adb.installAPK(apkPath)
+                    await UI.rebuildAPK(uri.fsPath);
+                    const parentPath = path.parse(uri.fsPath).dir;
+                    const apkPath = path.join(
+                        parentPath,
+                        "dist",
+                        apktool.getApkNameFromApkToolYaml(uri.fsPath)
+                    );
+                    await adb.installAPK(apkPath);
                 })
                 .catch(() => {
                     outputChannel.appendLine(
