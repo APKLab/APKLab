@@ -76,6 +76,10 @@
             {
                 "command": "apklab.quarkReport",
                 "title": "APKLab: Show Quark analysis report"
+            },
+            {
+                "command": "apklab.updateSmaliLines",
+                "title": "APKLab: Update Smali Lines from Decompiled Source"
             }
         ],
         "menus": {
@@ -99,6 +103,10 @@
                 {
                     "command": "apklab.quarkReport",
                     "when": "false"
+                },
+                {
+                    "command": "apklab.updateSmaliLines",
+                    "when": "false"
                 }
             ],
             "editor/context": [
@@ -121,6 +129,11 @@
                     "command": "apklab.quarkReport",
                     "when": "resourceFilename == quarkReport.json",
                     "group": "navigation"
+                },
+                {
+                    "command": "apklab.updateSmaliLines",
+                    "when": "resourceFilename == apktool.yml",
+                    "group": "navigation"
                 }
             ],
             "editor/title": [
@@ -139,6 +152,11 @@
                 {
                     "command": "apklab.quarkReport",
                     "when": "resourceFilename == quarkReport.json"
+                },
+                {
+                    "command": "apklab.updateSmaliLines",
+                    "when": "resourceFilename == apktool.yml",
+                    "group": "navigation"
                 }
             ],
             "explorer/context": [
@@ -165,6 +183,11 @@
                 {
                     "command": "apklab.quarkReport",
                     "when": "resourceFilename == quarkReport.json",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.updateSmaliLines",
+                    "when": "resourceFilename == apktool.yml",
                     "group": "navigation"
                 }
             ]
