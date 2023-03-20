@@ -87,6 +87,7 @@ export namespace apktool {
             args = args.concat(apktoolArgs);
         }
         const shouldExist = path.join(projectDir, "dist", apkFileName);
+        let canBeSigned = false;
         await executeProcess({
             name: "Rebuilding",
             report: report,
@@ -94,9 +95,10 @@ export namespace apktool {
             args: args,
             shouldExist: shouldExist,
             onSuccess: () => {
-                apkSigner.signAPK(projectDir, apkFileName);
+                canBeSigned = true;
             },
         });
+        if (canBeSigned) await apkSigner.signAPK(projectDir, apkFileName);
     }
 
     /**
@@ -120,4 +122,10 @@ export namespace apktool {
             args: args,
         });
     }
+
+    export const getApkNameFromApkToolYaml = (
+        apktoolYamlPath: string
+    ): string => {
+        return getApkName(apktoolYamlPath);
+    };
 }
