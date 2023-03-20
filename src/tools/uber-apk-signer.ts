@@ -1,19 +1,14 @@
 import * as fs from "fs";
-import * as path from "path";
 import * as vscode from "vscode";
 import { extensionConfigName } from "../data/constants";
 import { executeProcess } from "../utils/executor";
 
 export namespace apkSigner {
     /**
-     * Signs given apk file using **uber-apk-signer** from projectDir/dist/apkFileName.apk.
-     * @param projectDir current directory of the project.
-     * @param apkFileName name of the original apk file from `apktool.yml`.
+     * Signs given apk file using **uber-apk-signer** from apk/file/path.apk.
+     * @param apkFilePath path of the an apk file to be signed.
      */
-    export async function signAPK(
-        projectDir: string,
-        apkFileName: string
-    ): Promise<void> {
+    export async function signAPK(apkFilePath: string): Promise<void> {
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
         const apkSignerPath = extensionConfig.get("apkSignerPath");
@@ -21,15 +16,12 @@ export namespace apkSigner {
         const keystorePassword = extensionConfig.get("keystorePassword");
         const keyAlias = extensionConfig.get("keyAlias");
         const keyPassword = extensionConfig.get("keyPassword");
-        const builtApkPath = path.join(projectDir, "dist", apkFileName);
-        const report = `Signing ${path.basename(projectDir)}${path.sep}dist${
-            path.sep
-        }${apkFileName}`;
+        const report = `Signing ${apkFilePath}`;
         const args = [
             "-jar",
             String(apkSignerPath),
             "-a",
-            builtApkPath,
+            apkFilePath,
             "--allowResign",
             "--overwrite",
         ];
@@ -56,7 +48,7 @@ export namespace apkSigner {
             report: report,
             command: "java",
             args: args,
-            shouldExist: builtApkPath,
+            shouldExist: apkFilePath,
         });
     }
 }

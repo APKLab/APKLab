@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as vscode from "vscode";
-import { extensionConfigName, outputChannel } from "../data/constants";
+import { outputChannel } from "../data/constants";
 import { executeProcess } from "../utils/executor";
 
 export namespace git {
@@ -14,10 +13,6 @@ export namespace git {
         projectDir: string,
         commitMsg: string
     ): Promise<void> {
-        const extensionConfig =
-            vscode.workspace.getConfiguration(extensionConfigName);
-        const initializeGit = extensionConfig.get("initProjectDirAsGit");
-        if (!initializeGit) return;
         try {
             // .gitignore content
             const gitignore = "/build\n/dist\n";

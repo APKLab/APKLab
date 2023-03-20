@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
-import { commands, QuickPickItem, Uri, window } from "vscode";
-import { outputChannel } from "./data/constants";
+import { commands, QuickPickItem, Uri, window, workspace } from "vscode";
+import { extensionConfigName, outputChannel } from "./data/constants";
 import { quickPickUtil } from "./utils/quick-picks";
 import { Quark } from "./tools/quark-engine";
 import { apktool } from "./tools/apktool";
@@ -108,7 +108,11 @@ export namespace UI {
                 }
 
                 // Initialize project dir as git repo
-                await git.initGitDir(projectDir, "Initial APKLab project");
+                const initializeGit = workspace
+                    .getConfiguration(extensionConfigName)
+                    .get("initProjectDirAsGit");
+                if (initializeGit)
+                    await git.initGitDir(projectDir, "Initial APKLab project");
 
                 // open project dir in a new window
                 if (!process.env["TEST"]) {

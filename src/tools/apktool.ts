@@ -5,25 +5,25 @@ import { extensionConfigName, outputChannel } from "../data/constants";
 import { executeProcess } from "../utils/executor";
 import { apkSigner } from "./uber-apk-signer";
 
-/**
- * Get original file name from `apktool.yml` file of decoded apk.
- * @param apktoolYamlPath The path of `apktool.yml` file.
- * @returns returns the original apk file name or empty string.
- */
-function getApkName(apktoolYamlPath: string) {
-    try {
-        const fileContent = fs.readFileSync(apktoolYamlPath);
-        const regArr = /apkFileName: .*\.apk/.exec(String(fileContent));
-        return regArr && regArr.length > 0 ? regArr[0].split(": ")[1] : "";
-    } catch (err) {
-        outputChannel.appendLine(
-            "Couldn't find apkFileName in apktool.yml: " + String(err)
-        );
-        return "";
-    }
-}
-
 export namespace apktool {
+    /**
+     * Get original file name from `apktool.yml` file of decoded apk.
+     * @param apktoolYamlPath The path of `apktool.yml` file.
+     * @returns returns the original apk file name or empty string.
+     */
+    export function getApkNameFromApkToolYaml(apktoolYamlPath: string): string {
+        try {
+            const fileContent = fs.readFileSync(apktoolYamlPath);
+            const regArr = /apkFileName: .*\.apk/.exec(String(fileContent));
+            return regArr && regArr.length > 0 ? regArr[0].split(": ")[1] : "";
+        } catch (err) {
+            outputChannel.appendLine(
+                "Couldn't find apkFileName in apktool.yml: " + String(err)
+            );
+            return "";
+        }
+    }
+
     /**
      * Decodes(Disassembles) the apk resources & dalvik bytecode using **Apktool**.
      * @param apkFilePath file path Uri for apk file to decode.
@@ -74,7 +74,7 @@ export namespace apktool {
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
-        const apkFileName = getApkName(apktoolYmlPath);
+        const apkFileName = getApkNameFromApkToolYaml(apktoolYmlPath);
         if (!apkFileName) {
             return;
         }
@@ -86,19 +86,19 @@ export namespace apktool {
         if (apktoolArgs && apktoolArgs.length > 0) {
             args = args.concat(apktoolArgs);
         }
-        const shouldExist = path.join(projectDir, "dist", apkFileName);
+        const outputApkFilePath = path.join(projectDir, "dist", apkFileName);
         let canBeSigned = false;
         await executeProcess({
             name: "Rebuilding",
             report: report,
             command: "java",
             args: args,
-            shouldExist: shouldExist,
+            shouldExist: outputApkFilePath,
             onSuccess: () => {
                 canBeSigned = true;
             },
         });
-        if (canBeSigned) await apkSigner.signAPK(projectDir, apkFileName);
+        if (canBeSigned) await apkSigner.signAPK(outputApkFilePath);
     }
 
     /**
@@ -122,10 +122,4 @@ export namespace apktool {
             args: args,
         });
     }
-
-    export const getApkNameFromApkToolYaml = (
-        apktoolYamlPath: string
-    ): string => {
-        return getApkName(apktoolYamlPath);
-    };
 }
