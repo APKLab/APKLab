@@ -221,15 +221,15 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "yarn clean && webpack --mode production --devtool hidden-source-map",
-        "compile": "tsc -p ./",
+        "clean": "git clean -Xdf -e !node_modules -e !node_modules/**/* -e !.vscode-test -e !.vscode-test/**/*",
         "lint": "eslint src --ext ts && prettier --check .",
         "fix": "prettier --write . && eslint src --ext ts --fix",
-        "clean": "git clean -Xdf -e !node_modules -e !node_modules/**/* -e !.vscode-test -e !.vscode-test/**/*",
-        "pretest": "yarn compile",
+        "pretest": "tsc -p ./",
         "test": "node ./out/test/runTest.js",
-        "package": "vsce package --yarn",
-        "watch": "webpack --watch"
+        "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+        "watch": "yarn esbuild-base --sourcemap --watch",
+        "vscode:prepublish": "yarn clean && yarn esbuild-base --minify",
+        "package": "vsce package --yarn"
     },
     "devDependencies": {
         "@types/glob": "^8.1.0",
@@ -241,16 +241,14 @@
         "@typescript-eslint/parser": "^6.1.0",
         "@vscode/test-electron": "^2.3.3",
         "@vscode/vsce": "^2.19.0",
+        "esbuild": "^0.18.16",
         "eslint": "^8.45.0",
         "eslint-config-prettier": "^8.8.0",
         "eslint-plugin-import": "^2.27.5",
         "glob": "^10.3.3",
         "mocha": "^10.2.0",
         "prettier": "^3.0.0",
-        "ts-loader": "^9.4.4",
-        "typescript": "^5.1.6",
-        "webpack": "^5.88.2",
-        "webpack-cli": "^5.1.4"
+        "typescript": "^5.1.6"
     },
     "dependencies": {
         "apk-mitm": "^1.2.1",

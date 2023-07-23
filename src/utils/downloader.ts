@@ -3,7 +3,7 @@ import * as https from "https";
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import * as extract from "extract-zip";
+import extract = require("extract-zip");
 import {
     extensionConfigName,
     apklabDataDir,
