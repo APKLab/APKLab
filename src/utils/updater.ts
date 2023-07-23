@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import {
     apklabDataDir,
     extensionConfigName,
+    outputChannel,
     updaterConfigURL,
 } from "../data/constants";
 import { apktool } from "../tools/apktool";
@@ -152,11 +153,16 @@ async function getUpdateConfig(): Promise<Config> {
             return configJsonData;
         }
     }
-    const buffer = await downloadFile(updaterConfigURL);
-    const config = JSON.parse(Buffer.from(buffer).toString("utf-8"));
-    if (config && config.tools) {
-        fs.writeFileSync(configFile, buffer);
-        return config;
+    try {
+        const buffer = await downloadFile(updaterConfigURL);
+        const config = JSON.parse(Buffer.from(buffer).toString("utf-8"));
+        if (config && config.tools) {
+            fs.writeFileSync(configFile, buffer);
+            return config;
+        }
+    } catch (err) {
+        outputChannel.appendLine(`Failed to download update config: ${err}`);
     }
+
     return configJsonData;
 }
