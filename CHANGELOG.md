@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.7.0] - 2023-07-23
+
+### Added
+
+- Added option to Rebuild and Install APK (#189) (thanks @Udhayarajan)
+
+### Fixed
+
+- Jadx: don't use verbose and quiet mode together
+- fix typo in settings (#181) (thanks @souramoo)
+- handle update check when device is offline (#194)
+- config: disable `git init` by default
+- (dev) code refactoring & updated deps
+- (ci) tests: fix git init tests after default config change
+
 ## [1.6.1] - 2022-07-31
 
 ### Added
