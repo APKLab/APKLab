@@ -244,7 +244,7 @@
         "eslint": "^8.45.0",
         "eslint-config-prettier": "^8.8.0",
         "eslint-plugin-import": "^2.27.5",
-        "glob": "^8.1.0",
+        "glob": "^10.3.3",
         "mocha": "^10.2.0",
         "prettier": "^3.0.0",
         "ts-loader": "^9.4.4",
