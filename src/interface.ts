@@ -17,7 +17,7 @@ export namespace UI {
      */
     export async function showArgsQuickPick(
         items: QuickPickItem[],
-        placeHolder: string
+        placeHolder: string,
     ): Promise<QuickPickItem[] | undefined> {
         return await window.showQuickPick(items, {
             placeHolder: placeHolder,
@@ -43,13 +43,13 @@ export namespace UI {
         if (result && result.length === 1) {
             const quickPickItems = await showArgsQuickPick(
                 quickPickUtil.getQuickPickItems("decodeQuickPickItems"),
-                "Additional features & Apktool/Jadx arguments"
+                "Additional features & Apktool/Jadx arguments",
             );
 
             if (quickPickItems) {
                 const args = quickPickItems.map<string>((item) => item.label);
                 const argDescriptions = quickPickItems.map<string | undefined>(
-                    (item) => item.description
+                    (item) => item.description,
                 );
                 const decompileJavaIndex =
                     argDescriptions.indexOf("[Use Jadx]");
@@ -57,7 +57,7 @@ export namespace UI {
                     argDescriptions.indexOf("[Use Quark-Engine]");
                 const jadxOptionsIndex = argDescriptions.indexOf("jadx");
                 const jadxOptionsNumber = argDescriptions.filter(
-                    (item) => item === "jadx"
+                    (item) => item === "jadx",
                 ).length;
                 let decompileJava = false;
                 let quarkAnalysis = false;
@@ -78,7 +78,7 @@ export namespace UI {
                             "APKLab: Quark command not found, \
                             please make sure you have installed python3 and Quark-Engine. \
                             Check here to install Quark-Engine: \
-                            https://github.com/quark-engine/quark-engine"
+                            https://github.com/quark-engine/quark-engine",
                         );
                         return;
                     }
@@ -88,7 +88,7 @@ export namespace UI {
                 const apkFilePath = result[0].fsPath;
                 let projectDir = path.join(
                     path.dirname(apkFilePath),
-                    path.parse(apkFilePath).name
+                    path.parse(apkFilePath).name,
                 );
                 // don't delete the existing dir if it already exists
                 while (fs.existsSync(projectDir)) {
@@ -119,7 +119,7 @@ export namespace UI {
                     await commands.executeCommand(
                         "vscode.openFolder",
                         Uri.file(projectDir),
-                        true
+                        true,
                     );
                 }
             }
@@ -135,7 +135,7 @@ export namespace UI {
     export async function rebuildAPK(apktoolYmlPath: string): Promise<void> {
         const quickPickItems = await showArgsQuickPick(
             quickPickUtil.getQuickPickItems("rebuildQuickPickItems"),
-            "Additional Apktool arguments"
+            "Additional Apktool arguments",
         );
         const args = quickPickItems
             ? quickPickItems.map<string>((item) => item.label)

@@ -27,10 +27,10 @@ export function activate(context: vscode.ExtensionContext): void {
                 })
                 .catch(() => {
                     outputChannel.appendLine(
-                        "Can't download/update dependencies!"
+                        "Can't download/update dependencies!",
                     );
                 });
-        }
+        },
     );
 
     // command for rebuilding apk file
@@ -43,10 +43,10 @@ export function activate(context: vscode.ExtensionContext): void {
                 })
                 .catch(() => {
                     outputChannel.appendLine(
-                        "Can't download/update dependencies!"
+                        "Can't download/update dependencies!",
                     );
                 });
-        }
+        },
     );
 
     // command for installing apk file
@@ -54,7 +54,7 @@ export function activate(context: vscode.ExtensionContext): void {
         "apklab.installApkFile",
         (uri: vscode.Uri) => {
             adb.installAPK(uri.fsPath);
-        }
+        },
     );
 
     // command for rebuilding and installing the apk
@@ -68,22 +68,22 @@ export function activate(context: vscode.ExtensionContext): void {
                     const apkPath = path.join(
                         parentPath,
                         "dist",
-                        apktool.getApkNameFromApkToolYaml(uri.fsPath)
+                        apktool.getApkNameFromApkToolYaml(uri.fsPath),
                     );
                     await adb.installAPK(apkPath);
                 })
                 .catch(() => {
                     outputChannel.appendLine(
-                        "Can't download/update dependencies!"
+                        "Can't download/update dependencies!",
                     );
                 });
-        }
+        },
     );
 
     // command for patching files for https inspection
     const patchApkForHttpsCommand = vscode.commands.registerCommand(
         "apklab.patchApkForHttps",
-        (uri: vscode.Uri) => apkMitm.applyMitmPatches(uri.fsPath)
+        (uri: vscode.Uri) => apkMitm.applyMitmPatches(uri.fsPath),
     );
 
     // command to empty apktool framework resource dir
@@ -96,10 +96,10 @@ export function activate(context: vscode.ExtensionContext): void {
                 })
                 .catch(() => {
                     outputChannel.appendLine(
-                        "Can't download/update dependencies!"
+                        "Can't download/update dependencies!",
                     );
                 });
-        }
+        },
     );
 
     // command to show quark analysis report as web view
@@ -107,7 +107,7 @@ export function activate(context: vscode.ExtensionContext): void {
         "apklab.quarkReport",
         (uri: vscode.Uri) => {
             Quark.showSummaryReport(uri.fsPath);
-        }
+        },
     );
 
     context.subscriptions.push(
@@ -117,7 +117,7 @@ export function activate(context: vscode.ExtensionContext): void {
         rebuildAndInstallAPkFileCommand,
         patchApkForHttpsCommand,
         emptyFrameworkDirCommand,
-        quarkReportCommand
+        quarkReportCommand,
     );
 
     // check if open folder contains `quarkReport.json` file
@@ -126,7 +126,7 @@ export function activate(context: vscode.ExtensionContext): void {
     if (folders && folders.length > 0) {
         const quarkReportFile = path.join(
             folders[0].uri.fsPath,
-            "quarkReport.json"
+            "quarkReport.json",
         );
         if (fs.existsSync(quarkReportFile)) {
             Quark.showSummaryReport(quarkReportFile);

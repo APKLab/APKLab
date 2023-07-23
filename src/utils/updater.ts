@@ -86,7 +86,7 @@ export async function updateTools(): Promise<void> {
             .showInformationMessage(
                 "APKLab: Some of the needed tools are missing or outdated.",
                 "Update tools",
-                "Cancel"
+                "Cancel",
             )
             .then(async (updateAction) => {
                 if (updateAction == "Update tools") {
@@ -97,7 +97,7 @@ export async function updateTools(): Promise<void> {
                             .update(
                                 tool.configName,
                                 "",
-                                vscode.ConfigurationTarget.Global
+                                vscode.ConfigurationTarget.Global,
                             )
                             .then(async () => {
                                 await downloadTool(tool);
@@ -131,7 +131,7 @@ export function checkAndInstallTools(): Promise<void> {
                         await apktool.emptyFrameworkDir();
                     }
                 }
-            })
+            }),
         );
         resolve();
     });

@@ -18,7 +18,7 @@ export namespace apktool {
             return regArr && regArr.length > 0 ? regArr[0].split(": ")[1] : "";
         } catch (err) {
             outputChannel.appendLine(
-                "Couldn't find apkFileName in apktool.yml: " + String(err)
+                "Couldn't find apkFileName in apktool.yml: " + String(err),
             );
             return "";
         }
@@ -33,7 +33,7 @@ export namespace apktool {
     export async function decodeAPK(
         apkFilePath: string,
         projectDir: string,
-        apktoolArgs: string[]
+        apktoolArgs: string[],
     ): Promise<void> {
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
@@ -69,7 +69,7 @@ export namespace apktool {
      */
     export async function rebuildAPK(
         apktoolYmlPath: string,
-        apktoolArgs: string[]
+        apktoolArgs: string[],
     ): Promise<void> {
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
@@ -80,7 +80,7 @@ export namespace apktool {
         }
         const projectDir = path.parse(apktoolYmlPath).dir;
         const report = `Rebuilding ${apkFileName} into ${path.basename(
-            projectDir
+            projectDir,
         )}${path.sep}dist`;
         let args = ["-jar", String(apktoolPath), "b", projectDir];
         if (apktoolArgs && apktoolArgs.length > 0) {

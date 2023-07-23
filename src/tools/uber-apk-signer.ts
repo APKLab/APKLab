@@ -40,7 +40,7 @@ export namespace apkSigner {
                 "--ksAlias",
                 String(keyAlias),
                 "--ksKeyPass",
-                String(keyPassword)
+                String(keyPassword),
             );
         }
         await executeProcess({

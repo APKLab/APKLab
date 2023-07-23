@@ -246,7 +246,7 @@
         "eslint-plugin-import": "^2.27.5",
         "glob": "^8.1.0",
         "mocha": "^10.2.0",
-        "prettier": "^2.8.4",
+        "prettier": "^3.0.0",
         "ts-loader": "^9.4.4",
         "typescript": "^5.1.6",
         "webpack": "^5.88.2",

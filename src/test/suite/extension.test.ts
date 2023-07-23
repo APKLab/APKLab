@@ -68,7 +68,7 @@ describe("Extension Test Suite", function () {
         await jadx.decompileAPK(testApkPath, projectDir, []);
         const jsonFilePath = path.join(
             simpleKeyboardDir,
-            "decompiled_files.json"
+            "decompiled_files.json",
         );
         const jsonFileData = fs.readFileSync(jsonFilePath, "utf-8");
         const decompiledFiles: string[] = JSON.parse(jsonFileData);
@@ -76,7 +76,7 @@ describe("Extension Test Suite", function () {
         decompiledFiles.forEach((file) => {
             if (
                 !fs.existsSync(
-                    path.join(simpleKeyboardDir, "test", "java_src", file)
+                    path.join(simpleKeyboardDir, "test", "java_src", file),
                 )
             ) {
                 assert.fail(`File ${file} not found!`);
@@ -98,7 +98,7 @@ describe("Extension Test Suite", function () {
             assert.fail(`Analysis Report file ${reportFile} not found!`);
         }
         const reportData: { [key: string]: any } = JSON.parse(
-            fs.readFileSync(reportFile, "utf-8")
+            fs.readFileSync(reportFile, "utf-8"),
         );
 
         console.log("Validating analysis report...");
@@ -127,7 +127,7 @@ describe("Extension Test Suite", function () {
         const apktoolYmlPath = path.resolve(
             simpleKeyboardDir,
             "test",
-            "apktool.yml"
+            "apktool.yml",
         );
         console.log(`Rebuilding apk with ${apktoolYmlPath}...`);
         await apktool.rebuildAPK(apktoolYmlPath, ["--use-aapt2"]);
@@ -136,7 +136,7 @@ describe("Extension Test Suite", function () {
             simpleKeyboardDir,
             "test",
             "dist",
-            "test.apk"
+            "test.apk",
         );
         if (!fs.existsSync(outApkPath)) {
             assert.fail(`File ${outApkPath} not found!`);
@@ -155,10 +155,10 @@ describe("Extension Test Suite", function () {
             process.env.HOME + osAppDataDir,
             "apktool",
             "framework",
-            "1.apk"
+            "1.apk",
         );
         console.log(
-            `apktool default framework apk path: ${apktoolDefaultFrameworkPath}`
+            `apktool default framework apk path: ${apktoolDefaultFrameworkPath}`,
         );
         if (fs.existsSync(apktoolDefaultFrameworkPath)) {
             console.log(`Emptying apktool res-framework dir...`);
@@ -169,7 +169,7 @@ describe("Extension Test Suite", function () {
             console.log(`Emptied apktool res-framework dir...`);
         } else {
             assert.fail(
-                `res-framework dir or default framework apk doesn't exist!`
+                `res-framework dir or default framework apk doesn't exist!`,
             );
         }
     });

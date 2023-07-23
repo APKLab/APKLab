@@ -11,14 +11,14 @@ export namespace git {
      */
     export async function initGitDir(
         projectDir: string,
-        commitMsg: string
+        commitMsg: string,
     ): Promise<void> {
         try {
             // .gitignore content
             const gitignore = "/build\n/dist\n";
             await fs.promises.writeFile(
                 path.join(projectDir, ".gitignore"),
-                gitignore
+                gitignore,
             );
             const cdCmd = `cd${
                 process.platform.startsWith("win") ? " /d" : ""
@@ -35,7 +35,7 @@ export namespace git {
             });
         } catch (err: any) {
             outputChannel.appendLine(
-                `Error: Initializing project dir as Git repository: ${err.message}`
+                `Error: Initializing project dir as Git repository: ${err.message}`,
             );
         }
     }
