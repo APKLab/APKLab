@@ -14,7 +14,7 @@ import { executeProcess } from "../utils/executor";
  */
 function parseReport(reportPath: string) {
     const quarkReportJSON: any = JSON.parse(
-        fs.readFileSync(reportPath, "utf8")
+        fs.readFileSync(reportPath, "utf8"),
     );
     const crimes = quarkReportJSON.crimes;
 
@@ -75,7 +75,7 @@ function functionToPath(srcDir: string, func: any): string {
     if (func.class[0] == "L") {
         srcPath = glob.sync(
             `${srcDir}/smali*/${func.class.substring(1)}.smali`,
-            {}
+            {},
         );
     }
     return srcPath[0];
@@ -89,7 +89,7 @@ function functionToPath(srcDir: string, func: any): string {
  */
 function searchFunctionSegment(
     doc: vscode.TextDocument,
-    functionName: string
+    functionName: string,
 ): Array<number> | false {
     const lineCount = doc.lineCount;
     let foundMethod = false;
@@ -130,7 +130,7 @@ function searchFunctionSegment(
 function getApiCallPosition(
     doc: vscode.TextDocument,
     api: Array<any>,
-    seg: number[] | null
+    seg: number[] | null,
 ): vscode.Position | false {
     if (seg == null) {
         seg = [0, doc.lineCount];
@@ -162,7 +162,7 @@ function getApiCallPosition(
 function navigateSourceCode(
     projectDir: string,
     parentFunction: any,
-    apiCalls: Array<any>
+    apiCalls: Array<any>,
 ) {
     const smaliPath = functionToPath(projectDir, parentFunction);
     vscode.workspace.openTextDocument(smaliPath).then((doc) => {
@@ -172,11 +172,11 @@ function navigateSourceCode(
 
             const mdSegment: number[] | false = searchFunctionSegment(
                 doc,
-                parentFunction.method
+                parentFunction.method,
             );
             if (!mdSegment) {
                 vscode.window.showErrorMessage(
-                    "APKLab: Cannot find the parent function in source code!"
+                    "APKLab: Cannot find the parent function in source code!",
                 );
                 return;
             }
@@ -185,17 +185,17 @@ function navigateSourceCode(
             const fstApi: vscode.Position | false = getApiCallPosition(
                 doc,
                 apiCalls[0],
-                mdSegment
+                mdSegment,
             );
             const secApi: vscode.Position | false = getApiCallPosition(
                 doc,
                 apiCalls[1],
-                mdSegment
+                mdSegment,
             );
 
             if (!fstApi || !secApi) {
                 vscode.window.showErrorMessage(
-                    "Cannot find the APIs call in source code!"
+                    "Cannot find the APIs call in source code!",
                 );
                 return;
             }
@@ -212,7 +212,7 @@ function navigateSourceCode(
             const methodSegmentDecoration = {
                 range: new vscode.Range(
                     new vscode.Position(mdSegment[0], 0),
-                    new vscode.Position(mdSegment[1], 0)
+                    new vscode.Position(mdSegment[1], 0),
                 ),
             };
             parentDecorationsArray.push(methodSegmentDecoration);
@@ -244,7 +244,7 @@ function navigateSourceCode(
 
             e.selection = new vscode.Selection(
                 parentFunctionPosition,
-                parentFunctionPosition
+                parentFunctionPosition,
             );
 
             vscode.commands.executeCommand("revealLine", {
@@ -282,7 +282,7 @@ export namespace Quark {
      */
     export async function analyzeAPK(
         apkFilePath: string,
-        projectDir: string
+        projectDir: string,
     ): Promise<void> {
         const jsonReportPath = path.join(projectDir, `quarkReport.json`);
 
@@ -304,7 +304,7 @@ export namespace Quark {
         const report: { [key: string]: any } = parseReport(reportPath);
 
         await vscode.commands.executeCommand(
-            "workbench.action.editorLayoutTwoColumns"
+            "workbench.action.editorLayoutTwoColumns",
         );
 
         const panel = vscode.window.createWebviewPanel(
@@ -313,7 +313,7 @@ export namespace Quark {
             vscode.ViewColumn.Two,
             {
                 enableScripts: true,
-            }
+            },
         );
 
         panel.webview.html = quarkSummaryReportHTML(report);
@@ -328,7 +328,7 @@ export namespace Quark {
                         ],
                         report[message.cid]["api_call"][message.functionId][
                             "apis"
-                        ]
+                        ],
                     );
                     break;
             }

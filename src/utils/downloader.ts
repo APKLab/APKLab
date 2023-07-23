@@ -31,11 +31,11 @@ export async function downloadTool(tool: Tool): Promise<string | null> {
             try {
                 await extract(filePath, { dir: configPath });
                 outputChannel.appendLine(
-                    `Extracted ${filePath} into ${configPath}`
+                    `Extracted ${filePath} into ${configPath}`,
                 );
             } catch (err: any) {
                 outputChannel.appendLine(
-                    `Error: Extracting file ${filePath}: ${err.message}`
+                    `Error: Extracting file ${filePath}: ${err.message}`,
                 );
             }
         }
@@ -44,7 +44,7 @@ export async function downloadTool(tool: Tool): Promise<string | null> {
             .update(
                 tool.configName,
                 configPath,
-                vscode.ConfigurationTarget.Global
+                vscode.ConfigurationTarget.Global,
             );
         return filePath;
     } catch (error) {
@@ -72,7 +72,8 @@ export async function downloadFile(urlString: string): Promise<Buffer> {
             } else if (response.statusCode !== 200) {
                 // Download failed - print error message
                 outputChannel.appendLine(
-                    "Download failed with response code: " + response.statusCode
+                    "Download failed with response code: " +
+                        response.statusCode,
                 );
                 reject("Failed");
             }
@@ -86,7 +87,7 @@ export async function downloadFile(urlString: string): Promise<Buffer> {
             let downloadPercentage = 0;
 
             outputChannel.appendLine(
-                `Download size: ${(packageSize / 1024 / 1024).toFixed(2)} MB`
+                `Download size: ${(packageSize / 1024 / 1024).toFixed(2)} MB`,
             );
 
             response.on("data", (data) => {
@@ -95,12 +96,12 @@ export async function downloadFile(urlString: string): Promise<Buffer> {
 
                 // Update status bar item with percentage
                 const newPercentage = Math.ceil(
-                    100 * (downloadedBytes / packageSize)
+                    100 * (downloadedBytes / packageSize),
                 );
                 if (newPercentage !== downloadPercentage) {
                     downloadPercentage = newPercentage;
                     outputChannel.appendLine(
-                        `Downloaded ${downloadPercentage}%`
+                        `Downloaded ${downloadPercentage}%`,
                     );
                 }
             });

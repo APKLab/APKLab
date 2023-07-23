@@ -47,7 +47,7 @@ export function executeProcess(processOptions: ProcessOptions): Thenable<void> {
     outputChannel.appendLine(processOptions.report);
     outputChannel.appendLine("-".repeat(processOptions.report.length));
     outputChannel.appendLine(
-        `${processOptions.command} ${processOptions.args.join(" ")}`
+        `${processOptions.command} ${processOptions.args.join(" ")}`,
     );
 
     return vscode.window.withProgress(
@@ -65,18 +65,18 @@ export function executeProcess(processOptions: ProcessOptions): Thenable<void> {
                     processOptions.args,
                     {
                         shell: processOptions.shell,
-                    }
+                    },
                 );
                 cp.stdout.on("data", (data) =>
-                    outputChannel.appendLine(data.toString().trim())
+                    outputChannel.appendLine(data.toString().trim()),
                 );
                 cp.stderr.on("data", (data) =>
-                    outputChannel.appendLine(data.toString().trim())
+                    outputChannel.appendLine(data.toString().trim()),
                 );
                 cp.on("error", (data) => {
                     outputChannel.appendLine(data.toString().trim());
                     vscode.window.showErrorMessage(
-                        `APKLab: ${processOptions.name} process failed.`
+                        `APKLab: ${processOptions.name} process failed.`,
                     );
                     resolve();
                 });
@@ -88,10 +88,10 @@ export function executeProcess(processOptions: ProcessOptions): Thenable<void> {
                             : true)
                     ) {
                         outputChannel.appendLine(
-                            `${processOptions.name} process was successful`
+                            `${processOptions.name} process was successful`,
                         );
                         vscode.window.showInformationMessage(
-                            `APKLab: ${processOptions.name} process was successful.`
+                            `APKLab: ${processOptions.name} process was successful.`,
                         );
                         if (processOptions.onSuccess) {
                             await processOptions.onSuccess();
@@ -100,23 +100,23 @@ export function executeProcess(processOptions: ProcessOptions): Thenable<void> {
                         outputChannel.appendLine(
                             code !== 0
                                 ? `${processOptions.name} process exited with code ${code}`
-                                : `${processOptions.name} process didn't create ${processOptions.shouldExist}`
+                                : `${processOptions.name} process didn't create ${processOptions.shouldExist}`,
                         );
                         vscode.window.showErrorMessage(
-                            `APKLab: ${processOptions.name} process failed.`
+                            `APKLab: ${processOptions.name} process failed.`,
                         );
                     }
                     resolve();
                 });
                 token.onCancellationRequested(() => {
                     outputChannel.appendLine(
-                        `User canceled the ${processOptions.name} process`
+                        `User canceled the ${processOptions.name} process`,
                     );
                     if (!cp.killed) {
                         cp.kill();
                     }
                 });
             });
-        }
+        },
     );
 }

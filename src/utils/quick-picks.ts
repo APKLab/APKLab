@@ -98,7 +98,7 @@ export namespace quickPickUtil {
     export function setQuickPickDefault(category: string, label: string): void {
         if (quickPickItems[category]) {
             const targetOption = quickPickItems[category].filter(
-                (x) => x.label === label
+                (x) => x.label === label,
             )[0];
             if (targetOption) {
                 targetOption.picked = true;

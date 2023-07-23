@@ -13,7 +13,7 @@ export namespace jadx {
     export async function decompileAPK(
         apkFilePath: string,
         projectDir: string,
-        jadxArgs: string[]
+        jadxArgs: string[],
     ): Promise<void> {
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);

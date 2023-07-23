@@ -12,7 +12,7 @@ export namespace apkMitm {
      * @param apktoolYmlPath The path of `apktool.yml` file.
      */
     export async function applyMitmPatches(
-        apktoolYmlPath: string
+        apktoolYmlPath: string,
     ): Promise<void> {
         try {
             const report = "Applying patches for HTTPS inspection (MITM)";
@@ -24,25 +24,25 @@ export namespace apkMitm {
 
             if (!process.env["TEST"]) {
                 outputChannel.appendLine(
-                    `Using apk-mitm v${APK_MITM_VERSION} (https://github.com/shroudedcode/apk-mitm)\n`
+                    `Using apk-mitm v${APK_MITM_VERSION} (https://github.com/shroudedcode/apk-mitm)\n`,
                 );
             }
 
             const projectDir = path.dirname(apktoolYmlPath);
 
             await observeListr(applyPatches(projectDir)).forEach((line) =>
-                outputChannel.appendLine(line)
+                outputChannel.appendLine(line),
             );
 
             outputChannel.appendLine("\nSuccessfully applied MITM patches!");
             vscode.window.showInformationMessage(
-                "APKLab: Successfully applied MITM patches!"
+                "APKLab: Successfully applied MITM patches!",
             );
         } catch (err: any) {
             outputChannel.appendLine(err);
             outputChannel.appendLine("Failed to apply MITM patches!");
             vscode.window.showErrorMessage(
-                "APKLab: Failed to apply MITM patches!"
+                "APKLab: Failed to apply MITM patches!",
             );
         }
     }
