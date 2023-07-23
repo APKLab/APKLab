@@ -232,6 +232,7 @@
         "watch": "webpack --watch"
     },
     "devDependencies": {
+        "@types/cross-spawn": "^6.0.2",
         "@types/glob": "^8.1.0",
         "@types/listr": "^0.14.4",
         "@types/mocha": "^10.0.1",
@@ -254,6 +255,7 @@
     },
     "dependencies": {
         "apk-mitm": "^1.2.1",
+        "cross-spawn": "^7.0.3",
         "extract-zip": "^2.0.1"
     }
 }

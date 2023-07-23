@@ -1,5 +1,5 @@
-import * as child_process from "child_process";
 import * as fs from "fs";
+import * as cross_spawn from "cross-spawn";
 import * as vscode from "vscode";
 import { outputChannel } from "../data/constants";
 
@@ -60,7 +60,7 @@ export function executeProcess(processOptions: ProcessOptions): Thenable<void> {
             return new Promise<void>((resolve) => {
                 progress.report({ message: processOptions.report });
 
-                const cp = child_process.spawn(
+                const cp = cross_spawn.spawn(
                     processOptions.command,
                     processOptions.args,
                     {
