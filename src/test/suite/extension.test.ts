@@ -149,8 +149,8 @@ describe("Extension Test Suite", function () {
             process.platform == "linux"
                 ? "/.local/share"
                 : process.platform == "darwin"
-                ? "/Library"
-                : "\\AppData\\Local";
+                  ? "/Library"
+                  : "\\AppData\\Local";
         const apktoolDefaultFrameworkPath = path.join(
             process.env.HOME + osAppDataDir,
             "apktool",

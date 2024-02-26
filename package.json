@@ -7,7 +7,7 @@
     "license": "SEE LICENSE IN LICENSE",
     "icon": "assets/icon.png",
     "engines": {
-        "vscode": "^1.45.0"
+        "vscode": "^1.75.0"
     },
     "homepage": "https://apklab.surendrajat.xyz",
     "repository": {
@@ -42,9 +42,7 @@
     ],
     "activationEvents": [
         "workspaceContains:apktool.yml",
-        "workspaceContains:quarkReport.json",
-        "onCommand:apklab.openApkFile",
-        "onCommand:apklab.emptyFrameworkDir"
+        "workspaceContains:quarkReport.json"
     ],
     "main": "./dist/extension",
     "contributes": {
@@ -233,23 +231,23 @@
     },
     "devDependencies": {
         "@types/glob": "^8.1.0",
-        "@types/listr": "^0.14.4",
-        "@types/mocha": "^10.0.1",
-        "@types/node": "^18.15.3",
-        "@types/vscode": "^1.45.0",
-        "@typescript-eslint/eslint-plugin": "^6.1.0",
-        "@typescript-eslint/parser": "^6.1.0",
-        "@vscode/test-electron": "^2.3.3",
-        "@vscode/vsce": "^2.19.0",
-        "eslint": "^8.45.0",
-        "eslint-config-prettier": "^8.8.0",
-        "eslint-plugin-import": "^2.27.5",
-        "glob": "^10.3.3",
-        "mocha": "^10.2.0",
-        "prettier": "^3.0.0",
-        "ts-loader": "^9.4.4",
-        "typescript": "^5.1.6",
-        "webpack": "^5.88.2",
+        "@types/listr": "^0.14.9",
+        "@types/mocha": "^10.0.6",
+        "@types/node": "^20.11.20",
+        "@types/vscode": "^1.75.0",
+        "@typescript-eslint/eslint-plugin": "^7.0.2",
+        "@typescript-eslint/parser": "^7.0.2",
+        "@vscode/test-electron": "^2.3.9",
+        "@vscode/vsce": "^2.24.0",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-import": "^2.29.1",
+        "glob": "^10.3.10",
+        "mocha": "^10.3.0",
+        "prettier": "^3.2.5",
+        "ts-loader": "^9.5.1",
+        "typescript": "^5.3.3",
+        "webpack": "^5.90.3",
         "webpack-cli": "^5.1.4"
     },
     "dependencies": {
