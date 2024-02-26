@@ -21,34 +21,34 @@ jobs:
           - linux-build-test
           - macos-build-test
           - windows-build-test
-          - node18-build
+          - node20-build
         include:
           - name: lint
             os: ubuntu-22.04
-            node: 16
+            node: 18
           - name: linux-build-test
             os: ubuntu-22.04
-            node: 16
+            node: 18
             run_test: true
           - name: macos-build-test
             os: macos-latest
-            node: 16
+            node: 18
             run_test: true
           - name: windows-build-test
             os: windows-latest
-            node: 16
-            run_test: true
-          - name: node18-build
-            os: ubuntu-22.04
             node: 18
+            run_test: true
+          - name: node20-build
+            os: ubuntu-22.04
+            node: 20
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: "yarn"
