@@ -31,7 +31,7 @@ jobs:
             node: 18
             run_test: true
           - name: macos-build-test
-            os: macos-latest
+            os: macos-14
             node: 18
             run_test: true
           - name: windows-build-test
