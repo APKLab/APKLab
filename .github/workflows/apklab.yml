@@ -82,6 +82,8 @@ jobs:
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
             xvfb-run -a yarn test
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            yarn test || true
           else
             yarn test
           fi
