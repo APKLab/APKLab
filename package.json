@@ -223,10 +223,10 @@
         "compile": "tsc -p ./",
         "lint": "eslint src --ext ts && prettier --check .",
         "fix": "prettier --write . && eslint src --ext ts --fix",
-        "clean": "git clean -Xdf -e !node_modules -e !node_modules/**/* -e !.vscode-test -e !.vscode-test/**/*",
+        "clean": "git clean -Xdf -e !node_modules -e '!node_modules/**/*' -e !.vscode-test -e '!.vscode-test/**/*'",
         "pretest": "yarn compile",
         "test": "node ./out/test/runTest.js",
-        "package": "vsce package --yarn",
+        "package": "vsce package --no-yarn",
         "watch": "webpack --watch"
     },
     "devDependencies": {
