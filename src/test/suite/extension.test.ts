@@ -130,7 +130,7 @@ describe("Extension Test Suite", function () {
             "apktool.yml",
         );
         console.log(`Rebuilding apk with ${apktoolYmlPath}...`);
-        await apktool.rebuildAPK(apktoolYmlPath, ["--use-aapt2"]);
+        await apktool.rebuildAPK(apktoolYmlPath, []);
         console.log("Checking for APK output...");
         const outApkPath = path.join(
             simpleKeyboardDir,
