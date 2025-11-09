@@ -38,6 +38,9 @@ async function main() {
         outfile: 'dist/extension.js',
         external: ['vscode'],
         logLevel: 'silent',
+        alias: {
+            'any-observable': './src/any-observable-fix.ts'
+        },
         plugins: [
             /* add to the end of plugins array */
             esbuildProblemMatcherPlugin,
