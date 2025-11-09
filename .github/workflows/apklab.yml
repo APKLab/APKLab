@@ -47,6 +47,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 22
+          cache: "yarn"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run Linter
@@ -55,6 +56,7 @@ jobs:
       - name: Package extension
         if: matrix.name != 'lint'
         run: yarn package
+
       - name: Setup python
         if: matrix.run_test == true
         uses: actions/setup-python@v6
@@ -71,6 +73,19 @@ jobs:
           # check if it installed properly
           quark --help
           quark -a testdata/simplekeyboard/test.apk -s
+
+      - name: Get VS Code stable release version
+        if: matrix.run_test == true
+        id: code-stable
+        run: |
+          echo "VSCODE_VERSION=`curl --silent https://update.code.visualstudio.com/api/releases/stable | jq -r '.[0]'`" >> "$GITHUB_OUTPUT"
+      - name: Cache VS Code download for testing
+        if: matrix.run_test == true
+        uses: actions/cache@v4
+        with:
+          path: |
+            .vscode-test
+          key: ${{ runner.os }}-vscode-test-cache-${{ steps.code-stable.outputs.VSCODE_VERSION }}
       - name: Run tests
         if: matrix.run_test == true
         shell: bash
@@ -82,7 +97,7 @@ jobs:
           else
             yarn test
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: matrix.name == 'linux-build-test'
         with:
           name: apklab.vsix
