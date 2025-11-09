@@ -7,7 +7,7 @@
     "license": "SEE LICENSE IN LICENSE",
     "icon": "assets/icon.png",
     "engines": {
-        "vscode": "^1.100.0"
+        "vscode": "^1.75.0"
     },
     "homepage": "https://apklab.surendrajat.xyz",
     "repository": {
@@ -233,7 +233,7 @@
         "@types/listr": "^0.14.10",
         "@types/mocha": "^10.0.10",
         "@types/node": "^24",
-        "@types/vscode": "^1.100.0",
+        "@types/vscode": "^1.75.0",
         "@vscode/test-electron": "^2.5.2",
         "@vscode/vsce": "^3.7.0",
         "esbuild": "^0.26.0",
