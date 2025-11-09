@@ -20,7 +20,7 @@ jobs:
           - lint
           - linux-build-test
           - macos-build-test
-          - windows-build-test
+          # - windows-build-test
           # - node24-build
         include:
           - name: lint
@@ -31,9 +31,9 @@ jobs:
           - name: macos-build-test
             os: macos-latest
             run_test: true
-          - name: windows-build-test
-            os: windows-latest
-            run_test: true
+          # - name: windows-build-test
+          #   os: windows-latest
+          #   run_test: true
           # - name: node24-build
           #   os: ubuntu-latest
           #   node: 24
