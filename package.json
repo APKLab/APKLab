@@ -224,10 +224,9 @@
         "clean": "git clean -Xdf -e !node_modules -e '!node_modules/**/*' -e !.vscode-test -e '!.vscode-test/**/*'",
         "pretest": "tsc -p ./",
         "test": "node ./out/test/runTest.js",
-        "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
-        "watch": "yarn esbuild-base --sourcemap --watch",
-        "vscode:prepublish": "yarn clean && yarn esbuild-base --minify",
-        "package": "vsce package"
+        "watch": "node esbuild.config.mjs --watch",
+        "vscode:prepublish": "yarn clean && node esbuild.config.mjs --production",
+        "package": "vsce package --yarn"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.1",
