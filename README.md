@@ -11,7 +11,7 @@ The ultimate Android RE experience right inside your <a href="https://code.visua
 </h4>
 
 <p align="center">
-APKLab seamlessly integrates the best open-source tools: <a href='https://github.com/quark-engine/quark-engine'>Quark-Engine</a>, <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/skylot/jadx">Jadx</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a>, <a href="https://github.com/shroudedcode/apk-mitm/">apk-mitm</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
+APKLab seamlessly integrates the best open-source tools: <a href="https://github.com/ibotpeaches/apktool/">Apktool</a>, <a href="https://github.com/skylot/jadx">Jadx</a>, <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a>, <a href="https://github.com/shroudedcode/apk-mitm/">apk-mitm</a> and more to the excellent VS Code so you can focus on app analysis and get it done without leaving the IDE.
 </p>
 
 <p align="center">
@@ -24,8 +24,8 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
     <a href="https://marketplace.visualstudio.com/items?itemName=Surendrajat.apklab">
         <img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/surendrajat.apklab?logo=visual-studio-code&logoColor=blue&labelColor=404752&color=blue">
     </a>
-    <a href="https://github.com/APKLab/APKLab/actions?query=workflow%3A%22CI%22">
-        <img alt="CI" src="https://github.com/APKLab/APKLab/workflows/CI/badge.svg?branch=master&event=push">
+    <a href="https://github.com/APKLab/APKLab/actions/workflows/apklab.yml">
+        <img alt="CI" src="https://github.com/APKLab/APKLab/actions/workflows/apklab.yml/badge.svg?branch=master&event=push">
     </a>
 </p>
 <p align="center">
@@ -63,15 +63,15 @@ APKLab seamlessly integrates the best open-source tools: <a href='https://github
 
 ## Requirements
 
-- **JDK 8+**
+- **JDK 11+**
 
   > Run **`java -version`** in your Shell, if not found, download from [here](https://adoptopenjdk.net/).
 
-- **quark-engine >=21.01.6** (for malware analysis)
+- **quark-engine >=21.01.6** (optional - for malware analysis)
 
   > Run **`quark`** in your Shell, if not found, check [official docs](https://github.com/quark-engine/quark-engine).
 
-- **adb**
+- **adb** (optional)
   > Run **`adb devices`** in your Shell, if not found, check [this guide](https://www.xda-developers.com/install-adb-windows-macos-linux/).
 
 ## Getting Started
@@ -159,6 +159,8 @@ For bug reports, feature requests or simply discussing an idea, please open an i
 
 ## Credits
 
+<details>
+
 - [Feimaomii](https://github.com/Feimaomii) for the awesome logo
 - [Aman Sharma](https://github.com/amsharma44) for active contribution
 - [Niklas Higi](https://github.com/shroudedcode) for apk-mitm
@@ -167,3 +169,4 @@ For bug reports, feature requests or simply discussing an idea, please open an i
 - [patrickfav](https://github.com/patrickfav) for uber-apk-signer
 - [skylot](https://github.com/skylot) for Jadx
 - [Loyie King](https://github.com/LoyieKing) for Smalise
+</details>
