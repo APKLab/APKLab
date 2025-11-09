@@ -21,7 +21,6 @@ jobs:
           - linux-build-test
           - macos-build-test
           # - windows-build-test
-          # - node24-build
         include:
           - name: lint
             os: ubuntu-latest
@@ -34,9 +33,6 @@ jobs:
           # - name: windows-build-test
           #   os: windows-latest
           #   run_test: true
-          # - name: node24-build
-          #   os: ubuntu-latest
-          #   node: 24
 
     steps:
       - name: Checkout repo
@@ -46,7 +42,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: "yarn"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -116,7 +112,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Package extension
