@@ -41,8 +41,7 @@
         "dalvik"
     ],
     "activationEvents": [
-        "workspaceContains:apktool.yml",
-        "workspaceContains:quarkReport.json"
+        "onStartupFinished"
     ],
     "main": "./dist/extension",
     "contributes": {
