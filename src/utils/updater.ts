@@ -13,7 +13,7 @@ import { downloadFile, downloadTool } from "./downloader";
 /**
  * Tool details for downloading it if it doesn't exist.
  */
-export type Tool = {
+export interface Tool {
     /**
      * Name of the tool.
      */
@@ -42,12 +42,14 @@ export type Tool = {
      * If it's a zip file then where to extract it?
      */
     unzipDir?: string;
-};
+}
 
 /**
  * structure of update config data
  */
-type Config = { tools: Tool[] };
+interface Config {
+    tools: Tool[];
+}
 
 /**
  * Check the tools in update config

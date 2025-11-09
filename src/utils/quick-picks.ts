@@ -1,6 +1,6 @@
 import { QuickPickItem } from "vscode";
 
-const quickPickItems: { [index: string]: QuickPickItem[] } = {
+const quickPickItems: Record<string, QuickPickItem[]> = {
     /**
      * QuickPickItem array for additional **Apktool** args for APK building.
      */

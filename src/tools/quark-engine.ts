@@ -18,14 +18,14 @@ function parseReport(reportPath: string) {
     );
     const crimes = quarkReportJSON.crimes;
 
-    const report: { [key: string]: any } = {};
+    const report: Record<string, any> = {};
 
     for (let crimeIndex = 0; crimeIndex < crimes.length; crimeIndex++) {
         const crimeObj = crimes[crimeIndex];
         const crimeId = `c${crimeIndex}`;
 
         if (crimeObj.confidence == "100%") {
-            const newFunctionObj: { [key: string]: any } = {};
+            const newFunctionObj: Record<string, any> = {};
 
             for (
                 let functionIndex = 0;
@@ -90,7 +90,7 @@ function functionToPath(srcDir: string, func: any): string {
 function searchFunctionSegment(
     doc: vscode.TextDocument,
     functionName: string,
-): Array<number> | false {
+): number[] | false {
     const lineCount = doc.lineCount;
     let foundMethod = false;
 
@@ -129,7 +129,7 @@ function searchFunctionSegment(
  */
 function getApiCallPosition(
     doc: vscode.TextDocument,
-    api: Array<any>,
+    api: any[],
     seg: number[] | null,
 ): vscode.Position | false {
     if (seg == null) {
@@ -162,7 +162,7 @@ function getApiCallPosition(
 function navigateSourceCode(
     projectDir: string,
     parentFunction: any,
-    apiCalls: Array<any>,
+    apiCalls: any[],
 ) {
     const smaliPath = functionToPath(projectDir, parentFunction);
     vscode.workspace.openTextDocument(smaliPath).then((doc) => {
@@ -301,7 +301,7 @@ export namespace Quark {
      */
     export async function showSummaryReport(reportPath: string): Promise<void> {
         const projectDir = path.dirname(reportPath);
-        const report: { [key: string]: any } = parseReport(reportPath);
+        const report: Record<string, any> = parseReport(reportPath);
 
         await vscode.commands.executeCommand(
             "workbench.action.editorLayoutTwoColumns",

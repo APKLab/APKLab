@@ -5,7 +5,7 @@ import { ThemeColor } from "vscode";
  * @param report The data of quark report.
  * @returns WebView HTML
  */
-export function quarkSummaryReportHTML(report: { [key: string]: any }): string {
+export function quarkSummaryReportHTML(report: Record<string, any>): string {
     let allCrimesHTML = "";
 
     for (const key in report) {

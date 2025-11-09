@@ -3,5 +3,4 @@
 // replaces that module and hard-codes the `Observable` implementation from
 // `rxjs` as the one that is used by packages which import `any-observable`.
 
-// eslint-disable-next-line import/no-default-export
 export { Observable as default } from "rxjs";

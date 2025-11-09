@@ -18,7 +18,7 @@ async function main() {
             launchArgs: ["--disable-extensions"],
             extensionTestsEnv: { TEST: "true" },
         });
-    } catch (err) {
+    } catch (_err) {
         console.error("Failed to run tests");
         process.exit(1);
     }

@@ -97,7 +97,7 @@ describe("Extension Test Suite", function () {
         if (!fs.existsSync(reportFile)) {
             assert.fail(`Analysis Report file ${reportFile} not found!`);
         }
-        const reportData: { [key: string]: any } = JSON.parse(
+        const reportData: Record<string, any> = JSON.parse(
             fs.readFileSync(reportFile, "utf-8"),
         );
 
