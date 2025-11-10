@@ -20,7 +20,7 @@ jobs:
           - lint
           - linux-build-test
           - macos-build-test
-          # - windows-build-test
+          - windows-build-test
         include:
           - name: lint
             os: ubuntu-latest
@@ -30,9 +30,9 @@ jobs:
           - name: macos-build-test
             os: macos-latest
             run_test: true
-          # - name: windows-build-test
-          #   os: windows-latest
-          #   run_test: true
+          - name: windows-build-test
+            os: windows-latest
+            run_test: true
 
     steps:
       - name: Checkout repo
