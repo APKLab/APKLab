@@ -73,6 +73,7 @@ jobs:
       - name: Get VS Code stable release version
         if: matrix.run_test == true
         id: code-stable
+        shell: bash
         run: |
           echo "VSCODE_VERSION=`curl --silent https://update.code.visualstudio.com/api/releases/stable | jq -r '.[0]'`" >> "$GITHUB_OUTPUT"
       - name: Cache VS Code download for testing
