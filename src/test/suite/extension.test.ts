@@ -97,9 +97,9 @@ describe("Extension Test Suite", function () {
         if (!fs.existsSync(reportFile)) {
             assert.fail(`Analysis Report file ${reportFile} not found!`);
         }
-        const reportData: Record<string, any> = JSON.parse(
+        const reportData = JSON.parse(
             fs.readFileSync(reportFile, "utf-8"),
-        );
+        ) as Record<string, unknown>;
 
         console.log("Validating analysis report...");
         // some basic structure tests and checks for fixed values
@@ -109,6 +109,7 @@ describe("Extension Test Suite", function () {
             reportData.size_bytes === 874736 &&
             Object.prototype.hasOwnProperty.call(reportData, "threat_level") &&
             Object.prototype.hasOwnProperty.call(reportData, "total_score") &&
+            Array.isArray(reportData.crimes) &&
             reportData.crimes.length > 0;
         if (!isValidJSON) {
             assert.fail(`Quark report data is not valid!`);

@@ -60,8 +60,8 @@ describe("VSIX Build & Packaging Tests", function () {
 
         Module._load = function (
             request: string,
-            _parent: any,
-            ..._args: any[]
+            _parent: unknown,
+            ..._args: unknown[]
         ) {
             if (request === "vscode") {
                 return createVSCodeMock();
@@ -71,6 +71,7 @@ describe("VSIX Build & Packaging Tests", function () {
 
         try {
             // Clear require cache
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete require.cache[extensionFile];
 
             // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -101,8 +102,8 @@ describe("VSIX Build & Packaging Tests", function () {
 
         Module._load = function (
             request: string,
-            _parent: any,
-            ..._args: any[]
+            _parent: unknown,
+            ..._args: unknown[]
         ) {
             if (request === "vscode") {
                 return createVSCodeMock();
@@ -112,6 +113,7 @@ describe("VSIX Build & Packaging Tests", function () {
 
         try {
             // Clear require cache
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete require.cache[extensionFile];
 
             // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -324,8 +326,8 @@ describe("VSIX Build & Packaging Tests", function () {
 
             Module._load = function (
                 request: string,
-                _parent: any,
-                ..._args: any[]
+                _parent: unknown,
+                ..._args: unknown[]
             ) {
                 if (request === "vscode") {
                     return createVSCodeMock();
@@ -334,6 +336,7 @@ describe("VSIX Build & Packaging Tests", function () {
             };
 
             try {
+                // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
                 delete require.cache[vsixExtensionPath];
                 // eslint-disable-next-line @typescript-eslint/no-require-imports
                 const extension = require(vsixExtensionPath);
@@ -453,7 +456,7 @@ function createVSCodeMock() {
             showQuickPick: () => Promise.resolve([]),
             showOpenDialog: () => Promise.resolve([]),
             showSaveDialog: () => Promise.resolve(),
-            withProgress: (options: any, task: any) => {
+            withProgress: (_options: unknown, task: unknown) => {
                 const progress = {
                     report: () => {
                         /* mock */
@@ -465,7 +468,10 @@ function createVSCodeMock() {
                         /* mock */
                     },
                 };
-                return task(progress, token);
+                return (task as (...args: unknown[]) => unknown)(
+                    progress,
+                    token,
+                );
             },
         },
         workspace: {
@@ -520,7 +526,7 @@ function createVSCodeMock() {
  */
 function createExtensionContext() {
     return {
-        subscriptions: [] as any[],
+        subscriptions: [] as unknown[],
         workspaceState: {
             get: () => undefined,
             update: () => Promise.resolve(),

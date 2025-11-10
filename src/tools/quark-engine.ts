@@ -48,7 +48,7 @@ interface QuarkProcessedCrime {
     api_call: Record<string, QuarkApiCallEntry>;
 }
 
-type QuarkReport = Record<string, QuarkProcessedCrime>;
+export type QuarkReport = Record<string, QuarkProcessedCrime>;
 
 /**
  * Read and parse the JSON file of quark analysis report.

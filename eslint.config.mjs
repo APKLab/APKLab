@@ -14,17 +14,16 @@ export default [
         ],
     },
     js.configs.recommended,
-    ...tseslint.configs.recommended,
+    ...tseslint.configs.strict,
     ...tseslint.configs.stylistic,
     {
-        // languageOptions: {
-        //     parserOptions: {
-        //         projectService: true,
-        //     },
-        // },
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+            },
+        },
         rules: {
             "@typescript-eslint/no-namespace": "off",
-            "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-unused-vars": [
                 "error",
                 {
