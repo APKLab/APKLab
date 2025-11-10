@@ -35,9 +35,11 @@ export async function downloadTool(tool: Tool): Promise<string | null> {
                 outputChannel.appendLine(
                     `Extracted ${filePath} into ${configPath}`,
                 );
-            } catch (err: any) {
+            } catch (err) {
+                const errorMessage =
+                    err instanceof Error ? err.message : String(err);
                 outputChannel.appendLine(
-                    `Error: Extracting file ${filePath}: ${err.message}`,
+                    `Error: Extracting file ${filePath}: ${errorMessage}`,
                 );
             }
         }
@@ -61,7 +63,7 @@ export async function downloadTool(tool: Tool): Promise<string | null> {
  * @returns a Buffer of the file contents.
  */
 export async function downloadFile(urlString: string): Promise<Buffer> {
-    const buffers: any[] = [];
+    const buffers: Buffer[] = [];
 
     return new Promise<Buffer>((resolve, reject) => {
         const request = https.request(new URL(urlString), (response) => {

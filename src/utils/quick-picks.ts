@@ -90,10 +90,20 @@ const quickPickItems: Record<string, QuickPickItem[]> = {
 };
 
 export namespace quickPickUtil {
+    /**
+     * Get quick pick items for a specific category.
+     * @param category The category name (e.g., "rebuildQuickPickItems", "decodeQuickPickItems")
+     * @returns Array of QuickPickItem objects for the specified category
+     */
     export function getQuickPickItems(category: string): QuickPickItem[] {
         return quickPickItems[category];
     }
 
+    /**
+     * Set a quick pick item as default (pre-selected) in a category.
+     * @param category The category name
+     * @param label The label of the item to set as default
+     */
     export function setQuickPickDefault(category: string, label: string): void {
         if (quickPickItems[category]) {
             const targetOption = quickPickItems[category].filter(

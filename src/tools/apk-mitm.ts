@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as path from "path";
 import { applyPatches, observeListr } from "apk-mitm";
 import * as vscode from "vscode";
@@ -11,6 +12,21 @@ export namespace apkMitm {
     export async function applyMitmPatches(
         apktoolYmlPath: string,
     ): Promise<void> {
+        if (!apktoolYmlPath || !path.isAbsolute(apktoolYmlPath)) {
+            vscode.window.showErrorMessage(
+                `APKLab: Invalid apktool.yml path: ${apktoolYmlPath}`,
+            );
+            return;
+        }
+
+        const projectDir = path.dirname(apktoolYmlPath);
+        if (!fs.existsSync(projectDir)) {
+            vscode.window.showErrorMessage(
+                `APKLab: Project directory not found: ${projectDir}`,
+            );
+            return;
+        }
+
         try {
             const report = "Applying patches for HTTPS inspection (MITM)";
 
@@ -23,8 +39,6 @@ export namespace apkMitm {
                 `Using apk-mitm (https://github.com/shroudedcode/apk-mitm)\n`,
             );
 
-            const projectDir = path.dirname(apktoolYmlPath);
-
             await observeListr(applyPatches(projectDir)).forEach((line) =>
                 outputChannel.appendLine(line),
             );
@@ -33,8 +47,10 @@ export namespace apkMitm {
             vscode.window.showInformationMessage(
                 "APKLab: Successfully applied MITM patches!",
             );
-        } catch (err: any) {
-            outputChannel.appendLine(err);
+        } catch (err) {
+            const errorMessage =
+                err instanceof Error ? err.message : String(err);
+            outputChannel.appendLine(errorMessage);
             outputChannel.appendLine("Failed to apply MITM patches!");
             vscode.window.showErrorMessage(
                 "APKLab: Failed to apply MITM patches!",

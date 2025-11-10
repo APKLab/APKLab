@@ -1,7 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import { apklabDataDir, outputChannel } from "./data/constants";
+import {
+    apklabDataDir,
+    DIST_DIR,
+    outputChannel,
+    QUARK_REPORT_FILENAME,
+} from "./data/constants";
 import { checkAndInstallTools, updateTools } from "./utils/updater";
 import { UI } from "./interface";
 import { apkMitm } from "./tools/apk-mitm";
@@ -67,7 +72,7 @@ export function activate(context: vscode.ExtensionContext): void {
                     const parentPath = path.parse(uri.fsPath).dir;
                     const apkPath = path.join(
                         parentPath,
-                        "dist",
+                        DIST_DIR,
                         apktool.getApkNameFromApkToolYaml(uri.fsPath),
                     );
                     await adb.installAPK(apkPath);
@@ -120,13 +125,13 @@ export function activate(context: vscode.ExtensionContext): void {
         quarkReportCommand,
     );
 
-    // check if open folder contains `quarkReport.json` file
+    // check if open folder contains quark report file
     // if it exists, show it as a report on open
     const folders = vscode.workspace.workspaceFolders;
     if (folders && folders.length > 0) {
         const quarkReportFile = path.join(
             folders[0].uri.fsPath,
-            "quarkReport.json",
+            QUARK_REPORT_FILENAME,
         );
         if (fs.existsSync(quarkReportFile)) {
             Quark.showSummaryReport(quarkReportFile);

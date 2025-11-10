@@ -1,7 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import { extensionConfigName, outputChannel } from "../data/constants";
+import {
+    APKTOOL_YML_FILENAME,
+    DIST_DIR,
+    extensionConfigName,
+    outputChannel,
+} from "../data/constants";
 import { executeProcess } from "../utils/executor";
 import { apkSigner } from "./uber-apk-signer";
 
@@ -12,13 +17,22 @@ export namespace apktool {
      * @returns returns the original apk file name or empty string.
      */
     export function getApkNameFromApkToolYaml(apktoolYamlPath: string): string {
+        if (!apktoolYamlPath || !fs.existsSync(apktoolYamlPath)) {
+            outputChannel.appendLine(
+                `Error: apktool.yml file not found at: ${apktoolYamlPath}`,
+            );
+            return "";
+        }
+
         try {
-            const fileContent = fs.readFileSync(apktoolYamlPath);
-            const regArr = /apkFileName: .*\.apk/.exec(String(fileContent));
+            const fileContent = fs.readFileSync(apktoolYamlPath, "utf8");
+            const regArr = /apkFileName: .*\.apk/.exec(fileContent);
             return regArr && regArr.length > 0 ? regArr[0].split(": ")[1] : "";
         } catch (err) {
+            const errorMessage =
+                err instanceof Error ? err.message : String(err);
             outputChannel.appendLine(
-                "Couldn't find apkFileName in apktool.yml: " + String(err),
+                `Couldn't find apkFileName in apktool.yml: ${errorMessage}`,
             );
             return "";
         }
@@ -35,11 +49,25 @@ export namespace apktool {
         projectDir: string,
         apktoolArgs: string[],
     ): Promise<void> {
+        if (!apkFilePath || !fs.existsSync(apkFilePath)) {
+            vscode.window.showErrorMessage(
+                `APKLab: APK file not found: ${apkFilePath}`,
+            );
+            return;
+        }
+
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
-        const apkFileName = path.basename(apkFilePath);
 
+        if (!apktoolPath || !fs.existsSync(String(apktoolPath))) {
+            vscode.window.showErrorMessage(
+                "APKLab: Apktool not found. Please check your configuration.",
+            );
+            return;
+        }
+
+        const apkFileName = path.basename(apkFilePath);
         const report = `Decoding ${apkFileName} into ${projectDir}`;
         let args = [
             "-jar",
@@ -52,7 +80,7 @@ export namespace apktool {
         if (apktoolArgs && apktoolArgs.length > 0) {
             args = args.concat(apktoolArgs);
         }
-        const shouldExist = path.join(projectDir, "apktool.yml");
+        const shouldExist = path.join(projectDir, APKTOOL_YML_FILENAME);
         await executeProcess({
             name: "Decoding",
             report: report,
@@ -71,13 +99,32 @@ export namespace apktool {
         apktoolYmlPath: string,
         apktoolArgs: string[],
     ): Promise<void> {
+        if (!apktoolYmlPath || !fs.existsSync(apktoolYmlPath)) {
+            vscode.window.showErrorMessage(
+                `APKLab: apktool.yml file not found: ${apktoolYmlPath}`,
+            );
+            return;
+        }
+
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
-        const apkFileName = getApkNameFromApkToolYaml(apktoolYmlPath);
-        if (!apkFileName) {
+
+        if (!apktoolPath || !fs.existsSync(String(apktoolPath))) {
+            vscode.window.showErrorMessage(
+                "APKLab: Apktool not found. Please check your configuration.",
+            );
             return;
         }
+
+        const apkFileName = getApkNameFromApkToolYaml(apktoolYmlPath);
+        if (!apkFileName) {
+            vscode.window.showErrorMessage(
+                "APKLab: Could not determine APK filename from apktool.yml",
+            );
+            return;
+        }
+
         const projectDir = path.parse(apktoolYmlPath).dir;
         const report = `Rebuilding ${apkFileName} into ${path.basename(
             projectDir,
@@ -86,7 +133,7 @@ export namespace apktool {
         if (apktoolArgs && apktoolArgs.length > 0) {
             args = args.concat(apktoolArgs);
         }
-        const outputApkFilePath = path.join(projectDir, "dist", apkFileName);
+        const outputApkFilePath = path.join(projectDir, DIST_DIR, apkFileName);
         let canBeSigned = false;
         await executeProcess({
             name: "Rebuilding",

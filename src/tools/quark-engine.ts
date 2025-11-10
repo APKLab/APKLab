@@ -3,29 +3,72 @@ import * as fs from "fs";
 import * as child_process from "child_process";
 import * as vscode from "vscode";
 import * as glob from "glob";
-import { outputChannel } from "../data/constants";
+import {
+    outputChannel,
+    QUARK_HIGH_CONFIDENCE,
+    QUARK_REPORT_FILENAME,
+} from "../data/constants";
 import { quarkSummaryReportHTML } from "../utils/quark-html";
 import { executeProcess } from "../utils/executor";
+
+interface QuarkApiCall {
+    first: string[];
+    second: string[];
+}
+
+type QuarkRegisterEntry = Record<string, QuarkApiCall>;
+
+interface QuarkCrime {
+    crime: string;
+    score: string;
+    weight: string;
+    confidence: string;
+    register: QuarkRegisterEntry[];
+}
+
+interface QuarkRawReport {
+    crimes: QuarkCrime[];
+}
+
+interface QuarkFunction {
+    class: string;
+    method: string;
+}
+
+interface QuarkApiCallEntry {
+    function: QuarkFunction;
+    apis: string[][];
+}
+
+interface QuarkProcessedCrime {
+    crime: string;
+    score: string;
+    weight: string;
+    confidence: string;
+    api_call: Record<string, QuarkApiCallEntry>;
+}
+
+type QuarkReport = Record<string, QuarkProcessedCrime>;
 
 /**
  * Read and parse the JSON file of quark analysis report.
  * @param reportPath The path of the `quarkReport.json` file.
  * @returns return parsed report data.
  */
-function parseReport(reportPath: string) {
-    const quarkReportJSON: any = JSON.parse(
+function parseReport(reportPath: string): QuarkReport {
+    const quarkReportJSON: QuarkRawReport = JSON.parse(
         fs.readFileSync(reportPath, "utf8"),
     );
     const crimes = quarkReportJSON.crimes;
 
-    const report: Record<string, any> = {};
+    const report: QuarkReport = {};
 
     for (let crimeIndex = 0; crimeIndex < crimes.length; crimeIndex++) {
         const crimeObj = crimes[crimeIndex];
         const crimeId = `c${crimeIndex}`;
 
-        if (crimeObj.confidence == "100%") {
-            const newFunctionObj: Record<string, any> = {};
+        if (crimeObj.confidence === QUARK_HIGH_CONFIDENCE) {
+            const newFunctionObj: Record<string, QuarkApiCallEntry> = {};
 
             for (
                 let functionIndex = 0;
@@ -35,7 +78,7 @@ function parseReport(reportPath: string) {
                 const functionObj = crimeObj.register[functionIndex];
                 const [items] = Object.entries(functionObj);
                 const parentFunction: string[] = items[0].split(" ");
-                const apiCalls: any = items[1];
+                const apiCalls: QuarkApiCall = items[1];
 
                 const parentClassName = parentFunction[0].replace(";", "");
                 delete parentFunction[0];
@@ -65,10 +108,11 @@ function parseReport(reportPath: string) {
 
 /**
  * Convert function name to the path of the source code file.
- * @param func The string of function name.
+ * @param srcDir The source directory to search in.
+ * @param func The function object with class name.
  * @return The path of the source code file.
  */
-function functionToPath(srcDir: string, func: any): string {
+function functionToPath(srcDir: string, func: QuarkFunction): string {
     outputChannel.appendLine(`Searching smali file: ${func.class}`);
     let srcPath = glob.sync(`${srcDir}/smali*/${func.class}.smali`, {});
 
@@ -123,13 +167,13 @@ function searchFunctionSegment(
 /**
  * Search the position where API called in the given document segment.
  * @param doc the text document from source code file.
- * @param apis The list of Smali code that call native API.
+ * @param api The list of Smali code that call native API.
  * @param seg The searching segment [start-line, end-line], if null then search the whole document.
  * @returns the position where API called, return false if not found.
  */
 function getApiCallPosition(
     doc: vscode.TextDocument,
-    api: any[],
+    api: string[],
     seg: number[] | null,
 ): vscode.Position | false {
     if (seg == null) {
@@ -161,8 +205,8 @@ function getApiCallPosition(
  */
 function navigateSourceCode(
     projectDir: string,
-    parentFunction: any,
-    apiCalls: any[],
+    parentFunction: QuarkFunction,
+    apiCalls: string[][],
 ) {
     const smaliPath = functionToPath(projectDir, parentFunction);
     vscode.workspace.openTextDocument(smaliPath).then((doc) => {
@@ -284,7 +328,21 @@ export namespace Quark {
         apkFilePath: string,
         projectDir: string,
     ): Promise<void> {
-        const jsonReportPath = path.join(projectDir, `quarkReport.json`);
+        if (!apkFilePath || !fs.existsSync(apkFilePath)) {
+            vscode.window.showErrorMessage(
+                `APKLab: APK file not found: ${apkFilePath}`,
+            );
+            return;
+        }
+
+        if (!projectDir || !fs.existsSync(projectDir)) {
+            vscode.window.showErrorMessage(
+                `APKLab: Project directory not found: ${projectDir}`,
+            );
+            return;
+        }
+
+        const jsonReportPath = path.join(projectDir, QUARK_REPORT_FILENAME);
 
         await executeProcess({
             name: "Quark analysis",
@@ -300,8 +358,15 @@ export namespace Quark {
      * @param reportPath the path of the `quarkReport.json` file.
      */
     export async function showSummaryReport(reportPath: string): Promise<void> {
+        if (!reportPath || !fs.existsSync(reportPath)) {
+            vscode.window.showErrorMessage(
+                `APKLab: Quark report not found: ${reportPath}`,
+            );
+            return;
+        }
+
         const projectDir = path.dirname(reportPath);
-        const report: Record<string, any> = parseReport(reportPath);
+        const report: QuarkReport = parseReport(reportPath);
 
         await vscode.commands.executeCommand(
             "workbench.action.editorLayoutTwoColumns",

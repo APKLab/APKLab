@@ -81,12 +81,11 @@ export function executeProcess(processOptions: ProcessOptions): Thenable<void> {
                     resolve();
                 });
                 cp.on("exit", async (code) => {
-                    if (
-                        code === 0 &&
-                        (processOptions.shouldExist
-                            ? fs.existsSync(processOptions.shouldExist)
-                            : true)
-                    ) {
+                    const expectedFileExists = processOptions.shouldExist
+                        ? fs.existsSync(processOptions.shouldExist)
+                        : true;
+
+                    if (code === 0 && expectedFileExists) {
                         outputChannel.appendLine(
                             `${processOptions.name} process was successful`,
                         );
@@ -97,11 +96,11 @@ export function executeProcess(processOptions: ProcessOptions): Thenable<void> {
                             await processOptions.onSuccess();
                         }
                     } else {
-                        outputChannel.appendLine(
+                        const errorMsg =
                             code !== 0
                                 ? `${processOptions.name} process exited with code ${code}`
-                                : `${processOptions.name} process didn't create ${processOptions.shouldExist}`,
-                        );
+                                : `${processOptions.name} process didn't create ${processOptions.shouldExist}`;
+                        outputChannel.appendLine(errorMsg);
                         vscode.window.showErrorMessage(
                             `APKLab: ${processOptions.name} process failed.`,
                         );

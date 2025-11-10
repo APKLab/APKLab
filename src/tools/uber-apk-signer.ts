@@ -9,9 +9,24 @@ export namespace apkSigner {
      * @param apkFilePath path of the an apk file to be signed.
      */
     export async function signAPK(apkFilePath: string): Promise<void> {
+        if (!apkFilePath || !fs.existsSync(apkFilePath)) {
+            vscode.window.showErrorMessage(
+                `APKLab: APK file not found: ${apkFilePath}`,
+            );
+            return;
+        }
+
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
         const apkSignerPath = extensionConfig.get("apkSignerPath");
+
+        if (!apkSignerPath || !fs.existsSync(String(apkSignerPath))) {
+            vscode.window.showErrorMessage(
+                "APKLab: uber-apk-signer not found. Please check your configuration.",
+            );
+            return;
+        }
+
         const keystorePath = extensionConfig.get("keystorePath");
         const keystorePassword = extensionConfig.get("keystorePassword");
         const keyAlias = extensionConfig.get("keyAlias");

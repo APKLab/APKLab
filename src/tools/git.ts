@@ -13,14 +13,30 @@ export namespace git {
         projectDir: string,
         commitMsg: string,
     ): Promise<void> {
+        if (!projectDir || !fs.existsSync(projectDir)) {
+            outputChannel.appendLine(
+                `Error: Project directory does not exist: ${projectDir}`,
+            );
+            return;
+        }
+
+        if (!commitMsg || commitMsg.trim().length === 0) {
+            commitMsg = "Initial commit";
+        }
+
         try {
-            // .gitignore content
+            // .gitignore content - ignore build artifacts
             const gitignore = "/build\n/dist\n";
             await fs.promises.writeFile(
                 path.join(projectDir, ".gitignore"),
                 gitignore,
             );
-            await process.chdir(projectDir);
+
+            // Initialize git repository
+            // Change to project directory for git commands
+            const originalDir = process.cwd();
+            process.chdir(projectDir);
+
             let initCmd = `git init && git config core.safecrlf false`;
             initCmd += ` && git add -A && git commit -q -m "${commitMsg}"`;
             const report = `Initializing ${projectDir} as Git repository`;
@@ -31,9 +47,14 @@ export namespace git {
                 args: [],
                 shell: true,
             });
-        } catch (err: any) {
+
+            // Restore original directory
+            process.chdir(originalDir);
+        } catch (err) {
+            const errorMessage =
+                err instanceof Error ? err.message : String(err);
             outputChannel.appendLine(
-                `Error: Initializing project dir as Git repository: ${err.message}`,
+                `Error: Initializing project dir as Git repository: ${errorMessage}`,
             );
         }
     }

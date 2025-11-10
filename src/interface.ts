@@ -1,7 +1,11 @@
 import * as path from "path";
 import * as fs from "fs";
 import { commands, QuickPickItem, Uri, window, workspace } from "vscode";
-import { extensionConfigName, outputChannel } from "./data/constants";
+import {
+    APK_FILE_EXTENSION,
+    extensionConfigName,
+    outputChannel,
+} from "./data/constants";
 import { quickPickUtil } from "./utils/quick-picks";
 import { Quark } from "./tools/quark-engine";
 import { apktool } from "./tools/apktool";
@@ -36,7 +40,7 @@ export namespace UI {
         const result = await window.showOpenDialog({
             canSelectFolders: false,
             filters: {
-                APK: ["apk"],
+                APK: [APK_FILE_EXTENSION.substring(1)], // Remove the dot
             },
             openLabel: "Select an APK file",
         });

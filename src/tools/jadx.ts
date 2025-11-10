@@ -1,6 +1,7 @@
+import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import { extensionConfigName } from "../data/constants";
+import { extensionConfigName, JAVA_SOURCE_DIR } from "../data/constants";
 import { executeProcess } from "../utils/executor";
 
 export namespace jadx {
@@ -15,14 +16,37 @@ export namespace jadx {
         projectDir: string,
         jadxArgs: string[],
     ): Promise<void> {
+        if (!apkFilePath || !path.isAbsolute(apkFilePath)) {
+            vscode.window.showErrorMessage(
+                `APKLab: Invalid APK file path: ${apkFilePath}`,
+            );
+            return;
+        }
+
         const extensionConfig =
             vscode.workspace.getConfiguration(extensionConfigName);
         const jadxDirPath = extensionConfig.get("jadxDirPath");
+
+        if (!jadxDirPath) {
+            vscode.window.showErrorMessage(
+                "APKLab: Jadx not configured. Please check your configuration.",
+            );
+            return;
+        }
+
         const jadxExeName = `jadx${
             process.platform.startsWith("win") ? ".bat" : ""
         }`;
         const jadxPath = path.join(String(jadxDirPath), "bin", jadxExeName);
-        const apkDecompileDir = path.join(projectDir, "java_src");
+
+        if (!fs.existsSync(jadxPath)) {
+            vscode.window.showErrorMessage(
+                `APKLab: Jadx executable not found at: ${jadxPath}`,
+            );
+            return;
+        }
+
+        const apkDecompileDir = path.join(projectDir, JAVA_SOURCE_DIR);
         const apkFileName = path.basename(apkFilePath);
         const report = `Decompiling ${apkFileName} into ${apkDecompileDir}`;
         let args = ["-r", "-q", "-ds", apkDecompileDir, apkFilePath];

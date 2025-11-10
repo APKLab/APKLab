@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import {
     apklabDataDir,
     extensionConfigName,
+    ONE_DAY_MS,
     outputChannel,
     updaterConfigURL,
 } from "../data/constants";
@@ -114,30 +115,35 @@ export async function updateTools(): Promise<void> {
  * Check the tools in update config
  * If any tool does not exist, download it.
  */
-export function checkAndInstallTools(): Promise<void> {
-    // TODO: Refactor without async promise
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise<void>(async (resolve, reject) => {
-        const extensionConfig =
-            vscode.workspace.getConfiguration(extensionConfigName);
-        const config = await getUpdateConfig();
-        await Promise.all(
-            config.tools.map(async (tool) => {
-                const toolPath = extensionConfig.get(tool.configName);
-                if (!toolPath || !fs.existsSync(String(toolPath))) {
-                    const filepath = await downloadTool(tool);
-                    if (!filepath) {
-                        reject();
-                    } else if (tool.name === "apktool") {
-                        // remove old res framework on apktool install
-                        await apktool.emptyFrameworkDir();
-                    }
+export async function checkAndInstallTools(): Promise<void> {
+    const extensionConfig =
+        vscode.workspace.getConfiguration(extensionConfigName);
+    const config = await getUpdateConfig();
+
+    const results = await Promise.allSettled(
+        config.tools.map(async (tool) => {
+            const toolPath = extensionConfig.get(tool.configName);
+            if (!toolPath || !fs.existsSync(String(toolPath))) {
+                const filepath = await downloadTool(tool);
+                if (!filepath) {
+                    throw new Error(`Failed to download tool: ${tool.name}`);
                 }
-            }),
-        );
-        resolve();
-    });
-    // eslint-enable-next-line no-async-promise-executor
+                if (tool.name === "apktool") {
+                    // remove old res framework on apktool install
+                    await apktool.emptyFrameworkDir();
+                }
+            }
+        }),
+    );
+
+    // Check if any downloads failed
+    const failures = results.filter((result) => result.status === "rejected");
+    if (failures.length > 0) {
+        const errors = failures
+            .map((f) => (f as PromiseRejectedResult).reason)
+            .join(", ");
+        throw new Error(`Failed to install some tools: ${errors}`);
+    }
 }
 
 /**
@@ -151,7 +157,7 @@ async function getUpdateConfig(): Promise<Config> {
 
     if (fs.existsSync(configFile)) {
         configJsonData = JSON.parse(fs.readFileSync(configFile, "utf-8"));
-        if (Date.now() - fs.statSync(configFile).mtimeMs < 86400000) {
+        if (Date.now() - fs.statSync(configFile).mtimeMs < ONE_DAY_MS) {
             return configJsonData;
         }
     }
