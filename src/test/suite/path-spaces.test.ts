@@ -153,7 +153,6 @@ describe("Path Handling - Spaces in Paths", function () {
         if (!Quark.checkQuarkInstalled()) {
             console.log("Skipping: Quark-Engine not installed");
             this.skip();
-            return;
         }
 
         // Copy test APK to directory with spaces
