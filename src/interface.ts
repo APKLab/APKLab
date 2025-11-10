@@ -66,23 +66,29 @@ export namespace UI {
                 let decompileJava = false;
                 let quarkAnalysis = false;
                 let jadxArgs: string[] = [];
-                if (jadxOptionsIndex > -1) {
+
+                // Extract jadx options if present
+                if (jadxOptionsIndex !== -1) {
                     jadxArgs = args.splice(jadxOptionsIndex, jadxOptionsNumber);
                 }
-                if (decompileJavaIndex > -1) {
+
+                // Check if Java decompilation was requested
+                if (decompileJavaIndex !== -1) {
                     decompileJava = true;
                     args.splice(decompileJavaIndex, 1);
                 }
-                if (quarkAnalysisIndex > -1) {
+
+                // Check if Quark analysis was requested
+                if (quarkAnalysisIndex !== -1) {
                     quarkAnalysis = true;
                     args.splice(quarkAnalysisIndex, 1);
                     if (!Quark.checkQuarkInstalled()) {
                         quarkAnalysis = false;
                         window.showErrorMessage(
-                            "APKLab: Quark command not found, \
-                            please make sure you have installed python3 and Quark-Engine. \
-                            Check here to install Quark-Engine: \
-                            https://github.com/quark-engine/quark-engine",
+                            "APKLab: Quark command not found. " +
+                                "Please make sure you have installed python3 and Quark-Engine. " +
+                                "Check here to install Quark-Engine: " +
+                                "https://github.com/quark-engine/quark-engine",
                         );
                         return;
                     }

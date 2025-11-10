@@ -81,8 +81,10 @@ function parseReport(reportPath: string): QuarkReport {
                 const apiCalls: QuarkApiCall = items[1];
 
                 const parentClassName = parentFunction[0].replace(";", "");
-                delete parentFunction[0];
-                const parentMethodName: string = parentFunction.join("");
+                // Use slice instead of delete to properly remove first element
+                const parentMethodName: string = parentFunction
+                    .slice(1)
+                    .join("");
                 const functionId = `${crimeId}-f${functionIndex}`;
 
                 newFunctionObj[functionId] = {
@@ -116,12 +118,20 @@ function functionToPath(srcDir: string, func: QuarkFunction): string {
     outputChannel.appendLine(`Searching smali file: ${func.class}`);
     let srcPath = glob.sync(`${srcDir}/smali*/${func.class}.smali`, {});
 
-    if (func.class[0] == "L") {
+    if (func.class[0] === "L") {
         srcPath = glob.sync(
             `${srcDir}/smali*/${func.class.substring(1)}.smali`,
             {},
         );
     }
+
+    if (srcPath.length === 0) {
+        outputChannel.appendLine(
+            `Warning: No smali file found for ${func.class}`,
+        );
+        return "";
+    }
+
     return srcPath[0];
 }
 
@@ -203,100 +213,120 @@ function getApiCallPosition(
  * @param parentFunction The data of parent function where APIs called from.
  * @param apiCalls The smali code that executes native APIs.
  */
-function navigateSourceCode(
+async function navigateSourceCode(
     projectDir: string,
     parentFunction: QuarkFunction,
     apiCalls: string[][],
-) {
+): Promise<void> {
     const smaliPath = functionToPath(projectDir, parentFunction);
-    vscode.workspace.openTextDocument(smaliPath).then((doc) => {
-        vscode.window.showTextDocument(doc, vscode.ViewColumn.One).then((e) => {
-            const parentDecorationsArray: vscode.DecorationOptions[] = [];
-            const apiDecorationsArray: vscode.DecorationOptions[] = [];
 
-            const mdSegment: number[] | false = searchFunctionSegment(
-                doc,
-                parentFunction.method,
+    if (!smaliPath) {
+        vscode.window.showErrorMessage(
+            "APKLab: Smali source file not found for the selected function.",
+        );
+        return;
+    }
+
+    try {
+        const doc = await vscode.workspace.openTextDocument(smaliPath);
+        const e = await vscode.window.showTextDocument(
+            doc,
+            vscode.ViewColumn.One,
+        );
+
+        const parentDecorationsArray: vscode.DecorationOptions[] = [];
+        const apiDecorationsArray: vscode.DecorationOptions[] = [];
+
+        const mdSegment: number[] | false = searchFunctionSegment(
+            doc,
+            parentFunction.method,
+        );
+        if (!mdSegment) {
+            vscode.window.showErrorMessage(
+                "APKLab: Cannot find the parent function in source code!",
             );
-            if (!mdSegment) {
-                vscode.window.showErrorMessage(
-                    "APKLab: Cannot find the parent function in source code!",
-                );
-                return;
-            }
-            const parentFunctionPosition = new vscode.Position(mdSegment[0], 0);
+            return;
+        }
+        const parentFunctionPosition = new vscode.Position(mdSegment[0], 0);
 
-            const fstApi: vscode.Position | false = getApiCallPosition(
-                doc,
-                apiCalls[0],
-                mdSegment,
+        const fstApi: vscode.Position | false = getApiCallPosition(
+            doc,
+            apiCalls[0],
+            mdSegment,
+        );
+        const secApi: vscode.Position | false = getApiCallPosition(
+            doc,
+            apiCalls[1],
+            mdSegment,
+        );
+
+        if (!fstApi || !secApi) {
+            vscode.window.showErrorMessage(
+                "APKLab: Cannot find the APIs call in source code!",
             );
-            const secApi: vscode.Position | false = getApiCallPosition(
-                doc,
-                apiCalls[1],
-                mdSegment,
-            );
+            return;
+        }
 
-            if (!fstApi || !secApi) {
-                vscode.window.showErrorMessage(
-                    "Cannot find the APIs call in source code!",
-                );
-                return;
-            }
+        const fstApiDecoration = {
+            range: new vscode.Range(fstApi, fstApi),
+        };
+        const secApiDecoration = {
+            range: new vscode.Range(secApi, secApi),
+        };
+        apiDecorationsArray.push(fstApiDecoration);
+        apiDecorationsArray.push(secApiDecoration);
 
-            const fstApiDecoration = {
-                range: new vscode.Range(fstApi, fstApi),
-            };
-            const secApiDecoration = {
-                range: new vscode.Range(secApi, secApi),
-            };
-            apiDecorationsArray.push(fstApiDecoration);
-            apiDecorationsArray.push(secApiDecoration);
+        const methodSegmentDecoration = {
+            range: new vscode.Range(
+                new vscode.Position(mdSegment[0], 0),
+                new vscode.Position(mdSegment[1], 0),
+            ),
+        };
+        parentDecorationsArray.push(methodSegmentDecoration);
 
-            const methodSegmentDecoration = {
-                range: new vscode.Range(
-                    new vscode.Position(mdSegment[0], 0),
-                    new vscode.Position(mdSegment[1], 0),
-                ),
-            };
-            parentDecorationsArray.push(methodSegmentDecoration);
-
-            const parentDecorationType =
-                vscode.window.createTextEditorDecorationType({
-                    isWholeLine: true,
-                    dark: {
-                        backgroundColor: "#193435",
-                    },
-                    light: {
-                        backgroundColor: "#dcfddc",
-                    },
-                });
-            const apiDecorationType =
-                vscode.window.createTextEditorDecorationType({
-                    fontWeight: "bold",
-                    isWholeLine: true,
-                    dark: {
-                        backgroundColor: "#5b2334",
-                    },
-                    light: {
-                        backgroundColor: "#ffc2c3",
-                    },
-                });
-
-            e.setDecorations(parentDecorationType, parentDecorationsArray);
-            e.setDecorations(apiDecorationType, apiDecorationsArray);
-
-            e.selection = new vscode.Selection(
-                parentFunctionPosition,
-                parentFunctionPosition,
-            );
-
-            vscode.commands.executeCommand("revealLine", {
-                lineNumber: mdSegment[0],
-                at: "top",
+        const parentDecorationType =
+            vscode.window.createTextEditorDecorationType({
+                isWholeLine: true,
+                dark: {
+                    backgroundColor: "#193435",
+                },
+                light: {
+                    backgroundColor: "#dcfddc",
+                },
             });
+        const apiDecorationType = vscode.window.createTextEditorDecorationType({
+            fontWeight: "bold",
+            isWholeLine: true,
+            dark: {
+                backgroundColor: "#5b2334",
+            },
+            light: {
+                backgroundColor: "#ffc2c3",
+            },
         });
-    });
+
+        e.setDecorations(parentDecorationType, parentDecorationsArray);
+        e.setDecorations(apiDecorationType, apiDecorationsArray);
+
+        e.selection = new vscode.Selection(
+            parentFunctionPosition,
+            parentFunctionPosition,
+        );
+
+        await vscode.commands.executeCommand("revealLine", {
+            lineNumber: mdSegment[0],
+            at: "top",
+        });
+    } catch (error) {
+        const errorMessage =
+            error instanceof Error ? error.message : String(error);
+        outputChannel.appendLine(
+            `Error navigating to source code: ${errorMessage}`,
+        );
+        vscode.window.showErrorMessage(
+            "APKLab: Failed to navigate to source code.",
+        );
+    }
 }
 
 export namespace Quark {

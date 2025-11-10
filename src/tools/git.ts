@@ -35,21 +35,24 @@ export namespace git {
             // Initialize git repository
             // Change to project directory for git commands
             const originalDir = process.cwd();
-            process.chdir(projectDir);
 
-            let initCmd = `git init && git config core.safecrlf false`;
-            initCmd += ` && git add -A && git commit -q -m "${commitMsg}"`;
-            const report = `Initializing ${projectDir} as Git repository`;
-            await executeProcess({
-                name: "Initializing Git",
-                report: report,
-                command: initCmd,
-                args: [],
-                shell: true,
-            });
+            try {
+                process.chdir(projectDir);
 
-            // Restore original directory
-            process.chdir(originalDir);
+                let initCmd = `git init && git config core.safecrlf false`;
+                initCmd += ` && git add -A && git commit -q -m "${commitMsg}"`;
+                const report = `Initializing ${projectDir} as Git repository`;
+                await executeProcess({
+                    name: "Initializing Git",
+                    report: report,
+                    command: initCmd,
+                    args: [],
+                    shell: true,
+                });
+            } finally {
+                // Always restore original directory, even on error
+                process.chdir(originalDir);
+            }
         } catch (err) {
             const errorMessage =
                 err instanceof Error ? err.message : String(err);

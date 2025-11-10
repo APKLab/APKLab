@@ -92,20 +92,29 @@ export async function updateTools(): Promise<void> {
                 "Cancel",
             )
             .then(async (updateAction) => {
-                if (updateAction == "Update tools") {
-                    needsUpdate.forEach(async (tool) => {
+                if (updateAction === "Update tools") {
+                    // Use Promise.allSettled to properly handle async operations
+                    const downloadPromises = needsUpdate.map(async (tool) => {
                         // remove tool path from configuration & download it
-                        vscode.workspace
+                        await vscode.workspace
                             .getConfiguration(extensionConfigName)
                             .update(
                                 tool.configName,
                                 "",
                                 vscode.ConfigurationTarget.Global,
-                            )
-                            .then(async () => {
-                                await downloadTool(tool);
-                            });
+                            );
+                        return await downloadTool(tool);
                     });
+
+                    const results = await Promise.allSettled(downloadPromises);
+                    const failures = results.filter(
+                        (r) => r.status === "rejected",
+                    );
+                    if (failures.length > 0) {
+                        outputChannel.appendLine(
+                            `Failed to update ${failures.length} tool(s)`,
+                        );
+                    }
                 }
             });
     }
