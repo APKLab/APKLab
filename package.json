@@ -220,7 +220,7 @@
     "scripts": {
         "lint": "eslint src --ext ts && prettier --check .",
         "fix": "prettier --write . && eslint src --ext ts --fix",
-        "clean": "git clean -Xdf -e !node_modules -e '!node_modules/**/*' -e !.vscode-test -e '!.vscode-test/**/*'",
+        "clean": "rm -rf out dist",
         "pretest": "tsc -p ./",
         "test": "node ./out/test/runTest.js",
         "watch": "node esbuild.config.mjs --watch",
