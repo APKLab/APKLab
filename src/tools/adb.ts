@@ -26,8 +26,7 @@ export namespace adb {
 
         const apkFileName = path.basename(apkFilePath);
         const report = `Installing ${apkFileName}`;
-        const quotedApkFilePath = `"${apkFilePath}"`;
-        const args = ["install", "-r", quotedApkFilePath];
+        const args = ["install", "-r", apkFilePath];
         await executeProcess({
             name: "Installing",
             report: report,
