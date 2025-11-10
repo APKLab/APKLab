@@ -97,7 +97,7 @@ describe("Extension Test Suite", function () {
         if (!fs.existsSync(reportFile)) {
             assert.fail(`Analysis Report file ${reportFile} not found!`);
         }
-        const reportData: { [key: string]: any } = JSON.parse(
+        const reportData: Record<string, any> = JSON.parse(
             fs.readFileSync(reportFile, "utf-8"),
         );
 
@@ -130,7 +130,7 @@ describe("Extension Test Suite", function () {
             "apktool.yml",
         );
         console.log(`Rebuilding apk with ${apktoolYmlPath}...`);
-        await apktool.rebuildAPK(apktoolYmlPath, ["--use-aapt2"]);
+        await apktool.rebuildAPK(apktoolYmlPath, []);
         console.log("Checking for APK output...");
         const outApkPath = path.join(
             simpleKeyboardDir,
@@ -149,8 +149,8 @@ describe("Extension Test Suite", function () {
             process.platform == "linux"
                 ? "/.local/share"
                 : process.platform == "darwin"
-                ? "/Library"
-                : "\\AppData\\Local";
+                  ? "/Library"
+                  : "\\AppData\\Local";
         const apktoolDefaultFrameworkPath = path.join(
             process.env.HOME + osAppDataDir,
             "apktool",

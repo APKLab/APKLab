@@ -9,7 +9,8 @@ export namespace adb {
     export async function installAPK(apkFilePath: string): Promise<void> {
         const apkFileName = path.basename(apkFilePath);
         const report = `Installing ${apkFileName}`;
-        const args = ["install", "-r", apkFilePath];
+        const quotedApkFilePath = `"${apkFilePath}"`;
+        const args = ["install", "-r", quotedApkFilePath];
         await executeProcess({
             name: "Installing",
             report: report,

@@ -3,9 +3,6 @@ import { applyPatches, observeListr } from "apk-mitm";
 import * as vscode from "vscode";
 import { outputChannel } from "../data/constants";
 
-// Defined in webpack config
-declare const APK_MITM_VERSION: string;
-
 export namespace apkMitm {
     /**
      * Apply patch to intercept HTTPS calls
@@ -22,11 +19,9 @@ export namespace apkMitm {
             outputChannel.appendLine(report);
             outputChannel.appendLine("-".repeat(report.length));
 
-            if (!process.env["TEST"]) {
-                outputChannel.appendLine(
-                    `Using apk-mitm v${APK_MITM_VERSION} (https://github.com/shroudedcode/apk-mitm)\n`,
-                );
-            }
+            outputChannel.appendLine(
+                `Using apk-mitm (https://github.com/shroudedcode/apk-mitm)\n`,
+            );
 
             const projectDir = path.dirname(apktoolYmlPath);
 

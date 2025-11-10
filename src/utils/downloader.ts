@@ -3,7 +3,9 @@ import * as https from "https";
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import * as extract from "extract-zip";
+// TODO: replace with another unzip library that has proper types
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import extract = require("extract-zip");
 import {
     extensionConfigName,
     apklabDataDir,

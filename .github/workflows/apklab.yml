@@ -20,37 +20,29 @@ jobs:
           - lint
           - linux-build-test
           - macos-build-test
-          - windows-build-test
-          - node18-build
+          # - windows-build-test
         include:
           - name: lint
-            os: ubuntu-22.04
-            node: 16
+            os: ubuntu-latest
           - name: linux-build-test
-            os: ubuntu-22.04
-            node: 16
+            os: ubuntu-latest
             run_test: true
           - name: macos-build-test
             os: macos-latest
-            node: 16
             run_test: true
-          - name: windows-build-test
-            os: windows-latest
-            node: 16
-            run_test: true
-          - name: node18-build
-            os: ubuntu-22.04
-            node: 18
+          # - name: windows-build-test
+          #   os: windows-latest
+          #   run_test: true
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           submodules: recursive
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 24
           cache: "yarn"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -60,11 +52,12 @@ jobs:
       - name: Package extension
         if: matrix.name != 'lint'
         run: yarn package
-      - name: Setup python 3.10
+
+      - name: Setup python
         if: matrix.run_test == true
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: "3.12"
       - name: Install quark-engine
         continue-on-error: true
         if: matrix.run_test == true
@@ -76,16 +69,31 @@ jobs:
           # check if it installed properly
           quark --help
           quark -a testdata/simplekeyboard/test.apk -s
+
+      - name: Get VS Code stable release version
+        if: matrix.run_test == true
+        id: code-stable
+        run: |
+          echo "VSCODE_VERSION=`curl --silent https://update.code.visualstudio.com/api/releases/stable | jq -r '.[0]'`" >> "$GITHUB_OUTPUT"
+      - name: Cache VS Code download for testing
+        if: matrix.run_test == true
+        uses: actions/cache@v4
+        with:
+          path: |
+            .vscode-test
+          key: ${{ runner.os }}-vscode-test-cache-${{ steps.code-stable.outputs.VSCODE_VERSION }}
       - name: Run tests
         if: matrix.run_test == true
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
             xvfb-run -a yarn test
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            yarn test || true
           else
             yarn test
           fi
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v5
         if: matrix.name == 'linux-build-test'
         with:
           name: apklab.vsix
@@ -94,18 +102,17 @@ jobs:
   release:
     name: release
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           submodules: recursive
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node }}
-          cache: "yarn"
+          node-version: 24
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Package extension

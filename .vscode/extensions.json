@@ -3,7 +3,6 @@
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "EditorConfig.EditorConfig",
-        // Required for `watch` task
-        "amodio.tsl-problem-matcher"
+        "connor4312.esbuild-problem-matchers"
     ]
 }

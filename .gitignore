@@ -5,3 +5,5 @@ dist/
 *.vsix
 vsc-extension-quickstart.md
 .DS_Store
+.yarn
+coverage

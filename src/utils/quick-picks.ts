@@ -1,15 +1,14 @@
 import { QuickPickItem } from "vscode";
 
-const quickPickItems: { [index: string]: QuickPickItem[] } = {
+const quickPickItems: Record<string, QuickPickItem[]> = {
     /**
      * QuickPickItem array for additional **Apktool** args for APK building.
      */
     rebuildQuickPickItems: [
         {
-            label: "--use-aapt2",
-            detail: "Use the aapt2 binary instead of aapt",
+            label: "--use-aapt1",
+            detail: "Use the legacy aapt1 binary instead of aapt2",
             alwaysShow: true,
-            picked: true,
         },
         {
             label: "--debug",

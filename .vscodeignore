@@ -14,3 +14,9 @@ webpack.config.js
 .github/
 testdata
 .*
+.yarn
+coverage
+testdata
+*.vsix
+*.lock
+*.mjs

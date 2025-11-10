@@ -4,8 +4,7 @@
         {
             "type": "npm",
             "script": "watch",
-            // Provided by `eamodio.tsl-problem-matcher` extension
-            "problemMatcher": "$ts-webpack-watch",
+            "problemMatcher": "$esbuild-watch",
             "isBackground": true,
             "presentation": {
                 "reveal": "never"
