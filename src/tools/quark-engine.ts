@@ -335,15 +335,16 @@ export namespace Quark {
      * @return if quark installed or not
      */
     export function checkQuarkInstalled(): boolean {
-        const cmd = "quark";
+        const cmd = "quark --version";
 
         outputChannel.appendLine(`exec: ${cmd}`);
 
         try {
-            child_process.execSync(cmd);
+            child_process.execSync(cmd, {});
+            outputChannel.appendLine(`Quark is installed`);
             return true;
         } catch (error) {
-            outputChannel.appendLine(`Caught error from Quark install check`);
+            outputChannel.appendLine(`Quark not found or not working properly`);
             outputChannel.append(String(error));
             return false;
         }
