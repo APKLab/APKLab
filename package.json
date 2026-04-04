@@ -91,6 +91,10 @@
             {
                 "command": "apklab.quarkReport",
                 "title": "APKLab: Show Quark analysis report"
+            },
+            {
+                "command": "apklab.updateTools",
+                "title": "APKLab: Update Tools"
             }
         ],
         "menus": {

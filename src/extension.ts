@@ -85,6 +85,12 @@ export function activate(context: vscode.ExtensionContext): void {
         },
     );
 
+    // command to manually update/install tools
+    const updateToolsCommand = vscode.commands.registerCommand(
+        "apklab.updateTools",
+        () => checkAndInstallTools(),
+    );
+
     context.subscriptions.push(
         openApkFileCommand,
         rebuildAPkFileCommand,
@@ -93,6 +99,7 @@ export function activate(context: vscode.ExtensionContext): void {
         patchApkForHttpsCommand,
         emptyFrameworkDirCommand,
         quarkReportCommand,
+        updateToolsCommand,
     );
 
     // check if open folder contains quark report file
