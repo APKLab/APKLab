@@ -30,11 +30,15 @@ interface ProcessOptions {
     /**
      * Callback on success.
      */
-    onSuccess?: CallableFunction;
+    onSuccess?: () => void | Promise<void>;
     /**
      * Execute command using shell
      */
     shell?: boolean;
+    /**
+     * Working directory for the process.
+     */
+    cwd?: string;
 }
 
 /**
@@ -65,6 +69,7 @@ export function executeProcess(processOptions: ProcessOptions): Thenable<void> {
                     processOptions.args,
                     {
                         shell: processOptions.shell,
+                        cwd: processOptions.cwd,
                     },
                 );
                 cp.stdout.on("data", (data) =>

@@ -26,62 +26,51 @@ export function activate(context: vscode.ExtensionContext): void {
     const openApkFileCommand = vscode.commands.registerCommand(
         "apklab.openApkFile",
         async () => {
-            checkAndInstallTools()
-                .then(async () => {
-                    UI.openApkFile();
-                })
-                .catch(() => {
-                    outputChannel.appendLine(
-                        "Can't download/update dependencies!",
-                    );
-                });
+            try {
+                await checkAndInstallTools();
+                await UI.openApkFile();
+            } catch {
+                outputChannel.appendLine("Can't download/update dependencies!");
+            }
         },
     );
 
     // command for rebuilding apk file
     const rebuildAPkFileCommand = vscode.commands.registerCommand(
         "apklab.rebuildApkFile",
-        (uri: vscode.Uri) => {
-            checkAndInstallTools()
-                .then(() => {
-                    UI.rebuildAPK(uri.fsPath);
-                })
-                .catch(() => {
-                    outputChannel.appendLine(
-                        "Can't download/update dependencies!",
-                    );
-                });
+        async (uri: vscode.Uri) => {
+            try {
+                await checkAndInstallTools();
+                await UI.rebuildAPK(uri.fsPath);
+            } catch {
+                outputChannel.appendLine("Can't download/update dependencies!");
+            }
         },
     );
 
     // command for installing apk file
     const installAPkFileCommand = vscode.commands.registerCommand(
         "apklab.installApkFile",
-        (uri: vscode.Uri) => {
-            adb.installAPK(uri.fsPath);
-        },
+        (uri: vscode.Uri) => adb.installAPK(uri.fsPath),
     );
 
     // command for rebuilding and installing the apk
     const rebuildAndInstallAPkFileCommand = vscode.commands.registerCommand(
         "apklab.rebuildAndInstallApkFile",
-        (uri: vscode.Uri) => {
-            checkAndInstallTools()
-                .then(async () => {
-                    await UI.rebuildAPK(uri.fsPath);
-                    const parentPath = path.parse(uri.fsPath).dir;
-                    const apkPath = path.join(
-                        parentPath,
-                        DIST_DIR,
-                        apktool.getApkNameFromApkToolYaml(uri.fsPath),
-                    );
-                    await adb.installAPK(apkPath);
-                })
-                .catch(() => {
-                    outputChannel.appendLine(
-                        "Can't download/update dependencies!",
-                    );
-                });
+        async (uri: vscode.Uri) => {
+            try {
+                await checkAndInstallTools();
+                await UI.rebuildAPK(uri.fsPath);
+                const parentPath = path.parse(uri.fsPath).dir;
+                const apkPath = path.join(
+                    parentPath,
+                    DIST_DIR,
+                    apktool.getApkNameFromApkToolYaml(uri.fsPath),
+                );
+                await adb.installAPK(apkPath);
+            } catch {
+                outputChannel.appendLine("Can't download/update dependencies!");
+            }
         },
     );
 
@@ -94,16 +83,13 @@ export function activate(context: vscode.ExtensionContext): void {
     // command to empty apktool framework resource dir
     const emptyFrameworkDirCommand = vscode.commands.registerCommand(
         "apklab.emptyFrameworkDir",
-        () => {
-            checkAndInstallTools()
-                .then(() => {
-                    apktool.emptyFrameworkDir();
-                })
-                .catch(() => {
-                    outputChannel.appendLine(
-                        "Can't download/update dependencies!",
-                    );
-                });
+        async () => {
+            try {
+                await checkAndInstallTools();
+                await apktool.emptyFrameworkDir();
+            } catch {
+                outputChannel.appendLine("Can't download/update dependencies!");
+            }
         },
     );
 
