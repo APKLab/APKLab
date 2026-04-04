@@ -83,7 +83,6 @@ export namespace UI {
                     quarkAnalysis = true;
                     args.splice(quarkAnalysisIndex, 1);
                     if (!Quark.checkQuarkInstalled()) {
-                        quarkAnalysis = false;
                         window.showErrorMessage(
                             "APKLab: Quark command not found. " +
                                 "Please make sure you have installed python3 and Quark-Engine. " +
