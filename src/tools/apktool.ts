@@ -156,12 +156,7 @@ export namespace apktool {
             vscode.workspace.getConfiguration(extensionConfigName);
         const apktoolPath = extensionConfig.get("apktoolPath");
         const report = "Cleaning up ApkTool Framework dir";
-        const args = [
-            "-jar",
-            String(apktoolPath),
-            "empty-framework-dir",
-            "--force",
-        ];
+        const args = ["-jar", String(apktoolPath), "clean-frameworks"];
         await executeProcess({
             name: "Cleanup Apktool framework dir",
             report: report,

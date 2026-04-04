@@ -6,12 +6,7 @@ const quickPickItems: Record<string, QuickPickItem[]> = {
      */
     rebuildQuickPickItems: [
         {
-            label: "--use-aapt1",
-            detail: "Use the legacy aapt1 binary instead of aapt2",
-            alwaysShow: true,
-        },
-        {
-            label: "--debug",
+            label: "--debuggable",
             detail: 'Build APK in Debug mode by adding debuggable="true" to AndroidManifest file',
             alwaysShow: true,
         },
@@ -64,14 +59,13 @@ const quickPickItems: Record<string, QuickPickItem[]> = {
             alwaysShow: true,
         },
         {
-            label: "--only-main-classes",
-            detail: "Only disassemble dex classes in root (classes[0-9]*.dex)",
+            label: "--all-src",
+            detail: "Disassemble all dex classes (default is only main classes)",
             description: "apktool",
-            picked: true,
         },
         {
             label: "--no-debug-info",
-            detail: "Prevents baksmali from writing out debug info (.local, .param, .line, etc). (-b)",
+            detail: "Prevents baksmali from writing out debug info (.local, .param, .line, etc)",
             description: "apktool",
         },
         {
