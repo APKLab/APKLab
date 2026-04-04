@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as vscode from "vscode";
 import { extensionConfigName } from "../data/constants";
 import { executeProcess } from "../utils/executor";
+import { getJavaPath } from "../utils/java";
 
 export namespace apkSigner {
     /**
@@ -61,7 +62,7 @@ export namespace apkSigner {
         await executeProcess({
             name: "Signing",
             report: report,
-            command: "java",
+            command: getJavaPath(),
             args: args,
             shouldExist: apkFilePath,
         });
