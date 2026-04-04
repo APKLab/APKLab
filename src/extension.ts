@@ -4,7 +4,6 @@ import * as vscode from "vscode";
 import {
     apklabDataDir,
     DIST_DIR,
-    outputChannel,
     QUARK_REPORT_FILENAME,
 } from "./data/constants";
 import { checkAndInstallTools, updateTools } from "./utils/updater";
@@ -26,12 +25,8 @@ export function activate(context: vscode.ExtensionContext): void {
     const openApkFileCommand = vscode.commands.registerCommand(
         "apklab.openApkFile",
         async () => {
-            try {
-                await checkAndInstallTools();
-                await UI.openApkFile();
-            } catch {
-                outputChannel.appendLine("Can't download/update dependencies!");
-            }
+            await checkAndInstallTools();
+            await UI.openApkFile();
         },
     );
 
@@ -39,12 +34,8 @@ export function activate(context: vscode.ExtensionContext): void {
     const rebuildAPkFileCommand = vscode.commands.registerCommand(
         "apklab.rebuildApkFile",
         async (uri: vscode.Uri) => {
-            try {
-                await checkAndInstallTools();
-                await UI.rebuildAPK(uri.fsPath);
-            } catch {
-                outputChannel.appendLine("Can't download/update dependencies!");
-            }
+            await checkAndInstallTools();
+            await UI.rebuildAPK(uri.fsPath);
         },
     );
 
@@ -58,19 +49,15 @@ export function activate(context: vscode.ExtensionContext): void {
     const rebuildAndInstallAPkFileCommand = vscode.commands.registerCommand(
         "apklab.rebuildAndInstallApkFile",
         async (uri: vscode.Uri) => {
-            try {
-                await checkAndInstallTools();
-                await UI.rebuildAPK(uri.fsPath);
-                const parentPath = path.parse(uri.fsPath).dir;
-                const apkPath = path.join(
-                    parentPath,
-                    DIST_DIR,
-                    apktool.getApkNameFromApkToolYaml(uri.fsPath),
-                );
-                await adb.installAPK(apkPath);
-            } catch {
-                outputChannel.appendLine("Can't download/update dependencies!");
-            }
+            await checkAndInstallTools();
+            await UI.rebuildAPK(uri.fsPath);
+            const parentPath = path.parse(uri.fsPath).dir;
+            const apkPath = path.join(
+                parentPath,
+                DIST_DIR,
+                apktool.getApkNameFromApkToolYaml(uri.fsPath),
+            );
+            await adb.installAPK(apkPath);
         },
     );
 
@@ -84,12 +71,8 @@ export function activate(context: vscode.ExtensionContext): void {
     const emptyFrameworkDirCommand = vscode.commands.registerCommand(
         "apklab.emptyFrameworkDir",
         async () => {
-            try {
-                await checkAndInstallTools();
-                await apktool.emptyFrameworkDir();
-            } catch {
-                outputChannel.appendLine("Can't download/update dependencies!");
-            }
+            await checkAndInstallTools();
+            await apktool.emptyFrameworkDir();
         },
     );
 

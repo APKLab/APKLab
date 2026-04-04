@@ -1,6 +1,5 @@
 import * as path from "path";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import Mocha = require("mocha");
+import Mocha from "mocha";
 import { glob } from "glob";
 
 export function run(): Promise<void> {

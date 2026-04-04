@@ -3,6 +3,7 @@
         "module": "commonjs",
         "target": "ES2024",
         "lib": ["ES2024"],
+        "esModuleInterop": true,
         "outDir": "out",
         "sourceMap": true,
         "strict": true,

@@ -125,33 +125,41 @@ export async function updateTools(): Promise<void> {
  * If any tool does not exist, download it.
  */
 export async function checkAndInstallTools(): Promise<void> {
-    const extensionConfig =
-        vscode.workspace.getConfiguration(extensionConfigName);
-    const config = await getUpdateConfig();
+    try {
+        const extensionConfig =
+            vscode.workspace.getConfiguration(extensionConfigName);
+        const config = await getUpdateConfig();
 
-    const results = await Promise.allSettled(
-        config.tools.map(async (tool) => {
-            const toolPath = extensionConfig.get(tool.configName);
-            if (!toolPath || !fs.existsSync(String(toolPath))) {
-                const filepath = await downloadTool(tool);
-                if (!filepath) {
-                    throw new Error(`Failed to download tool: ${tool.name}`);
+        const results = await Promise.allSettled(
+            config.tools.map(async (tool) => {
+                const toolPath = extensionConfig.get(tool.configName);
+                if (!toolPath || !fs.existsSync(String(toolPath))) {
+                    const filepath = await downloadTool(tool);
+                    if (!filepath) {
+                        throw new Error(
+                            `Failed to download tool: ${tool.name}`,
+                        );
+                    }
+                    if (tool.name === "apktool") {
+                        // remove old res framework on apktool install
+                        await apktool.emptyFrameworkDir();
+                    }
                 }
-                if (tool.name === "apktool") {
-                    // remove old res framework on apktool install
-                    await apktool.emptyFrameworkDir();
-                }
-            }
-        }),
-    );
+            }),
+        );
 
-    // Check if any downloads failed
-    const failures = results.filter((result) => result.status === "rejected");
-    if (failures.length > 0) {
-        const errors = failures
-            .map((f) => (f as PromiseRejectedResult).reason)
-            .join(", ");
-        throw new Error(`Failed to install some tools: ${errors}`);
+        // Check if any downloads failed
+        const failures = results.filter(
+            (result) => result.status === "rejected",
+        );
+        if (failures.length > 0) {
+            const errors = failures
+                .map((f) => (f as PromiseRejectedResult).reason)
+                .join(", ");
+            outputChannel.appendLine(`Failed to install some tools: ${errors}`);
+        }
+    } catch (err) {
+        outputChannel.appendLine(`Can't download/update dependencies: ${err}`);
     }
 }
 
