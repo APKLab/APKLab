@@ -1,0 +1,109 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Smali",
+    "patterns": [
+        { "include": "#comments" },
+        { "include": "#field-access" },
+        { "include": "#field-declaration" },
+        { "include": "#directives" },
+        { "include": "#keywords" },
+        { "include": "#opcodes" },
+        { "include": "#labels" },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#registers" },
+        { "include": "#types" }
+    ],
+    "repository": {
+        "comments": {
+            "name": "comment.line.number-sign.smali",
+            "match": "#.*$"
+        },
+        "field-access": {
+            "name": "meta.field-access.smali",
+            "match": "(L[^;]+;)->([$a-zA-Z_][\\w$-]*):(L[^;]+;|\\[[VZBSCIJFDL][^\\s]*|[VZBSCIJFD])",
+            "captures": {
+                "1": { "name": "entity.name.type.class.smali" },
+                "2": { "name": "variable.other.field.smali" },
+                "3": { "name": "entity.name.type.smali" }
+            }
+        },
+        "field-declaration": {
+            "name": "meta.field.smali",
+            "match": "^\\s*(\\.field)\\s+([^:]+):(L[^;]+;|\\[[VZBSCIJFDL][^\\s]*|[VZBSCIJFD])",
+            "captures": {
+                "1": { "name": "keyword.control.directive.smali" },
+                "2": { "name": "variable.other.field.smali" },
+                "3": { "name": "entity.name.type.smali" }
+            }
+        },
+        "directives": {
+            "name": "keyword.control.directive.smali",
+            "match": "\\.(class|super|implements|source|method|end method|field|annotation|end annotation|param|locals|registers|line|prologue|epilogue|catch|catchall|local|end local)"
+        },
+        "keywords": {
+            "name": "keyword.other.smali",
+            "match": "\\b(public|private|protected|static|final|synchronized|bridge|varargs|native|abstract|strictfp|synthetic|interface|transient|volatile|constructor|declared-synchronized|enum)\\b"
+        },
+        "opcodes": {
+            "name": "keyword.operator.smali",
+            "match": "\\b(nop|move|move-wide|move-object|move-result|move-result-wide|move-result-object|move-exception|return-void|return|return-wide|return-object|const|const-wide|const-string|const-class|monitor-enter|monitor-exit|check-cast|instance-of|array-length|new-instance|new-array|filled-new-array|throw|goto|packed-switch|sparse-switch|if-eq|if-ne|if-lt|if-ge|if-gt|if-le|if-eqz|if-nez|if-ltz|if-gez|if-gtz|if-lez|aget|aput|iget|iput|sget|sput|invoke-virtual|invoke-super|invoke-direct|invoke-static|invoke-interface|neg-int|not-int|neg-long|not-long|neg-float|neg-double|int-to-long|int-to-float|int-to-double|long-to-int|long-to-float|long-to-double|float-to-int|float-to-long|float-to-double|double-to-int|double-to-long|double-to-float|int-to-byte|int-to-char|int-to-short|add-int|sub-int|mul-int|div-int|rem-int|and-int|or-int|xor-int|shl-int|shr-int|ushr-int|add-long|sub-long|mul-long|div-long|rem-long|and-long|or-long|xor-long|shl-long|shr-long|ushr-long|add-float|sub-float|mul-float|div-float|rem-float|add-double|sub-double|mul-double|div-double|rem-double|cmp-long|cmpg-float|cmpl-float|cmpg-double|cmpl-double)([-/][a-z0-9]+)*\\b"
+        },
+        "strings": {
+            "name": "string.quoted.double.smali",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.smali",
+                    "match": "\\\\."
+                }
+            ]
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.hex.smali",
+                    "match": "-?0x[0-9a-fA-F]+"
+                },
+                {
+                    "name": "constant.numeric.binary.smali",
+                    "match": "-?0b[01]+"
+                },
+                {
+                    "name": "constant.numeric.float.smali",
+                    "match": "-?[0-9]+\\.[0-9]+[fF]?"
+                },
+                {
+                    "name": "constant.numeric.integer.smali",
+                    "match": "-?[0-9]+[Ll]?"
+                }
+            ]
+        },
+        "registers": {
+            "name": "variable.parameter.register.smali",
+            "match": "\\b[vp][0-9]+\\b"
+        },
+        "labels": {
+            "name": "entity.name.label.smali",
+            "match": ":[a-zA-Z_][a-zA-Z0-9_]*"
+        },
+        "types": {
+            "patterns": [
+                {
+                    "name": "entity.name.type.class.smali",
+                    "match": "L[^;]+;"
+                },
+                {
+                    "name": "storage.type.primitive.smali",
+                    "match": "\\b[VZBSCIJFD]\\b"
+                },
+                {
+                    "name": "storage.type.array.smali",
+                    "match": "\\[+"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.smali"
+}

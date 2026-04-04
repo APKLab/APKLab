@@ -17,9 +17,7 @@
     "bugs": {
         "url": "https://github.com/APKLab/APKLab/issues"
     },
-    "extensionDependencies": [
-        "LoyieKing.smalise"
-    ],
+    "extensionDependencies": [],
     "categories": [
         "Programming Languages",
         "Other"
@@ -45,6 +43,26 @@
     ],
     "main": "./dist/extension",
     "contributes": {
+        "languages": [
+            {
+                "id": "smali",
+                "aliases": [
+                    "Smali",
+                    "smali"
+                ],
+                "extensions": [
+                    ".smali"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "smali",
+                "scopeName": "source.smali",
+                "path": "./syntaxes/smali.tmLanguage.json"
+            }
+        ],
         "commands": [
             {
                 "command": "apklab.openApkFile",
@@ -213,6 +231,26 @@
                     "type": "boolean",
                     "default": "false",
                     "markdownDescription": "Initialize project output directory as **Git** repository."
+                },
+                "apklab.smaliLspPath": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Put the absolute path of `smali-lsp.jar` here if you want to use a non-latest version."
+                },
+                "apklab.javaPath": {
+                    "type": "string",
+                    "default": "java",
+                    "markdownDescription": "Path to the **Java** executable (requires Java 17+)."
+                },
+                "smaliLsp.trace.server": {
+                    "type": "string",
+                    "enum": [
+                        "off",
+                        "messages",
+                        "verbose"
+                    ],
+                    "default": "off",
+                    "markdownDescription": "Traces the communication between VS Code and the Smali Language Server."
                 }
             }
         }
@@ -248,6 +286,7 @@
     "dependencies": {
         "apk-mitm": "^1.3.0",
         "cross-spawn": "^7.0.6",
-        "extract-zip": "^2.0.1"
+        "extract-zip": "^2.0.1",
+        "vscode-languageclient": "^9.0.1"
     }
 }

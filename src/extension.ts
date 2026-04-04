@@ -12,6 +12,7 @@ import { apkMitm } from "./tools/apk-mitm";
 import { Quark } from "./tools/quark-engine";
 import { adb } from "./tools/adb";
 import { apktool } from "./tools/apktool";
+import { smaliLsp } from "./tools/smali-lsp";
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log("Activated apklab extension!");
@@ -107,6 +108,13 @@ export function activate(context: vscode.ExtensionContext): void {
         }
     }
 
+    // register Smali LSP (lazy — starts when a .smali file is opened)
+    smaliLsp.register(context);
+
     // check for the tools update
     updateTools();
+}
+
+export function deactivate(): Thenable<void> | undefined {
+    return smaliLsp.stopServer();
 }
