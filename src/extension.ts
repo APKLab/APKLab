@@ -12,6 +12,7 @@ import { apkMitm } from "./tools/apk-mitm";
 import { Quark } from "./tools/quark-engine";
 import { adb } from "./tools/adb";
 import { apktool } from "./tools/apktool";
+import { frida } from "./tools/frida";
 import { smaliLsp } from "./tools/smali-lsp";
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -91,6 +92,17 @@ export function activate(context: vscode.ExtensionContext): void {
         () => checkAndInstallTools(),
     );
 
+    // Frida commands
+    const generateFridaHookCommand = vscode.commands.registerCommand(
+        "apklab.generateFridaHook",
+        () => frida.generateHook(),
+    );
+
+    const injectFridaGadgetCommand = vscode.commands.registerCommand(
+        "apklab.injectFridaGadget",
+        (uri: vscode.Uri) => frida.injectGadget(uri),
+    );
+
     context.subscriptions.push(
         openApkFileCommand,
         rebuildAPkFileCommand,
@@ -100,6 +112,8 @@ export function activate(context: vscode.ExtensionContext): void {
         emptyFrameworkDirCommand,
         quarkReportCommand,
         updateToolsCommand,
+        generateFridaHookCommand,
+        injectFridaGadgetCommand,
     );
 
     // check if open folder contains quark report file

@@ -95,6 +95,14 @@
             {
                 "command": "apklab.updateTools",
                 "title": "APKLab: Update Tools"
+            },
+            {
+                "command": "apklab.generateFridaHook",
+                "title": "APKLab: Generate Frida Hook"
+            },
+            {
+                "command": "apklab.injectFridaGadget",
+                "title": "APKLab: Inject Frida Gadget"
             }
         ],
         "menus": {
@@ -118,6 +126,14 @@
                 {
                     "command": "apklab.quarkReport",
                     "when": "false"
+                },
+                {
+                    "command": "apklab.generateFridaHook",
+                    "when": "false"
+                },
+                {
+                    "command": "apklab.injectFridaGadget",
+                    "when": "false"
                 }
             ],
             "editor/context": [
@@ -139,6 +155,16 @@
                 {
                     "command": "apklab.quarkReport",
                     "when": "resourceFilename == quarkReport.json",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.generateFridaHook",
+                    "when": "resourceLangId == smali",
+                    "group": "1_modification"
+                },
+                {
+                    "command": "apklab.injectFridaGadget",
+                    "when": "resourceFilename == apktool.yml",
                     "group": "navigation"
                 }
             ],
@@ -184,6 +210,11 @@
                 {
                     "command": "apklab.quarkReport",
                     "when": "resourceFilename == quarkReport.json",
+                    "group": "navigation"
+                },
+                {
+                    "command": "apklab.injectFridaGadget",
+                    "when": "resourceFilename == apktool.yml",
                     "group": "navigation"
                 }
             ]
