@@ -560,3 +560,17 @@ function patchSmaliWithGadgetLoad(
     }
     return patched;
 }
+
+// Export pure functions for testing
+export const _testing = {
+    smaliTypeToJava,
+    parseSmaliParams,
+    parseMethodFromLine,
+    generateFridaHook,
+    detectArch,
+    detectArchFromFilename,
+    findSmaliFile,
+    patchSmaliWithGadgetLoad,
+    generateGadgetName,
+    GADGET_INJECT_MARKER,
+};
