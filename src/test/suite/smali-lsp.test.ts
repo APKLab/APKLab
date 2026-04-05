@@ -52,7 +52,7 @@ describe("Smali LSP Integration Tests", function () {
         const javaPath = getJavaPath();
         const serverOptions: ServerOptions = {
             command: javaPath,
-            args: ["-jar", serverJar, "--lsp"],
+            args: ["-jar", serverJar, "lsp"],
         };
 
         const clientOptions: LanguageClientOptions = {
