@@ -102,6 +102,34 @@ export namespace smaliLsp {
                 name: path.basename(projectRoot),
                 index: 0,
             },
+            middleware: {
+                handleWorkDoneProgress: (_token, params, next) => {
+                    if ("kind" in params) {
+                        if (
+                            params.kind === "begin" ||
+                            params.kind === "report"
+                        ) {
+                            const pct =
+                                params.percentage !== undefined
+                                    ? ` ${params.percentage}%`
+                                    : "";
+                            const msg = params.message
+                                ? ` (${params.message})`
+                                : "";
+                            showStatusBar(
+                                `$(sync~spin) Smali: Indexing${pct}`,
+                                `Indexing Smali${pct}${msg}`,
+                            );
+                        } else if (params.kind === "end") {
+                            showStatusBar(
+                                "$(check) Smali LSP",
+                                "Smali Language Server ready",
+                            );
+                        }
+                    }
+                    next(_token, params);
+                },
+            },
         };
 
         client = new LanguageClient(
@@ -114,8 +142,6 @@ export namespace smaliLsp {
         client.onDidChangeState((event) => {
             updateStatusBar(event.newState);
         });
-
-        showStatusBar("$(sync~spin) Smali: Indexing...", "Indexing project");
 
         try {
             await client.start();
