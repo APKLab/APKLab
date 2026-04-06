@@ -45,9 +45,11 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - Decode/Edit/Rebuild app resource files
 - Disassemble/Mod/Rebuild an APK to/from Smali
 - Decompile the APK to Java source
-- Excellent Smali language (LSP) support with [**smali-lsp**](https://github.com/Surendrajat/smali-lsp)
+- Excellent Smali language support with [**smali-lsp**](https://github.com/Surendrajat/smali-lsp) — go to definition, find references, hover, call/type hierarchy, code lens, completion, diagnostics
 - Analyze & mod effectively in VS Code with full IDE features
 - Sign & Install the APK after rebuild
+- Generate Frida hooks for any smali methods
+- Inject Frida gadget into APK with automatic main activity patching
 - Initialize `git` repo in project dir to track changes
 - Apply MITM patch for HTTPS inspection
 - Interactive Malware Analysis Report
@@ -98,6 +100,16 @@ APKLab seamlessly integrates the best open-source tools: <a href="https://github
 - Right-Click on `.apk` file (in `dist` directory) ➜ <kbd>APKLab: Install the APK</kbd>
 
   ![install.gif](https://github.com/APKLab/APKLab/raw/master/assets/install.gif)
+
+#### Generate Frida Hook
+
+- Right-Click inside a `.method` in a `.smali` file ➜ <kbd>APKLab: Generate Frida Hook</kbd>
+- Hook is appended to `frida_hooks.ts` in the project root
+
+#### Inject Frida Gadget
+
+- Right-Click on or inside `apktool.yml` file ➜ <kbd>APKLab: Inject Frida Gadget</kbd>
+- Select the gadget `.so` file, target architecture, and the main activity is patched automatically
 
 #### Clean ApkTool frameworks dir
 

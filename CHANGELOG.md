@@ -1,5 +1,37 @@
 # Changelog
 
+## [2.0.0] - 2026-04-06
+
+### Added
+
+- **Smali Language Server** integration — full LSP support (go to definition, find references, hover, call/type hierarchy, code lens, completion, diagnostics) powered by [smali-lsp](https://github.com/Surendrajat/smali-lsp)
+- **Frida Hook Generation** — right-click on any method in a `.smali` file to generate a Frida TypeScript hook (`frida_hooks.ts`)
+- **Frida Gadget Injection** — right-click on `apktool.yml` to inject Frida gadget `.so`, config, and patch the main activity
+- **AndroidManifest.xml parser** — auto-detect main/launcher activity for gadget injection
+- **Smali syntax highlighting** — built-in TextMate grammar (replaces Smalise dependency)
+- **LSP indexing progress** — status bar shows indexing percentage via WorkDoneProgress
+- **`APKLab: Update Tools`** command for manual tool update check
+- **Java path configuration** — `apklab.javaPath` setting for custom Java paths
+- **LSP trace configuration** — `smaliLsp.trace.server` setting for debugging
+
+### Changed
+
+- **Apktool 3.0+ compatibility** — `--debuggable` replaces `--debug`, `clean-frameworks` replaces `empty-framework-dir --force`, removed `--use-aapt1`, `--all-src` replaces `--only-main-classes`
+- Upgraded to ESLint 10 (flat config), TypeScript 6, esbuild 0.28
+- Migrated from Smalise to built-in smali language support
+- Tool update check throttled to once every 12 hours
+- Error handling moved into `checkAndInstallTools()` with internal retry logic
+- `getJavaPath()` extracted as shared utility across all tools
+
+### Removed
+
+- `LoyieKing.smalise` extension dependency (replaced by built-in grammar)
+
+### Fixed
+
+- Compile error on local builds (#220, thanks @mauriliofilho)
+- CI: bash shell on Windows, `clean` command cross-platform fix
+
 ## [1.7.0] - 2023-07-23
 
 ### Added
