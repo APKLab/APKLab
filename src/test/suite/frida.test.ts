@@ -71,10 +71,11 @@ describe("Frida Tool Tests", function () {
         });
 
         it("parses mixed types", function () {
-            assert.deepStrictEqual(
-                parseSmaliParams("ILjava/lang/String;Z"),
-                ["I", "Ljava/lang/String;", "Z"],
-            );
+            assert.deepStrictEqual(parseSmaliParams("ILjava/lang/String;Z"), [
+                "I",
+                "Ljava/lang/String;",
+                "Z",
+            ]);
         });
 
         it("parses array types", function () {
@@ -175,9 +176,7 @@ describe("Frida Tool Tests", function () {
     describe("detectArchFromFilename", function () {
         it("detects arm64", function () {
             assert.strictEqual(
-                detectArchFromFilename(
-                    "/path/frida-gadget-arm64.so",
-                ),
+                detectArchFromFilename("/path/frida-gadget-arm64.so"),
                 "arm64-v8a",
             );
         });
@@ -191,9 +190,7 @@ describe("Frida Tool Tests", function () {
 
         it("detects x86_64", function () {
             assert.strictEqual(
-                detectArchFromFilename(
-                    "/path/frida-gadget-x86_64.so",
-                ),
+                detectArchFromFilename("/path/frida-gadget-x86_64.so"),
                 "x86_64",
             );
         });
@@ -206,10 +203,7 @@ describe("Frida Tool Tests", function () {
         });
 
         it("returns null for unknown", function () {
-            assert.strictEqual(
-                detectArchFromFilename("/path/gadget.so"),
-                null,
-            );
+            assert.strictEqual(detectArchFromFilename("/path/gadget.so"), null);
         });
     });
 
@@ -228,7 +222,10 @@ describe("Frida Tool Tests", function () {
 
         it("produces ndk_ prefixed name", function () {
             const name = generateGadgetName();
-            assert.ok(name.startsWith("ndk_"), `Expected ndk_ prefix, got: ${name}`);
+            assert.ok(
+                name.startsWith("ndk_"),
+                `Expected ndk_ prefix, got: ${name}`,
+            );
         });
     });
 

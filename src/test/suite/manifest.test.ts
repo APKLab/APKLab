@@ -33,7 +33,10 @@ describe("Manifest Utility Tests", function () {
         </activity>
     </application>
 </manifest>`);
-        assert.strictEqual(findMainActivity(manifest), "com.example.app.MainActivity");
+        assert.strictEqual(
+            findMainActivity(manifest),
+            "com.example.app.MainActivity",
+        );
     });
 
     it("resolves relative activity name with dot prefix", function () {
@@ -48,7 +51,10 @@ describe("Manifest Utility Tests", function () {
         </activity>
     </application>
 </manifest>`);
-        assert.strictEqual(findMainActivity(manifest), "com.example.app.MainActivity");
+        assert.strictEqual(
+            findMainActivity(manifest),
+            "com.example.app.MainActivity",
+        );
     });
 
     it("resolves bare class name without package", function () {
@@ -63,7 +69,10 @@ describe("Manifest Utility Tests", function () {
         </activity>
     </application>
 </manifest>`);
-        assert.strictEqual(findMainActivity(manifest), "com.example.app.MainActivity");
+        assert.strictEqual(
+            findMainActivity(manifest),
+            "com.example.app.MainActivity",
+        );
     });
 
     it("returns null when no launcher activity exists", function () {
@@ -97,6 +106,9 @@ describe("Manifest Utility Tests", function () {
         </activity>
     </application>
 </manifest>`);
-        assert.strictEqual(findMainActivity(manifest), "com.example.app.MainActivity");
+        assert.strictEqual(
+            findMainActivity(manifest),
+            "com.example.app.MainActivity",
+        );
     });
 });
