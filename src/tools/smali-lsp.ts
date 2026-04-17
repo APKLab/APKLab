@@ -24,6 +24,11 @@ import { getJavaPath } from "../utils/java";
 
 let client: LanguageClient | undefined;
 let statusBarItem: StatusBarItem | undefined;
+// Track whether we've already shown the "no APKTool project" guidance this session,
+// so opening multiple standalone smali files doesn't spam the user.
+let noProjectGuidanceShown = false;
+// Same throttle for the "server JAR missing" warning — once per session.
+let missingJarWarningShown = false;
 
 /**
  * Find the APKTool project root by walking up from the given directory.
@@ -67,15 +72,27 @@ export namespace smaliLsp {
             outputChannel.appendLine(
                 "Smali LSP: No APKTool project found (no apktool.yml in parent dirs)",
             );
+            if (!noProjectGuidanceShown) {
+                noProjectGuidanceShown = true;
+                window.showInformationMessage(
+                    "APKLab: Smali language features are disabled — no APKTool project (apktool.yml) found in parent folders. Decode an APK via 'APKLab: Open an APK' to enable them.",
+                );
+            }
             return;
         }
 
         const javaPath = getJavaPath();
         const serverJar = resolveServerJar();
         if (!serverJar) {
-            window.showWarningMessage(
-                "APKLab: Smali LSP server JAR not found. Use 'APKLab: Update Tools' to trigger download, or set apklab.smaliLspPath.",
+            outputChannel.appendLine(
+                "Smali LSP: Server JAR not found at configured path",
             );
+            if (!missingJarWarningShown) {
+                missingJarWarningShown = true;
+                window.showWarningMessage(
+                    "APKLab: Smali LSP server JAR not found. Use 'APKLab: Update Tools' to trigger download, or set apklab.smaliLspPath.",
+                );
+            }
             return;
         }
 
