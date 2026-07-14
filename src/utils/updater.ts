@@ -53,6 +53,56 @@ interface Config {
 }
 
 /**
+ * The canonical on-disk location where a tool ends up after downloading:
+ * the extraction dir for zipped tools, otherwise the downloaded file itself.
+ */
+function getToolInstallPath(tool: Tool): string {
+    return path.join(
+        apklabDataDir,
+        tool.zipped && tool.unzipDir ? tool.unzipDir : tool.fileName,
+    );
+}
+
+/**
+ * Whether the exact version of `tool` is already present on disk, regardless
+ * of what the extension config points at. Keying off the files (not the config
+ * string) lets us self-heal when a previous download extracted successfully but
+ * the config write never happened — the failure mode that made jadx re-download
+ * on every launch. A genuine version bump changes the install path, so this
+ * still returns false and triggers a fresh download.
+ */
+function isToolInstalled(tool: Tool): boolean {
+    const installPath = getToolInstallPath(tool);
+    if (!fs.existsSync(installPath)) return false;
+    // a zipped tool is a dir; require it to be non-empty so a leftover empty
+    // dir from a failed extraction doesn't masquerade as an installed tool
+    if (tool.zipped && tool.unzipDir) {
+        return fs.readdirSync(installPath).length > 0;
+    }
+    return true;
+}
+
+/**
+ * Point the tool's config at its on-disk location if it isn't already, so the
+ * rest of the extension (which reads the config, not the disk) stays in sync.
+ */
+async function syncToolConfig(tool: Tool): Promise<void> {
+    const installPath = getToolInstallPath(tool);
+    const current = vscode.workspace
+        .getConfiguration(extensionConfigName)
+        .get(tool.configName);
+    if (current !== installPath) {
+        await vscode.workspace
+            .getConfiguration(extensionConfigName)
+            .update(
+                tool.configName,
+                installPath,
+                vscode.ConfigurationTarget.Global,
+            );
+    }
+}
+
+/**
  * Check the tools in update config
  * If any tool does not exist or does not match given file name, download it.
  */
@@ -70,18 +120,14 @@ export async function updateTools(): Promise<void> {
     const needsUpdate: Tool[] = [];
 
     const config = await getUpdateConfig();
-    config.tools.forEach((tool) => {
-        const toolPath = extensionConfig.get(tool.configName);
-        if (
-            !toolPath ||
-            !fs.existsSync(String(toolPath)) ||
-            (!tool.zipped &&
-                path.basename(String(toolPath)) !== tool.fileName) ||
-            (tool.zipped && path.basename(String(toolPath)) !== tool.unzipDir)
-        ) {
+    for (const tool of config.tools) {
+        if (isToolInstalled(tool)) {
+            // present on disk: repair a missing/stale config value if needed
+            await syncToolConfig(tool);
+        } else {
             needsUpdate.push(tool);
         }
-    });
+    }
 
     if (needsUpdate.length > 0) {
         // show update notification
@@ -94,17 +140,9 @@ export async function updateTools(): Promise<void> {
             .then(async (updateAction) => {
                 if (updateAction === "Update tools") {
                     // Use Promise.allSettled to properly handle async operations
-                    const downloadPromises = needsUpdate.map(async (tool) => {
-                        // remove tool path from configuration & download it
-                        await vscode.workspace
-                            .getConfiguration(extensionConfigName)
-                            .update(
-                                tool.configName,
-                                "",
-                                vscode.ConfigurationTarget.Global,
-                            );
-                        return await downloadTool(tool);
-                    });
+                    const downloadPromises = needsUpdate.map((tool) =>
+                        downloadTool(tool),
+                    );
 
                     const results = await Promise.allSettled(downloadPromises);
                     const failures = results.filter(
@@ -126,24 +164,22 @@ export async function updateTools(): Promise<void> {
  */
 export async function checkAndInstallTools(): Promise<void> {
     try {
-        const extensionConfig =
-            vscode.workspace.getConfiguration(extensionConfigName);
         const config = await getUpdateConfig();
 
         const results = await Promise.allSettled(
             config.tools.map(async (tool) => {
-                const toolPath = extensionConfig.get(tool.configName);
-                if (!toolPath || !fs.existsSync(String(toolPath))) {
-                    const filepath = await downloadTool(tool);
-                    if (!filepath) {
-                        throw new Error(
-                            `Failed to download tool: ${tool.name}`,
-                        );
-                    }
-                    if (tool.name === "apktool") {
-                        // remove old res framework on apktool install
-                        await apktool.emptyFrameworkDir();
-                    }
+                if (isToolInstalled(tool)) {
+                    // present on disk: repair a missing/stale config value
+                    await syncToolConfig(tool);
+                    return;
+                }
+                const filepath = await downloadTool(tool);
+                if (!filepath) {
+                    throw new Error(`Failed to download tool: ${tool.name}`);
+                }
+                if (tool.name === "apktool") {
+                    // remove old res framework on apktool install
+                    await apktool.emptyFrameworkDir();
                 }
             }),
         );
