@@ -553,6 +553,19 @@ function createVSCodeMock() {
         DocumentHighlightKind: {},
         SignatureHelpTriggerKind: {},
         Disposable: StubClass,
+        // vscode-languageclient extends these vscode classes at module load.
+        // esbuild compiles its `import * as code` to `__importStar`, which
+        // eager-copies own enumerable keys — so the Proxy's dynamic `get`
+        // below isn't enough; they must exist as real properties here.
+        CallHierarchyItem: StubClass,
+        CodeAction: StubClass,
+        CodeLens: StubClass,
+        CompletionItem: StubClass,
+        Diagnostic: StubClass,
+        DocumentLink: StubClass,
+        InlayHint: StubClass,
+        SymbolInformation: StubClass,
+        TypeHierarchyItem: StubClass,
         EventEmitter: class {
             event = () => ({ dispose: () => {} });
             fire() {}

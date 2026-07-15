@@ -2,7 +2,7 @@ import * as path from "path";
 import * as fs from "fs";
 import * as child_process from "child_process";
 import * as vscode from "vscode";
-import * as glob from "glob";
+import { globSync } from "glob";
 import {
     outputChannel,
     QUARK_HIGH_CONFIDENCE,
@@ -116,10 +116,10 @@ function parseReport(reportPath: string): QuarkReport {
  */
 function functionToPath(srcDir: string, func: QuarkFunction): string {
     outputChannel.appendLine(`Searching smali file: ${func.class}`);
-    let srcPath = glob.sync(`${srcDir}/smali*/${func.class}.smali`, {});
+    let srcPath = globSync(`${srcDir}/smali*/${func.class}.smali`, {});
 
     if (func.class[0] === "L") {
-        srcPath = glob.sync(
+        srcPath = globSync(
             `${srcDir}/smali*/${func.class.substring(1)}.smali`,
             {},
         );

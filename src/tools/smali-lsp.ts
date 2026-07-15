@@ -112,7 +112,10 @@ export namespace smaliLsp {
             synchronize: {
                 fileEvents: workspace.createFileSystemWatcher("**/*.smali"),
             },
-            outputChannel: outputChannel,
+            // vscode-languageclient 10 requires a LogOutputChannel here; let
+            // the client own a dedicated "Smali Language Server" log channel
+            // (APKLab's own status lines still go to the shared channel)
+            outputChannelName: "Smali Language Server",
             revealOutputChannelOn: 4, // Never
             workspaceFolder: {
                 uri: Uri.file(projectRoot),

@@ -3,7 +3,7 @@ import * as https from "https";
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import extract from "extract-zip";
+import AdmZip from "adm-zip";
 import {
     extensionConfigName,
     apklabDataDir,
@@ -29,7 +29,14 @@ export async function downloadTool(tool: Tool): Promise<string | null> {
         if (tool.zipped && tool.unzipDir) {
             configPath = path.join(apklabDataDir, tool.unzipDir);
             try {
-                await extract(filePath, { dir: configPath });
+                // synchronous extraction (no promise that can fail to settle);
+                // keepOriginalPermission preserves the unix exec bit that
+                // launcher scripts like jadx's `bin/jadx` need to run
+                new AdmZip(filePath).extractAllTo(
+                    configPath,
+                    /* overwrite */ true,
+                    /* keepOriginalPermission */ true,
+                );
                 outputChannel.appendLine(
                     `Extracted ${filePath} into ${configPath}`,
                 );

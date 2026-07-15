@@ -7,7 +7,7 @@
     "license": "SEE LICENSE IN LICENSE",
     "icon": "assets/icon.png",
     "engines": {
-        "vscode": "^1.75.0"
+        "vscode": "^1.91.0"
     },
     "homepage": "https://apklab.surendrajat.xyz",
     "repository": {
@@ -306,22 +306,22 @@
         "@types/listr": "^0.14.10",
         "@types/mocha": "^10.0.10",
         "@types/node": "^24",
-        "@types/vscode": "^1.75.0",
-        "@vscode/test-electron": "^2.5.2",
-        "@vscode/vsce": "^3.7.1",
-        "esbuild": "^0.28.0",
-        "eslint": "^10.2.0",
+        "@types/vscode": "~1.91.0",
+        "@vscode/test-electron": "^3.0.0",
+        "@vscode/vsce": "^3.9.2",
+        "esbuild": "^0.28.1",
+        "eslint": "^10.7.0",
         "eslint-config-prettier": "^10.1.8",
-        "glob": "^11.0.3",
-        "mocha": "^11.7.5",
-        "prettier": "^3.8.1",
+        "glob": "^13.0.6",
+        "mocha": "^11.7.6",
+        "prettier": "^3.9.5",
         "typescript": "^6.0.2",
-        "typescript-eslint": "^8.58.0"
+        "typescript-eslint": "^8.64.0"
     },
     "dependencies": {
+        "adm-zip": "^0.6.0",
         "apk-mitm": "^1.3.0",
         "cross-spawn": "^7.0.6",
-        "extract-zip": "^2.0.1",
-        "vscode-languageclient": "^9.0.1"
+        "vscode-languageclient": "^10.1.0"
     }
 }
