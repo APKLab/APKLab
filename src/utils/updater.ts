@@ -163,39 +163,36 @@ export async function updateTools(): Promise<void> {
  * If any tool does not exist, download it.
  */
 export async function checkAndInstallTools(): Promise<void> {
-    try {
-        const config = await getUpdateConfig();
+    const config = await getUpdateConfig();
+    if (!config.tools || config.tools.length === 0) {
+        throw new Error("APKLab: no tools found in the update config");
+    }
 
-        const results = await Promise.allSettled(
-            config.tools.map(async (tool) => {
-                if (isToolInstalled(tool)) {
-                    // present on disk: repair a missing/stale config value
-                    await syncToolConfig(tool);
-                    return;
-                }
-                const filepath = await downloadTool(tool);
-                if (!filepath) {
-                    throw new Error(`Failed to download tool: ${tool.name}`);
-                }
-                if (tool.name === "apktool") {
-                    // remove old res framework on apktool install
-                    await apktool.emptyFrameworkDir();
-                }
-            }),
-        );
+    const results = await Promise.allSettled(
+        config.tools.map(async (tool) => {
+            if (isToolInstalled(tool)) {
+                await syncToolConfig(tool);
+                return;
+            }
+            await downloadTool(tool);
+            if (!isToolInstalled(tool)) {
+                throw new Error(
+                    `could not install ${tool.name} from ${tool.downloadUrl}`,
+                );
+            }
+            if (tool.name === "apktool") {
+                await apktool.emptyFrameworkDir();
+            }
+        }),
+    );
 
-        // Check if any downloads failed
-        const failures = results.filter(
-            (result) => result.status === "rejected",
-        );
-        if (failures.length > 0) {
-            const errors = failures
-                .map((f) => (f as PromiseRejectedResult).reason)
-                .join(", ");
-            outputChannel.appendLine(`Failed to install some tools: ${errors}`);
-        }
-    } catch (err) {
-        outputChannel.appendLine(`Can't download/update dependencies: ${err}`);
+    const failures = results
+        .filter((r) => r.status === "rejected")
+        .map((r) => String((r as PromiseRejectedResult).reason));
+    if (failures.length > 0) {
+        const msg = `APKLab: failed to install tools: ${failures.join("; ")}`;
+        outputChannel.appendLine(msg);
+        throw new Error(msg);
     }
 }
 
