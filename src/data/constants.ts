@@ -27,7 +27,7 @@ export const apklabDataDir = path.join(os.homedir(), ".apklab");
  * URL to get the updater JSON data
  */
 export const updaterConfigURL =
-    "https://apklab.surendrajat.xyz/apklab_update_config.json";
+    "https://raw.githubusercontent.com/APKLab/website/refs/heads/master/static/apklab_update_config.json";
 
 /**
  * File extensions
