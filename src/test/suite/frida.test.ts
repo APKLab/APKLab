@@ -12,6 +12,7 @@ const {
     detectArchFromFilename,
     findSmaliFile,
     patchSmaliWithGadgetLoad,
+    enableNativeLibExtraction,
     generateGadgetName,
     GADGET_INJECT_MARKER,
 } = _testing;
@@ -271,6 +272,67 @@ describe("Frida Tool Tests", function () {
 
             const result = findSmaliFile(tmpDir, "com.example.Missing");
             assert.strictEqual(result, null);
+        });
+    });
+
+    describe("enableNativeLibExtraction", function () {
+        let tmpDir: string;
+
+        beforeEach(function () {
+            tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "frida-manifest-"));
+        });
+
+        afterEach(function () {
+            fs.rmSync(tmpDir, { recursive: true });
+        });
+
+        it("adds extraction for a manifest with no native-library setting", function () {
+            const manifestPath = path.join(tmpDir, "AndroidManifest.xml");
+            fs.writeFileSync(
+                manifestPath,
+                '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="example.synthetic"><application /></manifest>',
+            );
+
+            enableNativeLibExtraction(manifestPath);
+
+            const result = fs.readFileSync(manifestPath, "utf-8");
+            assert.ok(result.includes('android:extractNativeLibs="true"'));
+            assert.ok(result.includes('package="example.synthetic"'));
+        });
+
+        it("overrides false without duplicating the attribute", function () {
+            const manifestPath = path.join(tmpDir, "AndroidManifest.xml");
+            fs.writeFileSync(
+                manifestPath,
+                '<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:extractNativeLibs="false"><application /></manifest>',
+            );
+
+            enableNativeLibExtraction(manifestPath);
+
+            const result = fs.readFileSync(manifestPath, "utf-8");
+            assert.strictEqual(
+                (result.match(/android:extractNativeLibs=/g) || []).length,
+                1,
+            );
+            assert.ok(result.includes('android:extractNativeLibs="true"'));
+        });
+
+        it("adds the Android namespace when it is absent", function () {
+            const manifestPath = path.join(tmpDir, "AndroidManifest.xml");
+            fs.writeFileSync(
+                manifestPath,
+                '<manifest package="example.synthetic"><application /></manifest>',
+            );
+
+            enableNativeLibExtraction(manifestPath);
+
+            const result = fs.readFileSync(manifestPath, "utf-8");
+            assert.ok(
+                result.includes(
+                    'xmlns:android="http://schemas.android.com/apk/res/android"',
+                ),
+            );
+            assert.ok(result.includes('android:extractNativeLibs="true"'));
         });
     });
 

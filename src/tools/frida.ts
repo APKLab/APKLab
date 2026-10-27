@@ -178,6 +178,48 @@ function findProjectRoot(filePath: string): string | null {
     return null;
 }
 
+/**
+ * Ensure Android extracts native libraries from a rebuilt APK. This is needed
+ * when Frida Gadget is injected into a project that originally had no native
+ * libraries, so the Android package defaults would otherwise leave the gadget
+ * unavailable to System.loadLibrary.
+ */
+function enableNativeLibExtraction(manifestPath: string): void {
+    const content = fs.readFileSync(manifestPath, "utf-8");
+    const manifestTag = content.match(/<manifest\b[^>]*>/);
+    if (!manifestTag) {
+        throw new Error("AndroidManifest.xml has no manifest start tag");
+    }
+
+    let updatedTag = manifestTag[0];
+    const extractionAttribute =
+        /\s+android:extractNativeLibs\s*=\s*(?:"[^"]*"|'[^']*')/;
+    if (extractionAttribute.test(updatedTag)) {
+        updatedTag = updatedTag.replace(
+            extractionAttribute,
+            ' android:extractNativeLibs="true"',
+        );
+    } else {
+        updatedTag = updatedTag.replace(
+            />$/,
+            ' android:extractNativeLibs="true">',
+        );
+    }
+
+    if (!/\bxmlns:android\s*=/.test(updatedTag)) {
+        updatedTag = updatedTag.replace(
+            /\s+android:extractNativeLibs=/,
+            ' xmlns:android="http://schemas.android.com/apk/res/android" android:extractNativeLibs=',
+        );
+    }
+
+    fs.writeFileSync(
+        manifestPath,
+        content.replace(manifestTag[0], updatedTag),
+        "utf-8",
+    );
+}
+
 export namespace frida {
     /**
      * Generate a Frida hook for the method at the current cursor line.
@@ -363,6 +405,9 @@ export namespace frida {
                 `Frida Gadget: Script copied to ${scriptDest}`,
             );
         }
+
+        // Ensure the rebuilt APK extracts the injected native library.
+        enableNativeLibExtraction(manifestPath);
 
         // 4. Patch main activity smali to load gadget
         const activitySmaliPath = findSmaliFile(projectDir, mainActivityClass);
@@ -571,6 +616,7 @@ export const _testing = {
     detectArchFromFilename,
     findSmaliFile,
     patchSmaliWithGadgetLoad,
+    enableNativeLibExtraction,
     generateGadgetName,
     GADGET_INJECT_MARKER,
 };
