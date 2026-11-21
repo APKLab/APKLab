@@ -8,8 +8,12 @@ export namespace adb {
     /**
      * Installs the selected APK file to connected android device over ADB.
      * @param apkFilePath absolute path of the APK file.
+     * @param extraArgs optional additional ADB install arguments.
      */
-    export async function installAPK(apkFilePath: string): Promise<void> {
+    export async function installAPK(
+        apkFilePath: string,
+        extraArgs: string[] = [],
+    ): Promise<void> {
         if (!apkFilePath || !fs.existsSync(apkFilePath)) {
             vscode.window.showErrorMessage(
                 `APKLab: APK file not found: ${apkFilePath}`,
@@ -26,7 +30,7 @@ export namespace adb {
 
         const apkFileName = path.basename(apkFilePath);
         const report = `Installing ${apkFileName}`;
-        const args = ["install", "-r", apkFilePath];
+        const args = ["install", "-r", ...extraArgs, apkFilePath];
         await executeProcess({
             name: "Installing",
             report: report,

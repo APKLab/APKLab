@@ -8,6 +8,7 @@ import {
 } from "./data/constants";
 import { quickPickUtil } from "./utils/quick-picks";
 import { Quark } from "./tools/quark-engine";
+import { adb } from "./tools/adb";
 import { apktool } from "./tools/apktool";
 import { git } from "./tools/git";
 import { jadx } from "./tools/jadx";
@@ -140,8 +141,9 @@ export namespace UI {
     /**
      * Show a QuickPick with extra args and build the APK.
      * @param apktoolYmlPath path of the `apktool.yml` file.
+     * @returns true if the build ran, false if cancelled.
      */
-    export async function rebuildAPK(apktoolYmlPath: string): Promise<void> {
+    export async function rebuildAPK(apktoolYmlPath: string): Promise<boolean> {
         const quickPickItems = await showArgsQuickPick(
             quickPickUtil.getQuickPickItems("rebuildQuickPickItems"),
             "Additional Apktool arguments",
@@ -151,6 +153,38 @@ export namespace UI {
             : undefined;
         if (args) {
             await apktool.rebuildAPK(apktoolYmlPath, args);
+            return true;
         }
+        return false;
+    }
+
+    /**
+     * Show a QuickPick with extra ADB install args and install the APK.
+     * @param apkFilePath absolute path of the APK file.
+     */
+    export async function installAPK(apkFilePath: string): Promise<void> {
+        const installAsPlayStore = workspace
+            .getConfiguration(extensionConfigName)
+            .get<boolean>("installAsPlayStore", false);
+        const items = quickPickUtil
+            .getQuickPickItems("installQuickPickItems")
+            .map((item) => ({
+                ...item,
+                picked:
+                    item.label === "-i com.android.vending"
+                        ? installAsPlayStore
+                        : item.picked,
+            }));
+        const quickPickItems = await showArgsQuickPick(
+            items,
+            "Additional ADB install arguments",
+        );
+        if (!quickPickItems) {
+            return;
+        }
+        const extraArgs = quickPickItems.flatMap((item) =>
+            item.label.split(/\s+/).filter(Boolean),
+        );
+        await adb.installAPK(apkFilePath, extraArgs);
     }
 }

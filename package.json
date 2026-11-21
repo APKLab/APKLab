@@ -277,6 +277,11 @@
                     "default": "java",
                     "markdownDescription": "Path to the **Java** executable (requires Java 17+)."
                 },
+                "apklab.installAsPlayStore": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Pre-select `-i com.android.vending` (Google Play Store as installer package) in the ADB install options popup."
+                },
                 "smaliLsp.trace.server": {
                     "type": "string",
                     "enum": [

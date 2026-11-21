@@ -22,6 +22,17 @@ const quickPickItems: Record<string, QuickPickItem[]> = {
         },
     ],
     /**
+     * QuickPickItem array for additional **ADB** args for APK installation.
+     */
+    installQuickPickItems: [
+        {
+            label: "-i com.android.vending",
+            detail: "Install APK using Google Play Store as the installer package (required for Android Auto)",
+            description: "adb",
+            alwaysShow: true,
+        },
+    ],
+    /**
      * QuickPickItem array for additional **Apktool** args for APK decoding.
      */
     decodeQuickPickItems: [
