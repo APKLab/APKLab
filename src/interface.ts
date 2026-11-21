@@ -141,21 +141,49 @@ export namespace UI {
     /**
      * Show a QuickPick with extra args and build the APK.
      * @param apktoolYmlPath path of the `apktool.yml` file.
-     * @returns true if the build ran, false if cancelled.
+     * @param includeInstallOptions whether to include ADB install options in the same QuickPick.
+     * @returns build status and any selected ADB install arguments.
      */
-    export async function rebuildAPK(apktoolYmlPath: string): Promise<boolean> {
-        const quickPickItems = await showArgsQuickPick(
-            quickPickUtil.getQuickPickItems("rebuildQuickPickItems"),
-            "Additional Apktool arguments",
+    export async function rebuildAPK(
+        apktoolYmlPath: string,
+        includeInstallOptions = false,
+    ): Promise<{ built: boolean; adbArgs: string[] }> {
+        const rebuildItems = quickPickUtil.getQuickPickItems(
+            "rebuildQuickPickItems",
         );
-        const args = quickPickItems
-            ? quickPickItems.map<string>((item) => item.label)
-            : undefined;
-        if (args) {
-            await apktool.rebuildAPK(apktoolYmlPath, args);
-            return true;
+        let items = rebuildItems;
+        if (includeInstallOptions) {
+            const installAsPlayStore = workspace
+                .getConfiguration(extensionConfigName)
+                .get<boolean>("installAsPlayStore", false);
+            const installItems = quickPickUtil
+                .getQuickPickItems("installQuickPickItems")
+                .map((item) => ({
+                    ...item,
+                    picked:
+                        item.label === "-i com.android.vending"
+                            ? installAsPlayStore
+                            : item.picked,
+                }));
+            items = [...rebuildItems, ...installItems];
         }
-        return false;
+        const quickPickItems = await showArgsQuickPick(
+            items,
+            includeInstallOptions
+                ? "Additional Apktool & ADB arguments"
+                : "Additional Apktool arguments",
+        );
+        if (!quickPickItems) {
+            return { built: false, adbArgs: [] };
+        }
+        const apktoolArgs = quickPickItems
+            .filter((item) => item.description !== "adb")
+            .map<string>((item) => item.label);
+        const adbArgs = quickPickItems
+            .filter((item) => item.description === "adb")
+            .flatMap((item) => item.label.split(/\s+/).filter(Boolean));
+        await apktool.rebuildAPK(apktoolYmlPath, apktoolArgs);
+        return { built: true, adbArgs };
     }
 
     /**

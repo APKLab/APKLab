@@ -10,6 +10,7 @@ import { checkAndInstallTools, updateTools } from "./utils/updater";
 import { UI } from "./interface";
 import { apkMitm } from "./tools/apk-mitm";
 import { Quark } from "./tools/quark-engine";
+import { adb } from "./tools/adb";
 import { apktool } from "./tools/apktool";
 import { frida } from "./tools/frida";
 import { smaliLsp } from "./tools/smali-lsp";
@@ -51,7 +52,7 @@ export function activate(context: vscode.ExtensionContext): void {
         "apklab.rebuildAndInstallApkFile",
         async (uri: vscode.Uri) => {
             await checkAndInstallTools();
-            const built = await UI.rebuildAPK(uri.fsPath);
+            const { built, adbArgs } = await UI.rebuildAPK(uri.fsPath, true);
             if (!built) {
                 return;
             }
@@ -61,7 +62,7 @@ export function activate(context: vscode.ExtensionContext): void {
                 DIST_DIR,
                 apktool.getApkNameFromApkToolYaml(uri.fsPath),
             );
-            await UI.installAPK(apkPath);
+            await adb.installAPK(apkPath, adbArgs);
         },
     );
 
